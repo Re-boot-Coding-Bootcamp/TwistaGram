@@ -44,6 +44,7 @@ function LoginForm({
     <Box display="flex" flexDirection="column" gap={1}>
       <TextField
         id="username-email-input"
+        type="email"
         size="small"
         label="Username / Email"
         variant="outlined"
@@ -53,6 +54,7 @@ function LoginForm({
       />
       <TextField
         id="password-input"
+        type="password"
         size="small"
         label="Password"
         variant="outlined"
