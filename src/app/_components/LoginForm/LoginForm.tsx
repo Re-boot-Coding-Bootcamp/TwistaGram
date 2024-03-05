@@ -29,22 +29,28 @@ function LoginForm({ email, password, onSubmit }: LoginForm): JSX.Element {
   };
 
   return (
-    <Box>
+    <Box display="flex" flexDirection="column" gap={1}>
       <TextField
         id="username-email-input"
+        size="small"
         label="Username / Email"
         variant="outlined"
         value={usernameEmailValue}
         onChange={handleUsernameEmailChange}
+        fullWidth
       />
       <TextField
         id="password-input"
+        size="small"
         label="Password"
         variant="outlined"
         value={passwordValue}
         onChange={handlePasswordChange}
+        fullWidth
       />
-      <Typography>Forgot Password?</Typography>
+      <Typography variant="caption" textAlign="right" color="primary">
+        Forgot password?
+      </Typography>
       <Button variant="contained" onClick={handleOnClick} fullWidth>
         Log in
       </Button>
@@ -52,4 +58,4 @@ function LoginForm({ email, password, onSubmit }: LoginForm): JSX.Element {
   );
 }
 
-export default LoginForm;
+export { LoginForm };
