@@ -2,13 +2,13 @@ import { Button } from "@mui/material";
 import React from "react";
 import GoogleIcon from "@mui/icons-material/Google";
 
-interface GoogleLoginButtonProps {
+interface Props {
   onLogin: () => void;
 }
 
 const GoogleLoginButton = ({
   onLogin,
-}: GoogleLoginButtonProps): JSX.Element => {
+}: Props): JSX.Element => {
   const handleLogin = () => {
     onLogin();
   };
@@ -17,14 +17,11 @@ const GoogleLoginButton = ({
     <Button
       variant="contained"
       startIcon={<GoogleIcon />}
-      size="large"
       sx={{
         textTransform: "none",
         fontWeight: "normal",
         backgroundColor: "#248cb4",
         borderRadius: "8px",
-        width: "350px",
-        height: "50px",
         fontSize: "16px",
         "&:hover": {
           backgroundColor: "#196e7e",
@@ -32,6 +29,7 @@ const GoogleLoginButton = ({
         },
       }}
       onClick={handleLogin}
+      fullWidth
     >
       Log in with Google
     </Button>
