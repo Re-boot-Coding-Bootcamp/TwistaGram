@@ -38,7 +38,7 @@ export const Default: Story = {
     email: "",
     password: "",
     onSubmit: (email: string, password: string) => {
-      alert(`Email: ${email} and Password ${password}`);
+      alert(`Email: ${email} and Password: ${password}`);
     },
   },
 };
@@ -48,7 +48,7 @@ export const Prefilled: Story = {
     email: "totalrealemail123@gmail.com",
     password: "Password1234",
     onSubmit: (email: string, password: string) => {
-      alert(`Email: ${email} and Password ${password}`);
+      alert(`Email: ${email} and Password: ${password}`);
     },
   },
 };

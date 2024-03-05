@@ -2,13 +2,20 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import type { ChangeEventHandler } from "react";
 
+// Defined interfaces for props
 interface LoginForm {
   email?: string;
   password?: string;
   onSubmit: (email: string, password: string) => void;
+  onForgotPasswordClick: () => void;
 }
 
-function LoginForm({ email, password, onSubmit }: LoginForm): JSX.Element {
+function LoginForm({
+  email,
+  password,
+  onSubmit,
+  onForgotPasswordClick,
+}: LoginForm): JSX.Element {
   const [usernameEmailValue, setUsernameEmailValue] = useState<string>(
     email ?? ""
   );
@@ -24,8 +31,14 @@ function LoginForm({ email, password, onSubmit }: LoginForm): JSX.Element {
     setPasswordValue(e.target.value);
   };
 
-  const handleOnClick = () => {
+  // function to handle login
+  const handleLoginClick = () => {
     onSubmit(usernameEmailValue, passwordValue);
+  };
+
+  // function to handle forgotten password
+  const handleForgotPasswordClick = () => {
+    onForgotPasswordClick();
   };
 
   return (
@@ -48,10 +61,17 @@ function LoginForm({ email, password, onSubmit }: LoginForm): JSX.Element {
         onChange={handlePasswordChange}
         fullWidth
       />
-      <Typography variant="caption" textAlign="right" color="primary">
+      <Typography
+        id="forgot-password"
+        variant="caption"
+        textAlign="right"
+        color="primary"
+        onClick={handleForgotPasswordClick}
+        sx={{ cursor: "pointer" }}
+      >
         Forgot password?
       </Typography>
-      <Button variant="contained" onClick={handleOnClick} fullWidth>
+      <Button variant="contained" onClick={handleLoginClick} fullWidth>
         Log in
       </Button>
     </Box>
