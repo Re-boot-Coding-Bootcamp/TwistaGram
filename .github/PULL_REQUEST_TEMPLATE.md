@@ -10,7 +10,7 @@ Please include a summary of the change and which issue is fixed.
 
 ## Screenshot(s) / GIF(s):
 
-![It's beautiful]()
+![It's beautiful](https://murad-public-files.s3.amazonaws.com/beautiful.png)
 
 ## Type of change
 
