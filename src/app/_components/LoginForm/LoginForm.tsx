@@ -1,5 +1,4 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { ReactJSXElement } from "node_modules/@emotion/react/dist/declarations/types/jsx-namespace";
 import { useState } from "react";
 import type { ChangeEventHandler } from "react";
 
