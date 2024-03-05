@@ -71,7 +71,7 @@ function LoginForm({
       >
         Forgot password?
       </Typography>
-      <Button variant="contained" onClick={handleLoginClick} fullWidth>
+      <Button id="login-button" variant="contained" onClick={handleLoginClick} fullWidth>
         Log in
       </Button>
     </Box>
