@@ -1,4 +1,4 @@
-import { Box, Typography, Button, alpha} from '@mui/material'
+import { Box, Typography, Button} from '@mui/material'
 import React from 'react'
 
 const ForgotPassword = (): JSX.Element => {
