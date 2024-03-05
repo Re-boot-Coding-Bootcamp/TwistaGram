@@ -2,8 +2,7 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import type { ChangeEventHandler } from "react";
 
-// Defined interfaces for props
-interface LoginForm {
+interface LoginFormProps {
   email?: string;
   password?: string;
   onSubmit: (email: string, password: string) => void;
@@ -15,7 +14,7 @@ function LoginForm({
   password,
   onSubmit,
   onForgotPasswordClick,
-}: LoginForm): JSX.Element {
+}: LoginFormProps): JSX.Element {
   const [usernameEmailValue, setUsernameEmailValue] = useState<string>(
     email ?? ""
   );
@@ -71,7 +70,13 @@ function LoginForm({
       >
         Forgot password?
       </Typography>
-      <Button id="login-button" variant="contained" onClick={handleLoginClick} fullWidth>
+      <Button
+        id="login-button"
+        variant="contained"
+        onClick={handleLoginClick}
+        fullWidth
+        sx={{ textTransform: "false" }}
+      >
         Log in
       </Button>
     </Box>
