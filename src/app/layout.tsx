@@ -8,6 +8,8 @@ import "~/styles/globals.css";
 import { Inter } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
+import { ThemeProvider } from "@mui/material";
+import theme from "~/theme";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,7 +29,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <ThemeProvider theme={theme}>
+          <TRPCReactProvider>{children}</TRPCReactProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
