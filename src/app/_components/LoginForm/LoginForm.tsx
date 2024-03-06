@@ -3,27 +3,22 @@ import { useState } from "react";
 import type { ChangeEventHandler } from "react";
 
 interface LoginFormProps {
-  email?: string;
-  password?: string;
-  onSubmit: (email: string, password: string) => void;
+  onSubmit: (usernameOrEmail: string, password: string) => void;
   onForgotPasswordClick: () => void;
 }
 
 function LoginForm({
-  email,
-  password,
   onSubmit,
   onForgotPasswordClick,
 }: LoginFormProps): JSX.Element {
-  const [usernameEmailValue, setUsernameEmailValue] = useState<string>(
-    email ?? ""
-  );
-  const [passwordValue, setPasswordValue] = useState<string>(password ?? "");
+  const [usernameOrEmailValue, setUsernameOrEmailValue] = useState<string>("");
+
+  const [passwordValue, setPasswordValue] = useState<string>("");
 
   const handleUsernameEmailChange: ChangeEventHandler<HTMLInputElement> = (
     e
   ) => {
-    setUsernameEmailValue(e.target.value);
+    setUsernameOrEmailValue(e.target.value);
   };
 
   const handlePasswordChange: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -32,7 +27,7 @@ function LoginForm({
 
   // function to handle login
   const handleLoginClick = () => {
-    onSubmit(usernameEmailValue, passwordValue);
+    onSubmit(usernameOrEmailValue, passwordValue);
   };
 
   // function to handle forgotten password
@@ -48,7 +43,7 @@ function LoginForm({
         size="small"
         label="Username / Email"
         variant="outlined"
-        value={usernameEmailValue}
+        value={usernameOrEmailValue}
         onChange={handleUsernameEmailChange}
         fullWidth
       />
@@ -72,13 +67,7 @@ function LoginForm({
       >
         Forgot password?
       </Typography>
-      <Button
-        id="login-button"
-        variant="contained"
-        onClick={handleLoginClick}
-        fullWidth
-        sx={{ textTransform: "false" }}
-      >
+      <Button id="login-button" variant="contained" onClick={handleLoginClick}>
         Log in
       </Button>
     </Box>

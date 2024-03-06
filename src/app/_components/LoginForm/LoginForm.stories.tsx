@@ -11,9 +11,8 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
-    email: { control: "text" },
-    password: { control: "text" },
     onSubmit: { control: "function" },
+    onForgotPasswordClick: { control: "function" },
   },
   decorators: [
     (Story) => (
@@ -29,23 +28,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    email: "",
-    password: "",
-    onSubmit: (email: string, password: string) => {
-      alert(`Email: ${email} and Password: ${password}`);
-    },
-    onForgotPasswordClick: () => {
-      alert("Forgot Password was clicked!");
-    },
-  },
-};
-
-export const Prefilled: Story = {
-  args: {
-    email: "totalrealemail123@gmail.com",
-    password: "Password1234",
-    onSubmit: (email: string, password: string) => {
-      alert(`Email: ${email} and Password: ${password}`);
+    onSubmit: (usernameOrEmail: string, password: string) => {
+      alert(`Email: ${usernameOrEmail} and Password: ${password}`);
     },
     onForgotPasswordClick: () => {
       alert("Forgot Password was clicked!");
