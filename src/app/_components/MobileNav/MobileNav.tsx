@@ -36,7 +36,7 @@ const MobileNav = () => {
     >
       <BottomNavigation
         value={selectedPage}
-        onChange={(event, newValue) => {
+        onChange={(_event, newValue) => {
           setSelectedPage(newValue as NavItems);
         }}
         sx={{
