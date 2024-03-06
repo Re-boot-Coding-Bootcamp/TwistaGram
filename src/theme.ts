@@ -8,6 +8,18 @@ const theme = createTheme({
       dark: "#185a81",
     },
   },
+  components: {
+    MuiButton: {
+      defaultProps: {
+        fullWidth: true,
+      },
+      styleOverrides: {
+        root: {
+          textTransform: "none",
+        },
+      },
+    },
+  },
 });
 
 export default theme;
