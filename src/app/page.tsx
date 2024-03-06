@@ -2,7 +2,6 @@ import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 
 import { getServerAuthSession } from "~/server/auth";
-import { FrontLayout } from "./_components/FrontLayout/FrontLayout";
 
 export default async function Home() {
   noStore();
@@ -18,7 +17,6 @@ export default async function Home() {
       <Link href={session ? "/api/auth/signout" : "/api/auth/signin"}>
         {session ? "Sign out" : "Sign in"}
       </Link>
-      <FrontLayout />
     </div>
   );
 }
