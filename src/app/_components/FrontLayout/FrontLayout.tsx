@@ -7,23 +7,27 @@ import theme from "~/theme";
 const FrontLayout = (): JSX.Element => {
   const mobileSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-const MobileFooterContainer = () => {
-  return (
-    <Box id="have-an-account" sx={{
-      textAlign: "center",
-      marginTop: "auto",
-      marginBottom: "1rem",
-      position: "absolute",
-      bottom: "1rem",
-      width: mobileSmallScreen ? "100vw" : "100%",
-      borderTop: "1px solid #CCC",
-      paddingTop: "13px",
-      height: mobileSmallScreen ? "10px" : "40px",
-    }}
-    > Have an account? Container
-    </Box>
-  )
-}
+  const MobileFooterContainer = () => {
+    return (
+      <Box
+        id="have-an-account"
+        sx={{
+          textAlign: "center",
+          marginTop: "auto",
+          marginBottom: "1rem",
+          position: "absolute",
+          bottom: "1rem",
+          width: mobileSmallScreen ? "100vw" : "100%",
+          borderTop: "1px solid #CCC",
+          paddingTop: "13px",
+          height: mobileSmallScreen ? "10px" : "40px",
+        }}
+      >
+        {" "}
+        Have an account? Container
+      </Box>
+    );
+  };
 
   return (
     <>
@@ -53,27 +57,46 @@ const MobileFooterContainer = () => {
         >
           <Box
             id="logo-container"
-            mb={6}
-            style={{
+            sx={{
               position: "absolute",
-              top: "5rem",
+              top: mobileSmallScreen ? "2rem" : "5rem",
               left: "50%",
               transform: "translateX(-50%)",
+              marginBottom: "15px",
             }}
           >
             <Image src={Logo as string} alt="logo" width={200} />
           </Box>
-          <Typography
-            variant="h6"
-            color="#B5B5B5"
-            fontWeight="bold"
-            mb={3}
-            style={{ textAlign: "center" }}
+          <Box
+            sx={{
+              textAlign: "center",
+              marginTop: "80px",
+              marginBottom: "15px",
+            }}
           >
-            Sign up to see posts, photos, and videos from your friends.
-          </Typography>
+            <Typography
+              variant="h6"
+              color="#B5B5B5"
+              fontWeight="bold"
+              style={{ textAlign: "center", fontSize: "17px" }}
+            >
+              Sign up to see posts, photos, and videos from your friends.
+            </Typography>
+          </Box>
           <form style={{ textAlign: "center", width: "100%" }}>
-            <Box id="google-login" mb={3}>
+            <Box
+              id="google-login"
+              sx={{
+                width: "343px",
+                height: "47px",
+                backgroundColor: "#E0E0E0",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                border: "1px dashed #9E9E9E",
+                marginTop: "15px",
+              }}
+            >
               Google login container
             </Box>
 
@@ -84,6 +107,7 @@ const MobileFooterContainer = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 marginY: "1.5rem",
+                marginTop: "35px",
               }}
             >
               <Divider
@@ -116,14 +140,28 @@ const MobileFooterContainer = () => {
               />
             </Box>
 
-            <Box id="registration-form" sx={{
-              flexGrow: 1,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center"
-            }}>Registration container</Box>
+            <Box
+              id="registration-form"
+              sx={{
+                width: "343px",
+                height: "266px",
+                backgroundColor: "#E0E0E0",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                border: "1px dashed #9E9E9E",
+                marginTop: "35px",
+                marginBottom: "23px",
+              }}
+            >
+              Registration container
+            </Box>
+            <Typography style={{ marginBottom: "40px" }}>
+              By signing up, you agree to our terms, data policy and cookies
+              policy.
+            </Typography>
           </form>
-          <MobileFooterContainer /> 
+          <MobileFooterContainer />
         </Box>
       </Grid>
     </>
