@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import { Grid, Typography, Box, Divider, useMediaQuery } from "@mui/material";
 import Logo from "~/assets/images/logo_font.svg";
@@ -8,6 +6,24 @@ import theme from "~/theme";
 
 const FrontLayout = (): JSX.Element => {
   const mobileSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+const MobileFooterContainer = () => {
+  return (
+    <Box id="have-an-account" sx={{
+      textAlign: "center",
+      marginTop: "auto",
+      marginBottom: "1rem",
+      position: "absolute",
+      bottom: "1rem",
+      width: mobileSmallScreen ? "100vw" : "100%",
+      borderTop: "1px solid #CCC",
+      paddingTop: "13px",
+      height: mobileSmallScreen ? "10px" : "40px",
+    }}
+    > Have an account? Container
+    </Box>
+  )
+}
 
   return (
     <>
@@ -18,8 +34,9 @@ const FrontLayout = (): JSX.Element => {
         style={{ minHeight: "100vh" }}
       >
         <Box
+          id="borderline"
           sx={{
-            border: mobileSmallScreen ? "none" : "1px solid #CCCCCC",
+            border: mobileSmallScreen ? "none" : "1px solid #CCC",
             maxHeight: "812px",
             height: "90vh",
             margin: "auto",
@@ -34,12 +51,21 @@ const FrontLayout = (): JSX.Element => {
             },
           }}
         >
-          <Box id="logo-container" mb={6}>
+          <Box
+            id="logo-container"
+            mb={6}
+            style={{
+              position: "absolute",
+              top: "5rem",
+              left: "50%",
+              transform: "translateX(-50%)",
+            }}
+          >
             <Image src={Logo as string} alt="logo" width={200} />
           </Box>
           <Typography
             variant="h6"
-            color="#7E7575"
+            color="#B5B5B5"
             fontWeight="bold"
             mb={3}
             style={{ textAlign: "center" }}
@@ -64,7 +90,7 @@ const FrontLayout = (): JSX.Element => {
                 sx={{
                   flex: "1",
                   height: "1px",
-                  backgroundColor: "#CCCCCC",
+                  backgroundColor: "#CCC",
                   margin: "10px",
                   border: "none",
                 }}
@@ -72,7 +98,7 @@ const FrontLayout = (): JSX.Element => {
               <Typography
                 variant="subtitle1"
                 style={{
-                  color: "#999999",
+                  color: "#999",
                   fontSize: "15px",
                   margin: "0 0.5rem",
                 }}
@@ -83,18 +109,21 @@ const FrontLayout = (): JSX.Element => {
                 sx={{
                   flex: "1",
                   height: "1px",
-                  backgroundColor: "#CCCCCC",
+                  backgroundColor: "#CCC",
                   margin: "10px",
                   border: "none",
                 }}
               />
             </Box>
 
-            <Box id="registration-form">Registration container</Box>
+            <Box id="registration-form" sx={{
+              flexGrow: 1,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center"
+            }}>Registration container</Box>
           </form>
-          <Box style={{ textAlign: "center", marginTop: "2rem" }}>
-            <Box id="have-an-account">Have an account? Container</Box>
-          </Box>
+          <MobileFooterContainer /> 
         </Box>
       </Grid>
     </>
