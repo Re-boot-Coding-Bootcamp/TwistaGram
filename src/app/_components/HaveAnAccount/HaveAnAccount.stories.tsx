@@ -8,6 +8,7 @@ const meta: Meta = {
   parameters: {
     layout: "centered",
   },
+  tags: ["autodocs"],
   decorators: [
     (Story) => (
       <Box>

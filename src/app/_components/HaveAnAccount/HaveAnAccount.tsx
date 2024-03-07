@@ -1,5 +1,7 @@
 import React from "react";
-import { Box, Button, Typography, styled } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
+
 
 {
   /*Using styled-components approach to apply styles to the Typography component*/
@@ -10,14 +12,12 @@ const GrayText = styled(Typography)({
   "&:hover": {
     color: "#9A9A9A", // Darker gray color on hover to indicate interactivity
   },
+  whiteSpace: 'nowrap', // Prevent text from wrapping
 });
 
 {
   /*Using styled-components approach to apply styles to the Button component*/
 }
-const StyledButton = styled(Button)({
-  textTransform: "none", // Preventing the login text to be uppercase
-});
 
 interface HaveAnAccountProps {
   onLogin: () => void;
@@ -31,8 +31,9 @@ const HaveAnAccount: React.FC<HaveAnAccountProps> = ({
   return (
     <Box display="flex" alignItems="center">
       <GrayText onClick={onTextClick}>Already have an account?</GrayText>
-      <StyledButton onClick={onLogin}>Log in</StyledButton>
-    </Box>
+      <Button variant="text" color="primary" onClick={onLogin}>
+        Log in
+      </Button>    </Box>
   );
 };
 
