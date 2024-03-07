@@ -16,11 +16,6 @@ const GoogleLoginButton = ({ onLogin }: Props): JSX.Element => {
       variant="contained"
       color="primary"
       startIcon={<GoogleIcon />}
-      sx={{
-        fontWeight: "normal",
-        borderRadius: "8px",
-        fontSize: "16px",
-      }}
       onClick={handleLogin}
     >
       Log in with Google
