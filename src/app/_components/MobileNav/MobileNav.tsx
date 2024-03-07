@@ -10,14 +10,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-
-enum NavItems {
-  Home = "home",
-  Search = "search",
-  Post = "post",
-  Notification = "notification",
-  Account = "account",
-}
+import { NavItems } from "~/constants";
 
 const MobileNav = () => {
   const [selectedPage, setSelectedPage] = useState<NavItems>(NavItems.Home);
@@ -98,10 +91,10 @@ const MobileNav = () => {
           }
         />
         <BottomNavigationAction
-          value={NavItems.Account}
+          value={NavItems.Profile}
           disableRipple
           icon={
-            selectedPage === NavItems.Account ? (
+            selectedPage === NavItems.Profile ? (
               <AccountCircleIcon />
             ) : (
               <AccountCircleOutlinedIcon />
