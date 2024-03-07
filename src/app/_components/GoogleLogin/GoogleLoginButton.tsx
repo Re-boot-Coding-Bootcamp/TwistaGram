@@ -6,9 +6,7 @@ interface Props {
   onLogin: () => void;
 }
 
-const GoogleLoginButton = ({
-  onLogin,
-}: Props): JSX.Element => {
+const GoogleLoginButton = ({ onLogin }: Props): JSX.Element => {
   const handleLogin = () => {
     onLogin();
   };
@@ -16,20 +14,14 @@ const GoogleLoginButton = ({
   return (
     <Button
       variant="contained"
+      color="primary"
       startIcon={<GoogleIcon />}
       sx={{
-        textTransform: "none",
         fontWeight: "normal",
-        backgroundColor: "#248cb4",
         borderRadius: "8px",
         fontSize: "16px",
-        "&:hover": {
-          backgroundColor: "#196e7e",
-          borderColor: "#196e7e",
-        },
       }}
       onClick={handleLogin}
-      fullWidth
     >
       Log in with Google
     </Button>
