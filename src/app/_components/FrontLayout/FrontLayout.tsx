@@ -7,164 +7,129 @@ import theme from "~/theme";
 const FrontLayout = (): JSX.Element => {
   const mobileSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const MobileFooterContainer = () => {
-    return (
-      <Box
-        id="have-an-account"
-        sx={{
-          textAlign: "center",
-          marginTop: "auto",
-          marginBottom: "1rem",
-          position: "absolute",
-          bottom: "1rem",
-          width: mobileSmallScreen ? "100vw" : "100%",
-          borderTop: "1px solid #CCC",
-          paddingTop: "13px",
-          height: mobileSmallScreen ? "10px" : "40px",
-        }}
-      >
-        {" "}
-        Have an account? Container
-      </Box>
-    );
-  };
+  const FooterContainer = () => (
+    <Box
+      id="have-an-account"
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        borderTop: "1px solid #CCC",
+        marginTop: "20px",
+        paddingTop: mobileSmallScreen ? "20px" : "none",
+        width: mobileSmallScreen ? "100vw" : "100%",
+        height: mobileSmallScreen ? "10px" : "40px",
+      }}
+    >
+      Have an account? Container
+    </Box>
+  );
 
   return (
-    <>
-      <Grid
-        container
-        justifyContent="center"
-        alignItems="center"
-        style={{ minHeight: "100vh" }}
+    <Grid
+      container
+      justifyContent="center"
+      alignItems="center"
+      sx={{ minHeight: "100vh" }}
+    >
+      <Box
+        id="border-line"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          border: mobileSmallScreen ? "none" : "1px solid #CCC",
+          width: mobileSmallScreen ? "90%" : 375,
+          margin: "auto",
+          padding: "1rem",
+        }}
       >
-        <Box
-          id="borderline"
+        <Box id="logo-container" sx={{ marginTop: "40px" }}>
+          <Image src={Logo as string} alt="logo" width={200} />
+        </Box>
+
+        <Typography
+          variant="h6"
+          color="#B5B5B5"
+          fontWeight="bold"
           sx={{
-            border: mobileSmallScreen ? "none" : "1px solid #CCC",
-            maxHeight: "812px",
-            height: "90vh",
-            margin: "auto",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "1rem",
-            position: "relative",
-            "@media (min-width: 375px)": {
-              width: "375px",
-            },
+            textAlign: "center",
+            fontSize: "17px",
+            marginTop: "35px",
+            marginBottom: "15px",
           }}
         >
+          Sign up to see posts, photos, and videos from your friends.
+        </Typography>
+
+        <form style={{ width: "100%", textAlign: "center" }}>
           <Box
-            id="logo-container"
+            id="google-login"
             sx={{
-              position: "absolute",
-              top: mobileSmallScreen ? "2rem" : "5rem",
-              left: "50%",
-              transform: "translateX(-50%)",
-              marginBottom: "15px",
+              width: "100%",
+              maxWidth: "343px",
+              height: "47px",
+              backgroundColor: "#E0E0E0",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              border: "1px dashed #9E9E9E",
+              margin: "15px auto",
             }}
           >
-            <Image src={Logo as string} alt="logo" width={200} />
+            Google login container
           </Box>
+
           <Box
             sx={{
-              textAlign: "center",
-              marginTop: "80px",
-              marginBottom: "15px",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              marginY: "1.5rem",
             }}
           >
+            <Divider sx={{ flexGrow: 1, maxWidth: "45%" }} />
             <Typography
-              variant="h6"
-              color="#B5B5B5"
-              fontWeight="bold"
-              style={{ textAlign: "center", fontSize: "17px" }}
+              sx={{
+                marginX: "0.5rem",
+                color: "#999",
+                fontSize: "15px",
+              }}
             >
-              Sign up to see posts, photos, and videos from your friends.
+              OR
             </Typography>
+            <Divider sx={{ flexGrow: 1, maxWidth: "45%" }} />
           </Box>
-          <form style={{ textAlign: "center", width: "100%" }}>
-            <Box
-              id="google-login"
-              sx={{
-                width: "343px",
-                height: "47px",
-                backgroundColor: "#E0E0E0",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                border: "1px dashed #9E9E9E",
-                marginTop: "15px",
-              }}
-            >
-              Google login container
-            </Box>
 
-            <Box
-              sx={{
-                width: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                marginY: "1.5rem",
-                marginTop: "35px",
-              }}
-            >
-              <Divider
-                sx={{
-                  flex: "1",
-                  height: "1px",
-                  backgroundColor: "#CCC",
-                  margin: "10px",
-                  border: "none",
-                }}
-              />
-              <Typography
-                variant="subtitle1"
-                style={{
-                  color: "#999",
-                  fontSize: "15px",
-                  margin: "0 0.5rem",
-                }}
-              >
-                OR
-              </Typography>
-              <Divider
-                sx={{
-                  flex: "1",
-                  height: "1px",
-                  backgroundColor: "#CCC",
-                  margin: "10px",
-                  border: "none",
-                }}
-              />
-            </Box>
+          <Box
+            id="registration-form"
+            sx={{
+              width: "100%",
+              maxWidth: "343px",
+              height: "266px",
+              backgroundColor: "#E0E0E0",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              border: "1px dashed #9E9E9E",
+              margin: "35px auto 23px",
+            }}
+          >
+            Registration container
+          </Box>
 
-            <Box
-              id="registration-form"
-              sx={{
-                width: "343px",
-                height: "266px",
-                backgroundColor: "#E0E0E0",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                border: "1px dashed #9E9E9E",
-                marginTop: "35px",
-                marginBottom: "23px",
-              }}
-            >
-              Registration container
-            </Box>
-            <Typography style={{ marginBottom: "40px" }}>
-              By signing up, you agree to our terms, data policy and cookies
-              policy.
-            </Typography>
-          </form>
-          <MobileFooterContainer />
-        </Box>
-      </Grid>
-    </>
+          <Typography sx={{ marginBottom: "15px" }}>
+            By signing up, you agree to our terms, data policy, and cookies
+            policy.
+          </Typography>
+        </form>
+
+        <FooterContainer />
+      </Box>
+    </Grid>
   );
 };
 
