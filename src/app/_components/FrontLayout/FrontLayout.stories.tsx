@@ -6,7 +6,6 @@ const meta = {
   title: "Layout/FrontLayout",
   component: FrontLayout,
   parameters: {
-    // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
     layout: "fullscreen",
   },
 } satisfies Meta<typeof FrontLayout>;
