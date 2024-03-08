@@ -27,7 +27,7 @@ function Avatar({
                 sx={{
                   width: value,
                   height: value,
-                  cursor: onProfileClick !== undefined ? "pointer" : "",
+                  cursor: onProfileClick ? "pointer" : "unset",
                 }}
                 onClick={onProfileClick}
                 {...muiAvatarProps}
