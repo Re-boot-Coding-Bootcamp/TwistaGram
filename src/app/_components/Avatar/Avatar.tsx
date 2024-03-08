@@ -5,14 +5,10 @@ type size = "small" | "medium" | "large";
 
 interface AvatarProps extends MuiAvatarProps {
   size: size;
-  src?: string;
-  alt?: string;
 }
 
 function Avatar({
   size,
-  src,
-  alt,
   ...muiAvatarProps
 }: AvatarProps): JSX.Element {
   let heightAndWidth = 0;
@@ -29,8 +25,6 @@ function Avatar({
   }
   return (
     <MuiAvatar
-      alt={alt}
-      src={src}
       sx={{ width: heightAndWidth, height: heightAndWidth }}
       {...muiAvatarProps}
     ></MuiAvatar>
