@@ -15,11 +15,14 @@ function Avatar({
   onProfileClick,
   ...muiAvatarProps
 }: AvatarProps): JSX.Element {
+  // this function will be called if the component is set to clickable
   const handleProfileClick = () => {
+    // this is used to handle undefined issue with onProfileClick since it will not be defined if isClickable is not true
     if (isClickable && onProfileClick) {
       onProfileClick();
     }
   };
+  // this will handle the sizing based on the size provided in the props
   let heightAndWidth = 0;
   switch (size) {
     case "small":
@@ -33,15 +36,21 @@ function Avatar({
       break;
   }
 
+  //component that is clickable
   if (isClickable) {
     return (
       <MuiAvatar
-        sx={{ width: heightAndWidth, height: heightAndWidth, cursor: "pointer" }}
+        sx={{
+          width: heightAndWidth,
+          height: heightAndWidth,
+          cursor: "pointer",
+        }}
         {...muiAvatarProps}
         onClick={handleProfileClick}
       ></MuiAvatar>
     );
   }
+  // component that is not clickable
   return (
     <MuiAvatar
       sx={{ width: heightAndWidth, height: heightAndWidth }}
