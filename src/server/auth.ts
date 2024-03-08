@@ -6,9 +6,11 @@ import {
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
+import EmailProvider from "next-auth/providers/email";
 
 import { env } from "~/env";
 import { db } from "~/server/db";
+import { sendVerificationRequest } from "~/utils";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -59,6 +61,9 @@ export const authOptions: NextAuthOptions = {
           response_type: "code",
         },
       },
+    }),
+    EmailProvider({
+      sendVerificationRequest,
     }),
     /**
      * ...add more providers here.
