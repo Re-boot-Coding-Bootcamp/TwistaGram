@@ -10,9 +10,7 @@ export default async function Home() {
 
   return (
     <div>
-      <h3>Twistagram</h3>
-
-      <p>{session && <span>Logged in as {session.user?.name}</span>}</p>
+      <div>{session && <span>Logged in as {session.user?.name}</span>}</div>
 
       <Link href={session ? "/api/auth/signout" : "/api/auth/signin"}>
         {session ? "Sign out" : "Sign in"}
