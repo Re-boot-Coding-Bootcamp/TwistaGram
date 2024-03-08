@@ -22,9 +22,17 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Unclickable: Story = {
   args: {
     size: "small",
-   
+    onProfileClick: undefined,
+  },
+};
+export const Clickable: Story = {
+  args: {
+    size: "small",
+    onProfileClick: () => {
+      alert("Avatar has been clicked");
+    },
   },
 };
