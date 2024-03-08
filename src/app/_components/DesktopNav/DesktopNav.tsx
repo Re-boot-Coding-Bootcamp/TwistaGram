@@ -9,60 +9,17 @@ import {
   alpha,
 } from "@mui/material";
 import React, { useState } from "react";
-import HomeIcon from "@mui/icons-material/Home";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import SearchIcon from "@mui/icons-material/Search";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import AddBoxIcon from "@mui/icons-material/AddBox";
-import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { NavItems } from "~/constants";
+import { NavigationItems, Pages } from "~/constants";
 import theme from "~/theme";
 import Image from "next/image";
 import svgLogo from "~/assets/svgs/logo_font.svg";
+import { useRouter } from "next/navigation";
 
 const DESKTOP_NAV_WIDTH = "240px";
 
-const DesktopNavItems = [
-  {
-    text: NavItems.Home,
-    icon: <HomeOutlinedIcon />,
-    selectedIcon: <HomeIcon />,
-  },
-  {
-    text: NavItems.Search,
-    icon: <SearchOutlinedIcon />,
-    selectedIcon: (
-      <SearchIcon
-        style={{
-          stroke: "currentcolor",
-          strokeWidth: 1,
-        }}
-      />
-    ),
-  },
-  {
-    text: NavItems.Post,
-    icon: <AddBoxOutlinedIcon />,
-    selectedIcon: <AddBoxIcon />,
-  },
-  {
-    text: NavItems.Notification,
-    icon: <NotificationsOutlinedIcon />,
-    selectedIcon: <NotificationsIcon />,
-  },
-  {
-    text: NavItems.Profile,
-    icon: <AccountCircleOutlinedIcon />,
-    selectedIcon: <AccountCircleIcon />,
-  },
-];
-
 const DesktopNav = () => {
-  const [selectedPage, setSelectedPage] = useState<NavItems>(NavItems.Home);
+  const [selectedPage, setSelectedPage] = useState<Pages>(Pages.Home);
+  const router = useRouter();
 
   return (
     <Drawer
@@ -88,12 +45,13 @@ const DesktopNav = () => {
         <Image src={svgLogo as string} alt="twistagram-logo" width={230} />
       </Box>
       <List>
-        {DesktopNavItems.map(({ text, icon, selectedIcon }) => (
+        {NavigationItems.map(({ text, icon, selectedIcon, path }) => (
           <ListItem key={text} disablePadding>
             <ListItemButton
               disableRipple
               onClick={() => {
                 setSelectedPage(text);
+                router.push(path);
               }}
               sx={{
                 backgroundColor:

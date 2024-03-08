@@ -5,15 +5,11 @@ import "@fontsource/roboto/700.css";
 
 import "~/styles/globals.css";
 
-import { Inter } from "next/font/google";
-
 import { TRPCReactProvider } from "~/trpc/react";
 import { ThemeProvider } from "@mui/material";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import theme from "~/theme";
-
-const inter = Inter({
-  subsets: ["latin"],
-});
+import MainLayout from "./_layouts/MainLayout";
 
 export const metadata = {
   title: "Twistagram",
@@ -28,10 +24,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <ThemeProvider theme={theme}>
-          <TRPCReactProvider>{children}</TRPCReactProvider>
-        </ThemeProvider>
+      <body id="body-id">
+        <AppRouterCacheProvider>
+          <ThemeProvider theme={theme}>
+            <TRPCReactProvider>
+              <MainLayout>{children}</MainLayout>
+            </TRPCReactProvider>
+          </ThemeProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

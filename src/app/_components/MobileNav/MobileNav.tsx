@@ -1,19 +1,11 @@
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
 import React, { useState } from "react";
-import HomeIcon from "@mui/icons-material/Home";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import SearchIcon from "@mui/icons-material/Search";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import AddBoxIcon from "@mui/icons-material/AddBox";
-import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { NavItems } from "~/constants";
+import { NavigationItems, Pages } from "~/constants";
+import { useRouter } from "next/navigation";
 
 const MobileNav = () => {
-  const [selectedPage, setSelectedPage] = useState<NavItems>(NavItems.Home);
+  const [selectedPage, setSelectedPage] = useState<Pages>(Pages.Home);
+  const router = useRouter();
 
   return (
     <Paper
@@ -30,7 +22,7 @@ const MobileNav = () => {
       <BottomNavigation
         value={selectedPage}
         onChange={(_event, newValue) => {
-          setSelectedPage(newValue as NavItems);
+          setSelectedPage(newValue as Pages);
         }}
         sx={{
           height: "auto",
@@ -45,62 +37,15 @@ const MobileNav = () => {
           },
         }}
       >
-        <BottomNavigationAction
-          value={NavItems.Home}
-          disableRipple
-          icon={
-            selectedPage === NavItems.Home ? <HomeIcon /> : <HomeOutlinedIcon />
-          }
-        />
-        <BottomNavigationAction
-          value={NavItems.Search}
-          disableRipple
-          icon={
-            selectedPage === NavItems.Search ? (
-              <SearchIcon
-                style={{
-                  strokeWidth: 1,
-                  stroke: "currentColor",
-                }}
-              />
-            ) : (
-              <SearchOutlinedIcon />
-            )
-          }
-        />
-        <BottomNavigationAction
-          value={NavItems.Post}
-          disableRipple
-          icon={
-            selectedPage === NavItems.Post ? (
-              <AddBoxIcon />
-            ) : (
-              <AddBoxOutlinedIcon />
-            )
-          }
-        />
-        <BottomNavigationAction
-          value={NavItems.Notification}
-          disableRipple
-          icon={
-            selectedPage === NavItems.Notification ? (
-              <NotificationsIcon />
-            ) : (
-              <NotificationsOutlinedIcon />
-            )
-          }
-        />
-        <BottomNavigationAction
-          value={NavItems.Profile}
-          disableRipple
-          icon={
-            selectedPage === NavItems.Profile ? (
-              <AccountCircleIcon />
-            ) : (
-              <AccountCircleOutlinedIcon />
-            )
-          }
-        />
+        {NavigationItems.map(({ text, icon, selectedIcon, path }) => (
+          <BottomNavigationAction
+            key={text}
+            value={text}
+            disableRipple
+            icon={selectedPage === text ? selectedIcon : icon}
+            onClick={() => router.push(path)}
+          />
+        ))}
       </BottomNavigation>
     </Paper>
   );
