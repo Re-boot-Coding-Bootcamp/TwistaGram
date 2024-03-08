@@ -9,7 +9,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { ThemeProvider } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import theme from "~/theme";
-import MainLayout from "./_layouts/MainLayout";
+import { MainLayout } from "./_layouts";
 
 export const metadata = {
   title: "Twistagram",

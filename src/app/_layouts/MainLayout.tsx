@@ -1,11 +1,10 @@
 "use client";
 
 import React from "react";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { MobileNav } from "../_components/MobileNav/MobileNav";
-import theme from "~/theme";
-import { DesktopNav } from "../_components/DesktopNav/DesktopNav";
 import { Box } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { MobileNav, DesktopNav } from "~/app/_components";
+import theme from "~/theme";
 
 interface Props {
   children: React.ReactNode;
@@ -38,4 +37,4 @@ const MainLayout = ({ children }: Props) => {
   );
 };
 
-export default MainLayout;
+export { MainLayout };

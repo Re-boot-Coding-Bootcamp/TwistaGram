@@ -1,5 +1,6 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import { useState } from "react";
+import { Button } from "~/app/_components";
 
 interface RegistrationFormProps {
   onSubmit: (email: string, username: string, password: string) => void;
@@ -49,9 +50,7 @@ const RegistrationForm = ({ onSubmit }: RegistrationFormProps): JSX.Element => {
         }}
         fullWidth
       />
-      <Button color="primary" variant="contained" onClick={handleObClick}>
-        Sign up
-      </Button>
+      <Button size={"large"} text="Sign up" onClick={handleObClick} />
     </Box>
   );
 };
