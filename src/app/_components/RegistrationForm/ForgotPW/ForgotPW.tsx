@@ -1,7 +1,13 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import React from "react";
 
-const ForgotPW = (): JSX.Element => {
+interface Props {
+  onClick: () => void;
+}
+const ForgotPW = ( { onClick }: Props): JSX.Element => {
+  const handleForgotPw = () => {
+    onClick();
+  };
   return (
     <>
       <Box display="flex" flexDirection="column" gap={1}>
@@ -19,7 +25,7 @@ const ForgotPW = (): JSX.Element => {
           variant="outlined"
           sx={{pb:2}}
         />
-        <Button variant="contained" sx={{p:2}}>Reset Password</Button>
+        <Button variant="contained" sx={{p:2}} onClick={handleForgotPw}>Reset Password</Button>
       </Box>
     </>
   );
