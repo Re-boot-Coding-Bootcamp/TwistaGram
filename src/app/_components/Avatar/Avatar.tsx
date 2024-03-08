@@ -5,12 +5,21 @@ type size = "small" | "medium" | "large";
 
 interface AvatarProps extends MuiAvatarProps {
   size: size;
+  isClickable: boolean;
+  onProfileClick?: () => void;
 }
 
 function Avatar({
   size,
+  isClickable,
+  onProfileClick,
   ...muiAvatarProps
 }: AvatarProps): JSX.Element {
+  const handleProfileClick = () => {
+    if (isClickable && onProfileClick) {
+      onProfileClick();
+    }
+  };
   let heightAndWidth = 0;
   switch (size) {
     case "small":
@@ -22,6 +31,16 @@ function Avatar({
     case "large":
       heightAndWidth = 56;
       break;
+  }
+
+  if (isClickable) {
+    return (
+      <MuiAvatar
+        sx={{ width: heightAndWidth, height: heightAndWidth, cursor: "pointer" }}
+        {...muiAvatarProps}
+        onClick={handleProfileClick}
+      ></MuiAvatar>
+    );
   }
   return (
     <MuiAvatar
