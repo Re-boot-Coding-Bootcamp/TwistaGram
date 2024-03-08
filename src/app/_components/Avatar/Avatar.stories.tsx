@@ -26,12 +26,6 @@ export const Default: Story = {
   args: {
     size: "small",
     isClickable: false,
-  },
-};
-export const Clickable: Story = {
-  args: {
-    size: "small",
-    isClickable: true,
     onProfileClick: () => {
       alert("Profile has been clicked");
     },
