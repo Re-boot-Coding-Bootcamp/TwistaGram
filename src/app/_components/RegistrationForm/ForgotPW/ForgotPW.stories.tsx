@@ -9,11 +9,11 @@ const meta = {
     layout: "centered",
   },
   tags: ["autodocs"],
-  argTypes: {
-    email: { control: "text" },
-    password: { control: "text" },
-    onSubmit: { control: "function" },
-  },
+  // argTypes: {
+  //   email: { control: "text" },
+  //   password: { control: "text" },
+  //   onSubmit: { control: "function" },
+  // },
   decorators: [
     (Story) => (
       <Box width={"350px"}>
@@ -26,8 +26,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
-    email: "",
-    password: "",
+    // email: "",
+    // password: "",
     onSubmit: (email: string, password: string) => {
       alert(`Email: ${email} and Password ${password}`);
     },
