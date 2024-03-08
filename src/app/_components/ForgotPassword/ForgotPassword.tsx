@@ -12,11 +12,7 @@ const ForgotPassword = (): JSX.Element => {
         password
       </Typography>
 
-      <Button
-        variant="contained"
-        style={{ backgroundColor: "#648DDB" }}
-        id="confirm-reset-password"
-      >
+      <Button variant="contained" id="confirm-reset-password">
         Confirm
       </Button>
     </Box>
