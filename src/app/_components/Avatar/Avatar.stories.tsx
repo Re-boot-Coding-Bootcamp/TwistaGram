@@ -25,9 +25,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     size: "small",
-    isClickable: false,
-    onProfileClick: () => {
-      alert("Profile has been clicked");
-    },
+   
   },
 };
