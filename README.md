@@ -11,3 +11,8 @@ To start:
 To run storybook:
 
 - `npm run storybook`
+
+## Environments
+
+- Dev/QA: dev.twistagram.re-boot.us
+- Production: twistagram.re-boot.us
