@@ -1,13 +1,17 @@
 import { default as MuiAvatar } from "@mui/material/Avatar";
 import type { AvatarProps as MuiAvatarProps } from "@mui/material/Avatar";
 
-type ArraySize = "small" | "medium" | "large";
+type AvatarSize = "small" | "medium" | "large";
 interface AvatarProps extends MuiAvatarProps {
-  size: ArraySize;
+  size: AvatarSize;
   onProfileClick?: () => void;
 }
 
-const AvatarSizingMap = { small: 24, medium: 40, large: 56 };
+const AvatarSizingMap: Record<AvatarSize, number> = {
+  small: 24,
+  medium: 40,
+  large: 56,
+};
 
 function Avatar({
   size,
