@@ -14,5 +14,5 @@ To run storybook:
 
 ## Environments
 
-- Dev/QA: dev.twistagram.re-boot.us
-- Production: twistagram.re-boot.us
+- Dev/QA: https://dev.twistagram.re-boot.us/
+- Production: https://twistagram.re-boot.us/
