@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    ".eslintrc.cjs",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    ".next/types/**/*.ts",
+    "next-env.d.ts",
+    "**/*.stories.tsx",
+    "**/*.stories.ts"
+  ],
+  "exclude": ["node_modules"]
+}
