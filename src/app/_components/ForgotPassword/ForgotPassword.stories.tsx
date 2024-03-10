@@ -10,9 +10,7 @@ const meta = {
     layout: "centered",
   },
   tags: ["autodocs"],
-  argTypes: {
-    email: { control: "text" },
-  },
+  argTypes: {},
   decorators: [
     (Story) => (
       <Box width={"350px"}>
