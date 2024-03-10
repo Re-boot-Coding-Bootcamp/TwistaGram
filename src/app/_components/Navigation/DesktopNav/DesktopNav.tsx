@@ -12,7 +12,7 @@ import React, { useState } from "react";
 import { NavigationItems, Pages } from "~/constants";
 import theme from "~/theme";
 import Image from "next/image";
-import svgLogo from "~/assets/svgs/logo_font.svg";
+import Logo from "~/assets/images/logo_full.svg";
 import { useRouter } from "next/navigation";
 
 const DESKTOP_NAV_WIDTH = "240px";
@@ -42,7 +42,7 @@ const DesktopNav = () => {
         pt={5}
         pb={3}
       >
-        <Image src={svgLogo as string} alt="twistagram-logo" width={230} />
+        <Image src={Logo as string} alt="twistagram-logo" width={230} />
       </Box>
       <List>
         {NavigationItems.map(({ text, icon, selectedIcon, path }) => (
