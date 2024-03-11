@@ -4,12 +4,12 @@ import { Button } from "../Button";
 
 interface CreateUpdateProfileFormProps {
   onCancel: () => void;
-  onDone: () => void;
+  onSave: () => void;
 }
 
 const CreateUpdateProfileForm = ({
   onCancel,
-  onDone,
+  onSave,
 }: CreateUpdateProfileFormProps): JSX.Element => {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
@@ -23,7 +23,7 @@ const CreateUpdateProfileForm = ({
   const handleCreateProfile = () => {
     // Handle creating/updating profile
     console.log("Profile Created/Updated");
-    onDone();
+    onSave();
   };
 
   return (
@@ -73,6 +73,7 @@ const CreateUpdateProfileForm = ({
           value="muzappar.erkin0122@gmail.com"
           disabled
           variant="outlined"
+          required
         />
         <TextField
           label="Bio"
