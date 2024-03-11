@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Box } from "@mui/material";
-import { DontHaveAnAccount } from "./DontHaveAnAccount";
+import { CreateUpdateProfileForm } from "./CreateUpdateProfileForm";
 import React from "react";
 
 const meta = {
-  title: "Authentication/DontHaveAnAccount",
-  component: DontHaveAnAccount,
+  title: "Authentication/CreateUpdateProfileForm",
+  component: CreateUpdateProfileForm,
   parameters: {
     layout: "centered",
   },
@@ -19,7 +19,7 @@ const meta = {
       </Box>
     ),
   ],
-} satisfies Meta<typeof DontHaveAnAccount>;
+} satisfies Meta<typeof CreateUpdateProfileForm>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
