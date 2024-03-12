@@ -1,13 +1,11 @@
 import { Box, Typography, Button } from "@mui/material";
 import React from "react";
 
-interface confirmResetPasswordProps {
-  handleResetPasswordClick: () => void;
+interface Props {
+  onConfirm: () => void;
 }
 
-const ForgotPassword = ({
-  handleResetPasswordClick,
-}: confirmResetPasswordProps): JSX.Element => {
+const ForgotPassword = ({ onConfirm }: Props): JSX.Element => {
   return (
     <Box display="flex" flexDirection="column">
       <Typography mb={1} variant="h5" sx={{ fontWeight: "bold" }}>
@@ -21,7 +19,7 @@ const ForgotPassword = ({
       <Button
         variant="contained"
         id="confirm-reset-password"
-        onClick={handleResetPasswordClick}
+        onClick={onConfirm}
       >
         Confirm
       </Button>
@@ -29,4 +27,4 @@ const ForgotPassword = ({
   );
 };
 
-export default ForgotPassword;
+export { ForgotPassword };
