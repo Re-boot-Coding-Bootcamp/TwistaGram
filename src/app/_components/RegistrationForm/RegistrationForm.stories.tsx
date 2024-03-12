@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
+import React from "react";
 import { RegistrationForm } from "./RegistrationForm";
 import { Box } from "@mui/material";
 
