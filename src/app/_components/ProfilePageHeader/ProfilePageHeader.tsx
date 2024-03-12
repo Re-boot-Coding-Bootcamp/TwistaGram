@@ -121,7 +121,7 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           >
             <Avatar src={avatarUrl} sx={{ width: 86, height: 86 }} />
           </Box>
-          <CardContent id="name-username-container" sx={{ flexGrow: 1 }}>
+          <CardContent sx={{ flexGrow: 1 }}>
             <Typography
               sx={{ fontSize: "12px", fontWeight: "bold", mb: "8px" }}
             >
