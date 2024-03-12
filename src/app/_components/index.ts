@@ -5,4 +5,8 @@ export { DontHaveAnAccount } from "./DontHaveAnAccount";
 export { GoogleLoginButton } from "./GoogleLogin";
 export { HaveAnAccount } from "./HaveAnAccount";
 export { LoginForm } from "./LoginForm";
+
 export { ProfilePageHeader } from "./ProfilePageHeader";
+
+export { Avatar } from "./Avatar";
+
