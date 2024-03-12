@@ -42,11 +42,11 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
   };
 
   const styleTaggedText = (text: string) => {
-    const wordsWithSpaces = text.split(/(\s+)/);
+    const wordsWithTags = text.split(/(\s+)/);
 
     return (
       <>
-        {wordsWithSpaces.map((word, index) =>
+        {wordsWithTags.map((word, index) =>
           word.startsWith("@") || word.startsWith("#") ? (
             <span key={index} style={{ color: theme.palette.primary.main }}>
               {word}
@@ -73,7 +73,6 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
 
   return (
     <Box
-      id="main-container"
       sx={{
         display: "flex",
         alignItems: "center",
@@ -82,7 +81,6 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
       }}
     >
       <Card
-        id="content-container"
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -96,14 +94,10 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
         }}
         elevation={0}
       >
-        <Typography
-          id="username-top"
-          sx={{ fontSize: "16px", fontWeight: "bold", mb: "15px" }}
-        >
+        <Typography sx={{ fontSize: "16px", fontWeight: "bold", mb: "15px" }}>
           {contentText(username, 30)}
         </Typography>
         <Box
-          id="avatar-content-container"
           sx={{
             display: "flex",
             justifyContent: "center",
@@ -113,7 +107,6 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           }}
         >
           <Box
-            id="avatar-background"
             sx={{
               width: 96,
               height: 96,
@@ -126,20 +119,14 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
               mr: "10px",
             }}
           >
-            <Avatar
-              id="avatar-main"
-              src={avatarUrl}
-              sx={{ width: 86, height: 86 }}
-            />
+            <Avatar src={avatarUrl} sx={{ width: 86, height: 86 }} />
           </Box>
           <CardContent id="name-username-container" sx={{ flexGrow: 1 }}>
             <Typography
-              id="name"
               sx={{ fontSize: "12px", fontWeight: "bold", mb: "8px" }}
             >
               {`${contentText(name, 15)} `}
               <Typography
-                id="username-with-name"
                 component="span"
                 sx={{
                   fontSize: "12px",
@@ -154,7 +141,6 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           </CardContent>
         </Box>
         <Box
-          id="edit-profile-button-container"
           sx={{
             width: "100%",
             display: "flex",
@@ -163,7 +149,6 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           }}
         >
           <Button
-            id="edit-profile"
             variant="outlined"
             onClick={onEditProfile}
             sx={{
