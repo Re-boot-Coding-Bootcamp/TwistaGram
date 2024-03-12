@@ -6,3 +6,4 @@ export { GoogleLoginButton } from "./GoogleLogin";
 export { HaveAnAccount } from "./HaveAnAccount";
 export { LoginForm } from "./LoginForm";
 export { Avatar } from "./Avatar";
+export { CreateUpdateProfileForm } from "./CreateUpdateProfileForm";
