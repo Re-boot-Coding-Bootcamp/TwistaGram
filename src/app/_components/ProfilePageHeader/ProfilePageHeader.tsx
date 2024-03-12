@@ -64,9 +64,9 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
     const maxLimitBio = contentText(bio, 80);
     const bioContent = splitTextByLength(maxLimitBio, maxLengthPerRow);
 
-    return bioContent.map((chunk, index) => (
+    return bioContent.map((lineOfText, index) => (
       <Typography key={index} sx={{ fontSize: "12px" }}>
-        {styleTaggedText(chunk)}
+        {styleTaggedText(lineOfText)}
       </Typography>
     ));
   };
