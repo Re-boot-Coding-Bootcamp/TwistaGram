@@ -24,5 +24,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 export const Default: Story = {
-  args: {},
+  args: {
+    onCancel: () => {
+      alert("Action Canceled");
+    },
+    onSave: () => {
+      alert("Profile Created/Updated");
+    },
+  },
 };

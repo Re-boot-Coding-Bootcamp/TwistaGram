@@ -15,31 +15,20 @@ const CreateUpdateProfileForm = ({
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
 
-  const handleCancel = () => {
-    // Handle cancel action
-    console.log("Action Canceled");
-    onCancel();
-  };
-  const handleCreateProfile = () => {
-    // Handle creating/updating profile
-    console.log("Profile Created/Updated");
-    onSave();
-  };
-
   return (
     <Box>
       <Box display="flex" justifyContent="space-between" marginBottom={3}>
         <Button
           variant="outlined"
           color="primary"
-          onClick={handleCancel}
+          onClick={onCancel}
           text="Cancel"
           style={{ width: 70, backgroundColor: "white" }}
         />
         <Button
           variant="contained"
           color="primary"
-          onClick={handleCreateProfile}
+          onClick={onSave}
           text="Done"
           style={{ width: 70, color: "white" }}
         />
