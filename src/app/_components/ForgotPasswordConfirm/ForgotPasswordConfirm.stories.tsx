@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import React from "react";
 import { Box } from "@mui/material";
-import { ForgotPassword } from "./ForgotPassword";
+import { ForgotPasswordConfirm } from "./ForgotPasswordConfirm";
 
 const meta = {
-  title: "Authentication/ForgotPassword",
-  component: ForgotPassword,
+  title: "Authentication/ForgotPasswordConfirm",
+  component: ForgotPasswordConfirm,
   parameters: {
     layout: "centered",
   },
@@ -19,7 +19,7 @@ const meta = {
       </Box>
     ),
   ],
-} satisfies Meta<typeof ForgotPassword>;
+} satisfies Meta<typeof ForgotPasswordConfirm>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

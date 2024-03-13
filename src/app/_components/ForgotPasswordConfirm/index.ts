@@ -1,0 +1,1 @@
+export { ForgotPasswordConfirm } from "./ForgotPasswordConfirm";
