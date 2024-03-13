@@ -84,7 +84,7 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
         elevation={0}
       >
         <Typography
-          sx={{ fontSize: fontSizeBase, fontWeight: "bold", mb: "15px" }}
+          sx={{ fontSize: fontSizeBase, fontWeight: "bold", mb: "1.5rem" }}
         >
           {contentText(username, 30)}
         </Typography>
@@ -94,7 +94,7 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
             justifyContent: "center",
             alignItems: "center",
             width: "fit-content",
-            mb: "0.63rem",
+            mb: "0.6rem",
           }}
         >
           <Box
@@ -108,7 +108,7 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
               backgroundColor: theme.palette.background.paper,
               border: `1px solid ${theme.palette.divider}`,
               mr: "1.5rem",
-              mb: "0.5rem",
+              mb: "1rem",
             }}
           >
             <Avatar
