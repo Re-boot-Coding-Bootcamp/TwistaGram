@@ -12,3 +12,5 @@ export { ForgotPasswordForm } from "./ForgotPasswordForm";
 export { SignInPage } from "./SignInPage";
 export { ProfilePageHeader } from "./ProfilePageHeader";
 export { CreatePost } from "./CreatePost";
+export { VisuallyHiddenInput } from "./VisuallyHiddenInput";
+export { EmojiPicker } from "./EmojiPicker";

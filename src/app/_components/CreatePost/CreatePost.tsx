@@ -1,49 +1,73 @@
 "use client";
 
-import { Box, Divider, Grid, TextField } from "@mui/material";
+import { Box, Divider, TextField, Button as MuiButton } from "@mui/material";
 import ImageIcon from "@mui/icons-material/Image";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
-import { Button } from "../Button";
-import { Avatar } from "../Avatar";
-import { useState } from "react";
-import type { MouseEventHandler } from "react";
+import { type ChangeEvent, useEffect, useState } from "react";
+import { VisuallyHiddenInput, Avatar, Button, EmojiPicker } from "..";
+import { type EmojiClickData } from "emoji-picker-react";
+
 interface CreatePostProps {
-  onPostButtonClick: () => void;
-  onImagePickerClick?: () => void;
-  onEmojiPickerClick?: () => void;
+  onPostSubmit: () => void;
 }
 
-function CreatePost({
-  onPostButtonClick,
-  onImagePickerClick,
-  onEmojiPickerClick,
-}: CreatePostProps) {
+function CreatePost({ onPostSubmit }: CreatePostProps) {
   const [postContent, setPostContent] = useState("");
-  const [addImage, setAddImage] = useState(false);
-  const handlePostClick: MouseEventHandler<HTMLButtonElement> = () => {
-    onPostButtonClick();
+  const [file, setFile] = useState<File>();
+  const [previewUrl, setPreviewUrl] = useState<string>();
+
+  const handlePostClick = () => {
+    onPostSubmit();
   };
+
+  const onImagePickerClick = () => {
+    console.log("Image picker clicked");
+  };
+
+  const handleEmojiChange = (emoji: EmojiClickData) => {
+    console.log(emoji.emoji);
+  };
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    console.log(e);
+
+    if (e.target.files) {
+      const firstFile = e.target.files[0];
+      setFile(firstFile);
+    }
+  };
+
+  useEffect(() => {
+    if (file) {
+      const objectUrl = URL.createObjectURL(file);
+      setPreviewUrl(objectUrl);
+
+      return () => URL.revokeObjectURL(objectUrl);
+    }
+  }, [file]);
+
   return (
-    <>
-      <Box id="create-post-main-container">
-        <Grid container id="content" wrap="nowrap" spacing={2} mb={2}>
-          <Grid item>
-            <Avatar size="medium" />
-          </Grid>
-          <Grid item xs>
-            <TextField
-              variant="standard"
-              fullWidth
-              // get rid of Mui underline style
-              InputProps={{ disableUnderline: true }}
-              multiline
-              placeholder="What is happening?!"
-              value={postContent}
-              onChange={(e) => setPostContent(e.target.value)}
-            ></TextField>
-          </Grid>
-        </Grid>
-        {addImage && (
+    <Box id="create-post-main-container" display="flex" p={2} gap={1}>
+      <Box id="avatar-container">
+        <Avatar size="medium" />
+      </Box>
+
+      <Box id="context-container" flexGrow={1}>
+        <TextField
+          variant="standard"
+          fullWidth
+          inputProps={{ maxLength: 250 }}
+          InputProps={{ disableUnderline: true }}
+          multiline
+          placeholder="What is happening?!"
+          value={postContent}
+          onChange={(e) => setPostContent(e.target.value)}
+        />
+
+        {/* use previewUrl to display the image */}
+        {/* props: previewUrl, onClose */}
+        {file && (
           <Box
             height="250px"
             display="flex"
@@ -56,40 +80,50 @@ function CreatePost({
             Temporary Placeholder
           </Box>
         )}
-        {/* divider only appears when there is text or image in post */}
-        {postContent || addImage ? <Divider /> : null}
+
+        <Divider sx={{ my: 1 }} />
+
         <Box
+          id="actions-container"
           sx={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            mt: 1,
-            ml: 5,
           }}
         >
           <Box id="icon-pickers-container" display="flex" gap={2}>
-            <ImageIcon
-              fontSize="small"
-              onClick={() => {
-                setAddImage(true);
-                if (onImagePickerClick) {
-                  onImagePickerClick();
-                }
+            <MuiButton
+              component="label"
+              role={undefined}
+              variant="text"
+              tabIndex={-1}
+              disableRipple
+              sx={{
+                p: 0,
+                minWidth: "auto",
+                "&:hover": {
+                  backgroundColor: "transparent",
+                },
               }}
-            />
-            <EmojiEmotionsIcon fontSize="small" onClick={onEmojiPickerClick} />
+            >
+              <ImageIcon fontSize="small" />
+              <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+            </MuiButton>
+
+            <EmojiPicker onChange={handleEmojiChange}>
+              <EmojiEmotionsIcon fontSize="small" />
+            </EmojiPicker>
           </Box>
           <Box id="post-button-container">
             <Button
-              disabled={postContent || addImage ? false : true}
+              disabled={!postContent && !file}
               text="Post"
               onClick={handlePostClick}
-              sx={{ borderRadius: 4 }}
             />
           </Box>
         </Box>
       </Box>
-    </>
+    </Box>
   );
 }
 
