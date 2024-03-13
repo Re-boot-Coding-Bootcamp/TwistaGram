@@ -1,6 +1,5 @@
 import { Box, Typography, alpha } from "@mui/material";
-import { Button } from "~/app/_components";
-
+import { Button } from "../Button";
 interface DontHaveAnAccountProps {
   onSignUpClick: () => void;
 }
@@ -9,11 +8,23 @@ const DontHaveAnAccount = ({
   onSignUpClick,
 }: DontHaveAnAccountProps): JSX.Element => {
   return (
-    <Box display="flex" flexDirection="row" gap={1}>
-      <Typography id="dont-have-an-account" color={alpha("#000", 0.46)}>
+    <Box display="flex" alignItems="center">
+      <Typography
+        id="dont-have-an-account"
+        color={alpha("#9e9e9e", 0.8)}
+        style={{ whiteSpace: "nowrap" }}
+      >
         Don’t have an account?
       </Typography>
-      <Button text="Sign up" id="sign-up-link" onClick={onSignUpClick} />
+      <Button
+        variant="text"
+        color="primary"
+        onClick={onSignUpClick}
+        text="Sign up"
+        sx={{
+          width: 70,
+        }}
+      />
     </Box>
   );
 };
