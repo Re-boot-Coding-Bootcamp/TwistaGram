@@ -30,6 +30,7 @@
     }
   },
   "include": [
+    "svgr.d.ts",
     ".eslintrc.cjs",
     "next-env.d.ts",
     "**/*.ts",
@@ -38,5 +39,5 @@
     "**/*.js",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "**/*.stories.tsx", "**/*.stories.ts"]
 }
