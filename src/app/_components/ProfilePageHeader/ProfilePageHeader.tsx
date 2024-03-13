@@ -15,7 +15,6 @@ interface ProfilePageHeaderProps {
   name: string;
   username: string;
   bio: string;
-  avatarUrl: string; // for demonstration purpose only
   onEditProfile: () => void;
 }
 
