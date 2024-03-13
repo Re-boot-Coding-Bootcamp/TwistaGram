@@ -112,7 +112,7 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
             }}
           >
             <Avatar
-              size="large"
+              size="large" // this size is small for this component so applied custom size below
               sx={{
                 width: avatarInnerSize,
                 height: avatarInnerSize,
