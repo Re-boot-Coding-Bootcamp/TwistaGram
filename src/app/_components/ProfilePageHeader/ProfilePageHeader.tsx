@@ -76,7 +76,7 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#FAFAFA",
+          backgroundColor: theme.palette.background.default,
           width: "100%",
           maxWidth: isMobile ? "100%" : cardMaxWidth,
           py: "2rem",
@@ -106,8 +106,8 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              backgroundColor: "white",
-              border: "1px solid rgba(60, 60, 67, 0.2)",
+              backgroundColor: theme.palette.background.paper,
+              border: `1px solid ${theme.palette.divider}`,
               mr: "1.5rem",
               mb: "0.5rem",
             }}
@@ -145,10 +145,9 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           variant="outlined"
           onClick={onEditProfile}
           sx={{
-            borderColor: "rgba(60, 60, 67, 0.2)",
-            color: "black",
+            borderColor: theme.palette.common.black,
+            color: theme.palette.common.black,
             fontSize: fontSizeSmall,
-            backgroundColor: "white",
             borderRadius: "0.4rem",
             width: isMobile ? "100%" : "90%",
             maxWidth: "30rem",
