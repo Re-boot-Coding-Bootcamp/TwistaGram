@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Avatar,
   Box,
   Button,
   Card,
@@ -10,6 +9,7 @@ import {
 } from "@mui/material";
 import { contentText } from "./utility";
 import { StyledText } from "../StyledText/StyledTextComponent";
+import { Avatar } from "../Avatar";
 
 interface ProfilePageHeaderProps {
   name: string;
@@ -23,7 +23,7 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
   name,
   username,
   bio,
-  avatarUrl,
+
   onEditProfile,
 }) => {
   const theme = useTheme();
@@ -32,7 +32,7 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
   const scaleRatio = isMobile ? 1.5 : 1;
 
   const cardMaxWidth = `${23.5 * scaleRatio}rem`;
-  const avatarSize = `${6 * scaleRatio}rem`;
+  const avatarBackgroundSize = `${6 * scaleRatio}rem`;
   const avatarInnerSize = `${5.38 * scaleRatio}rem`;
   const fontSizeBase = `${16 * scaleRatio}px`;
   const fontSizeSmall = `${0.75 * scaleRatio}rem`;
@@ -100,8 +100,8 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
         >
           <Box
             sx={{
-              width: avatarSize,
-              height: avatarSize,
+              width: avatarBackgroundSize,
+              height: avatarBackgroundSize,
               borderRadius: "50%",
               display: "flex",
               alignItems: "center",
@@ -109,11 +109,15 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
               backgroundColor: "white",
               border: "1px solid rgba(60, 60, 67, 0.2)",
               mr: "1.5rem",
+              mb: "0.5rem",
             }}
           >
             <Avatar
-              src={avatarUrl}
-              sx={{ width: avatarInnerSize, height: avatarInnerSize }}
+              size="large"
+              sx={{
+                width: avatarInnerSize,
+                height: avatarInnerSize,
+              }}
             />
           </Box>
           <Box>
