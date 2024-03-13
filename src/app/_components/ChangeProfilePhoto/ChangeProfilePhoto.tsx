@@ -1,65 +1,48 @@
 "use client";
 
-import { styled } from "@mui/material/styles";
-import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
-import { Avatar } from "..";
-import { type ChangeEvent, useEffect, useState } from "react";
+import { Avatar, Button } from "..";
+import { useState } from "react";
+import UploadProfilePhotoModal from "./UploadProfilePhotoModal";
 
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
+interface Props {
+  onUpload: (file: File) => Promise<void>;
+  currentProfileUrl: string;
+}
 
-// TODO: use a modal to render preview and confirm upload
-const ChangeProfilePhoto = () => {
-  const [file, setFile] = useState<File>();
-  const [previewUrl, setPreviewUrl] = useState<string>();
+const ChangeProfilePhoto = ({ onUpload, currentProfileUrl }: Props) => {
+  const [isFileUploadModalOpen, setIsFileUploadModalOpen] = useState(false);
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    console.log(e);
-
-    if (e.target.files) {
-      const firstFile = e.target.files[0];
-      setFile(firstFile);
-    }
+  const handleFileUpload = async (file: File) => {
+    await onUpload(file);
+    setIsFileUploadModalOpen(false);
   };
 
-  useEffect(() => {
-    if (file) {
-      const objectUrl = URL.createObjectURL(file);
-      setPreviewUrl(objectUrl);
-
-      return () => URL.revokeObjectURL(objectUrl);
-    }
-  }, [file]);
+  const handleClose = () => {
+    setIsFileUploadModalOpen(false);
+  };
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" gap={1.5}>
-      <Avatar size="xlarge" src={previewUrl} />
+      <Avatar size="xlarge" src={currentProfileUrl} />
+
       <Button
-        component="label"
-        role={undefined}
+        text="Change Profile Photo"
         variant="text"
-        tabIndex={-1}
         disableRipple
         sx={{
           "&:hover": {
             backgroundColor: "transparent",
           },
         }}
-      >
-        Change Profile Photo
-        <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-      </Button>
+        onClick={() => setIsFileUploadModalOpen(true)}
+      />
+
+      <UploadProfilePhotoModal
+        open={isFileUploadModalOpen}
+        onClose={handleClose}
+        onFileUpload={handleFileUpload}
+      />
     </Box>
   );
 };
