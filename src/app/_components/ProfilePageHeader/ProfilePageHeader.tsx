@@ -4,10 +4,12 @@ import {
   Box,
   Button,
   Card,
-  CardContent,
   Typography,
+  useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { contentText } from "./utility";
+import { StyledText } from "../StyledText/StyledTextComponent";
 
 interface ProfilePageHeaderProps {
   name: string;
@@ -25,13 +27,16 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
   onEditProfile,
 }) => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.up("sm"));
 
-  const contentText = (text: string | undefined | null, maxLength: number) => {
-    if (!text) return "";
-    return text.length > maxLength
-      ? `${text.substring(0, maxLength)}...`
-      : text;
-  };
+  const scaleRatio = isMobile ? 1.5 : 1;
+
+  const cardMaxWidth = `${23.5 * scaleRatio}rem`;
+  const avatarSize = `${6 * scaleRatio}rem`;
+  const avatarInnerSize = `${5.38 * scaleRatio}rem`;
+  const fontSizeBase = `${16 * scaleRatio}px`;
+  const fontSizeSmall = `${0.75 * scaleRatio}rem`;
+  const buttonHeight = `${1.8 * scaleRatio}rem`;
 
   const splitTextByLength = (text: string, maxLength: number) => {
     const textLines = [];
@@ -41,32 +46,17 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
     return textLines;
   };
 
-  const styleTaggedText = (text: string) => {
-    const wordsWithTags = text.split(/(\s+)/);
-
-    return (
-      <>
-        {wordsWithTags.map((word, index) =>
-          word.startsWith("@") || word.startsWith("#") ? (
-            <span key={index} style={{ color: theme.palette.primary.main }}>
-              {word}
-            </span>
-          ) : (
-            word
-          )
-        )}
-      </>
+  const renderBio = (bioText: string) => {
+    const maxLengthPerRow = isMobile ? 35 : 30;
+    const maxLimitBio = isMobile ? 120 : 80;
+    const bioContent = splitTextByLength(
+      contentText(bioText, maxLimitBio),
+      maxLengthPerRow
     );
-  };
-
-  const renderBio = (bio: string) => {
-    const maxLengthPerRow = 30;
-    const maxLimitBio = contentText(bio, 80);
-    const bioContent = splitTextByLength(maxLimitBio, maxLengthPerRow);
 
     return bioContent.map((lineOfText, index) => (
-      <Typography key={index} sx={{ fontSize: "12px" }}>
-        {styleTaggedText(lineOfText)}
+      <Typography key={index} sx={{ fontSize: fontSizeSmall }}>
+        <StyledText text={lineOfText} />
       </Typography>
     ));
   };
@@ -87,14 +77,16 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: "#FAFAFA",
-          width: "375px",
-          height: "250px",
-          p: "20px",
+          width: "100%",
+          maxWidth: isMobile ? "100%" : cardMaxWidth,
+          py: "2rem",
           borderRadius: 0,
         }}
         elevation={0}
       >
-        <Typography sx={{ fontSize: "16px", fontWeight: "bold", mb: "15px" }}>
+        <Typography
+          sx={{ fontSize: fontSizeBase, fontWeight: "bold", mb: "15px" }}
+        >
           {contentText(username, 30)}
         </Typography>
         <Box
@@ -103,33 +95,38 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
             justifyContent: "center",
             alignItems: "center",
             width: "fit-content",
-            mb: "5px",
+            mb: "0.63rem",
           }}
         >
           <Box
             sx={{
-              width: 96,
-              height: 96,
+              width: avatarSize,
+              height: avatarSize,
               borderRadius: "50%",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               backgroundColor: "white",
               border: "1px solid rgba(60, 60, 67, 0.2)",
-              mr: "10px",
+              mr: "1.5rem",
             }}
           >
-            <Avatar src={avatarUrl} sx={{ width: 86, height: 86 }} />
+            <Avatar
+              src={avatarUrl}
+              sx={{ width: avatarInnerSize, height: avatarInnerSize }}
+            />
           </Box>
-          <CardContent sx={{ flexGrow: 1 }}>
+          <Box>
             <Typography
-              sx={{ fontSize: "12px", fontWeight: "bold", mb: "8px" }}
+              noWrap
+              sx={{ fontSize: fontSizeSmall, fontWeight: "bold" }}
             >
               {`${contentText(name, 15)} `}
               <Typography
                 component="span"
+                noWrap
                 sx={{
-                  fontSize: "12px",
+                  fontSize: fontSizeSmall,
                   fontWeight: "bold",
                   color: "rgba(149, 149, 149, 0.9)",
                 }}
@@ -138,32 +135,24 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
               </Typography>
             </Typography>
             {renderBio(bio)}
-          </CardContent>
+          </Box>
         </Box>
-        <Box
+        <Button
+          variant="outlined"
+          onClick={onEditProfile}
           sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            marginTop: 1,
+            borderColor: "rgba(60, 60, 67, 0.2)",
+            color: "black",
+            fontSize: fontSizeSmall,
+            backgroundColor: "white",
+            borderRadius: "0.4rem",
+            width: isMobile ? "100%" : "90%",
+            maxWidth: "30rem",
+            height: buttonHeight,
           }}
         >
-          <Button
-            variant="outlined"
-            onClick={onEditProfile}
-            sx={{
-              borderColor: "rgba(60, 60, 67, 0.2)",
-              color: "black",
-              fontSize: "13px",
-              backgroundColor: "white",
-              borderRadius: "6px",
-              width: 343,
-              height: 29,
-            }}
-          >
-            Edit Profile
-          </Button>
-        </Box>
+          Edit Profile
+        </Button>
       </Card>
     </Box>
   );
