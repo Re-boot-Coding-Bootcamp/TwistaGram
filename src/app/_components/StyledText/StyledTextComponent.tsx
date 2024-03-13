@@ -6,11 +6,10 @@ interface StyledTextProps {
 }
 
 const StyledText: React.FC<StyledTextProps> = ({ text }) => {
-  const theme = useTheme(); // Using MUI theme for consistent styling
+  const theme = useTheme();
 
-  // Function to split text and apply styles to tagged words
   const renderStyledText = (inputText: string) => {
-    const wordsWithTags = inputText.split(/(\s+)/); // Split by whitespace while keeping it in the result
+    const wordsWithTags = inputText.split(/(\s+)/);
 
     return (
       <>
@@ -20,16 +19,14 @@ const StyledText: React.FC<StyledTextProps> = ({ text }) => {
               {word}
             </span>
           ) : (
-            word // Non-tagged words are rendered as-is
+            word
           )
         )}
       </>
     );
   };
 
-  return (
-    <>{renderStyledText(text)}</> // Render the processed text
-  );
+  return <>{renderStyledText(text)}</>;
 };
 
 export { StyledText };
