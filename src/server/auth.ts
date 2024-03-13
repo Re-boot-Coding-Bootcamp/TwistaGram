@@ -49,6 +49,16 @@ export const authOptions: NextAuthOptions = {
     }),
   },
   adapter: PrismaAdapter(db) as Adapter,
+  theme: {
+    colorScheme: "light",
+  },
+  pages: {
+    signIn: "/auth/signin",
+    // signOut: "/auth/signout",
+    // error: "/auth/error",
+    // verifyRequest: "/auth/verify-request",
+    // newUser: "/auth/new-user",
+  },
   providers: [
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
