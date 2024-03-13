@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
-import { CreatePost } from "./CreatePost"
+import { CreatePost } from "./CreatePost";
 import { Box } from "@mui/material";
 
 const meta = {
@@ -10,10 +10,6 @@ const meta = {
     layout: "centered",
   },
   tags: ["autodocs"],
-  argTypes: {
-    onSubmit: { control: "function" },
-    onForgotPasswordClick: { control: "function" },
-  },
   decorators: [
     (Story) => (
       <Box width={"350px"}>
@@ -27,7 +23,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {
-    text: "Click me",
-  },
+  args: {},
 };
