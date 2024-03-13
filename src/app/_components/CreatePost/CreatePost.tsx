@@ -4,7 +4,13 @@ import { Box, Divider, TextField, Button as MuiButton } from "@mui/material";
 import ImageIcon from "@mui/icons-material/Image";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import { type ChangeEvent, useEffect, useState } from "react";
-import { VisuallyHiddenInput, Avatar, Button, EmojiPicker } from "..";
+import {
+  VisuallyHiddenInput,
+  Avatar,
+  Button,
+  EmojiPicker,
+  ImageContainer,
+} from "..";
 import { type EmojiClickData } from "emoji-picker-react";
 
 interface CreatePostProps {
@@ -14,14 +20,10 @@ interface CreatePostProps {
 function CreatePost({ onPostSubmit }: CreatePostProps) {
   const [postContent, setPostContent] = useState("");
   const [file, setFile] = useState<File>();
-  const [previewUrl, setPreviewUrl] = useState<string>();
+  const [imageUrl, setImageUrl] = useState<string>();
 
   const handlePostClick = () => {
     onPostSubmit();
-  };
-
-  const onImagePickerClick = () => {
-    console.log("Image picker clicked");
   };
 
   const handleEmojiChange = (emoji: EmojiClickData) => {
@@ -41,7 +43,7 @@ function CreatePost({ onPostSubmit }: CreatePostProps) {
   useEffect(() => {
     if (file) {
       const objectUrl = URL.createObjectURL(file);
-      setPreviewUrl(objectUrl);
+      setImageUrl(objectUrl);
 
       return () => URL.revokeObjectURL(objectUrl);
     }
@@ -65,20 +67,16 @@ function CreatePost({ onPostSubmit }: CreatePostProps) {
           onChange={(e) => setPostContent(e.target.value)}
         />
 
-        {/* use previewUrl to display the image */}
-        {/* props: previewUrl, onClose */}
-        {file && (
-          <Box
-            height="250px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            // will change background color once one is decided
-            bgcolor="lightgray"
-            mb={1}
-          >
-            Temporary Placeholder
-          </Box>
+        {/* use imageUrl to display the image */}
+        {/* props: imageUrl, onClose */}
+        {file && imageUrl && (
+          <ImageContainer
+            imageUrl={imageUrl}
+            onCloseImage={() => {
+              setFile(undefined);
+              setImageUrl(undefined);
+            }}
+          />
         )}
 
         <Divider sx={{ my: 1 }} />
