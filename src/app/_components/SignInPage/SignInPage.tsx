@@ -1,10 +1,12 @@
+"use client";
+
 import React from "react";
 import { Grid, Typography, Box, Divider, useMediaQuery } from "@mui/material";
 import Logo from "~/assets/images/logo_full.svg";
 import Image from "next/image";
 import theme from "~/theme";
 
-const FrontLayout = (): JSX.Element => {
+const SignInPage = (): JSX.Element => {
   const mobileSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const FooterContainer = () => (
@@ -133,4 +135,4 @@ const FrontLayout = (): JSX.Element => {
   );
 };
 
-export { FrontLayout };
+export { SignInPage };

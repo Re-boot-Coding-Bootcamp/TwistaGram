@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, TextField } from "@mui/material";
 import { useState } from "react";
 import { Button } from "~/app/_components";

@@ -9,4 +9,4 @@ export { Avatar } from "./Avatar";
 export { CreateUpdateProfileForm } from "./CreateUpdateProfileForm";
 export { ForgotPasswordConfirm } from "./ForgotPasswordConfirm";
 export { ForgotPasswordForm } from "./ForgotPasswordForm";
-export { FrontLayout } from "./FrontLayout";
+export { SignInPage } from "./SignInPage";

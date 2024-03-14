@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Typography, alpha } from "@mui/material";
 import { Button } from "../Button";
 interface DontHaveAnAccountProps {

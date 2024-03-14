@@ -1,1 +1,0 @@
-export { FrontLayout } from "./FrontLayout";

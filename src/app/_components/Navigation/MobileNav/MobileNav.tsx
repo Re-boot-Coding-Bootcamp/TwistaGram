@@ -1,3 +1,5 @@
+"use client";
+
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
 import React, { useState } from "react";
 import { NavigationItems, Pages } from "~/constants";
