@@ -3,7 +3,7 @@ import { getServerAuthSession } from "~/server/auth";
 import GoogleSignIn from "../_components/GoogleSignIn";
 import EmailSignIn from "../_components/EmailSignIn";
 import { redirect } from "next/navigation";
-import { SignInPage } from "~/app/_components";
+// import { SignInPage } from "~/app/_components";
 
 export default async function SignIn() {
   const session = await getServerAuthSession();
@@ -18,8 +18,10 @@ export default async function SignIn() {
     return <>No providers found</>;
   }
 
-  // <GoogleSignIn provider={providers.google} />
-  // <EmailSignIn provider={providers.email} />
-
-  return <SignInPage />;
+  return (
+    <>
+      <GoogleSignIn provider={providers.google} />
+      <EmailSignIn provider={providers.email} />
+    </>
+  );
 }
