@@ -7,7 +7,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { contentText } from "./utility";
+import { contentText } from "./contentText";
 import { StyledText } from "../StyledText/StyledTextComponent";
 import { Avatar } from "../Avatar";
 
@@ -28,15 +28,6 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.up("sm"));
 
-  const scaleRatio = isMobile ? 1.5 : 1;
-
-  const cardMaxWidth = `${23.5 * scaleRatio}rem`;
-  const avatarBackgroundSize = `${6 * scaleRatio}rem`;
-  const avatarInnerSize = `${5.38 * scaleRatio}rem`;
-  const fontSizeBase = `${16 * scaleRatio}px`;
-  const fontSizeSmall = `${0.75 * scaleRatio}rem`;
-  const buttonHeight = `${1.8 * scaleRatio}rem`;
-
   const splitTextByLength = (text: string, maxLength: number) => {
     const textLines = [];
     for (let i = 0; i < text.length; i += maxLength) {
@@ -54,7 +45,7 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
     );
 
     return bioContent.map((lineOfText, index) => (
-      <Typography key={index} sx={{ fontSize: fontSizeSmall }}>
+      <Typography key={index} sx={{ fontSize: isMobile ? 16 : 12 }}>
         <StyledText text={lineOfText} />
       </Typography>
     ));
@@ -75,16 +66,19 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: theme.palette.background.default,
+          backgroundColor: theme.palette.grey[50],
           width: "100%",
-          maxWidth: isMobile ? "100%" : cardMaxWidth,
-          py: "2rem",
+          py: 5,
           borderRadius: 0,
         }}
         elevation={0}
       >
         <Typography
-          sx={{ fontSize: fontSizeBase, fontWeight: "bold", mb: "1.5rem" }}
+          sx={{
+            fontSize: isMobile ? 22 : 16,
+            fontWeight: "bold",
+            mb: isMobile ? 4 : 2,
+          }}
         >
           {contentText(username, 30)}
         </Typography>
@@ -94,44 +88,37 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
             justifyContent: "center",
             alignItems: "center",
             width: "fit-content",
-            mb: "0.6rem",
+            mb: isMobile ? 4 : 2,
           }}
         >
           <Box
             sx={{
-              width: avatarBackgroundSize,
-              height: avatarBackgroundSize,
+              width: isMobile ? 106 : 66,
+              height: isMobile ? 106 : 66,
               borderRadius: "50%",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              backgroundColor: theme.palette.background.paper,
-              border: `1px solid ${theme.palette.divider}`,
-              mr: "1.5rem",
-              mb: "1rem",
+              backgroundColor: theme.palette.grey[50],
+              border: `1px solid ${theme.palette.grey[400]}`,
+              mr: isMobile ? 4 : 3,
             }}
           >
-            <Avatar
-              size="large" // this size is small for this component so applied custom size below
-              sx={{
-                width: avatarInnerSize,
-                height: avatarInnerSize,
-              }}
-            />
+            <Avatar size={isMobile ? "xlarge" : "large"} />
           </Box>
           <Box>
             <Typography
               noWrap
-              sx={{ fontSize: fontSizeSmall, fontWeight: "bold" }}
+              sx={{ fontSize: isMobile ? 18 : 14, fontWeight: "bold" }}
             >
               {`${contentText(name, 15)} `}
               <Typography
                 component="span"
                 noWrap
                 sx={{
-                  fontSize: fontSizeSmall,
+                  fontSize: isMobile ? 18 : 14,
                   fontWeight: "bold",
-                  color: "rgba(149, 149, 149, 0.9)",
+                  color: theme.palette.grey[500],
                 }}
               >
                 @{contentText(username, 12)}
@@ -144,13 +131,12 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           variant="outlined"
           onClick={onEditProfile}
           sx={{
-            borderColor: theme.palette.common.black,
-            color: theme.palette.common.black,
-            fontSize: fontSizeSmall,
-            borderRadius: "0.4rem",
-            width: isMobile ? "100%" : "90%",
-            maxWidth: "30rem",
-            height: buttonHeight,
+            borderColor: theme.palette.grey[900],
+            color: theme.palette.grey[900],
+            fontSize: isMobile ? 16 : 12,
+            maxWidth: isMobile ? 440 : 320,
+            height: isMobile ? 44 : 30,
+            backgroundColor: "#fff",
           }}
         >
           Edit Profile
