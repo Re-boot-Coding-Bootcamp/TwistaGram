@@ -1,8 +1,14 @@
 "use client";
 
-import { Box, Divider, TextField, Button as MuiButton } from "@mui/material";
+import {
+  Box,
+  Divider,
+  TextField,
+  Button as MuiButton,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import ImageIcon from "@mui/icons-material/Image";
-import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import { type ChangeEvent, useEffect, useState } from "react";
 import {
   VisuallyHiddenInput,
@@ -12,27 +18,43 @@ import {
   ImageContainer,
 } from "..";
 import { type EmojiClickData } from "emoji-picker-react";
+import { PictureExtensions } from "~/constants";
+import theme from "~/theme";
+
+export type PostContent =
+  | { content?: string; image: File }
+  | { content: string; image?: File };
 
 interface CreatePostProps {
-  onPostSubmit: () => void;
+  onPostSubmit: (postContent: PostContent) => Promise<void>;
 }
+
+const POST_CHAR_LIMIT = 250;
 
 function CreatePost({ onPostSubmit }: CreatePostProps) {
   const [postContent, setPostContent] = useState("");
   const [file, setFile] = useState<File>();
   const [imageUrl, setImageUrl] = useState<string>();
+  const [isPosting, setIsPosting] = useState(false);
 
-  const handlePostClick = () => {
-    onPostSubmit();
+  const handlePostClick = async () => {
+    setIsPosting(true);
+    await onPostSubmit({
+      content: postContent,
+      image: file,
+    });
+    setPostContent("");
+    setFile(undefined);
+    setImageUrl(undefined);
+    setIsPosting(false);
   };
 
-  const handleEmojiChange = (emoji: EmojiClickData) => {
-    console.log(emoji.emoji);
+  const handleEmojiChange = (emojiData: EmojiClickData) => {
+    setPostContent((prevContent) => prevContent + emojiData.emoji);
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    console.log(e);
 
     if (e.target.files) {
       const firstFile = e.target.files[0];
@@ -59,16 +81,15 @@ function CreatePost({ onPostSubmit }: CreatePostProps) {
         <TextField
           variant="standard"
           fullWidth
-          inputProps={{ maxLength: 250 }}
+          inputProps={{ maxLength: POST_CHAR_LIMIT }}
           InputProps={{ disableUnderline: true }}
           multiline
           placeholder="What is happening?!"
           value={postContent}
           onChange={(e) => setPostContent(e.target.value)}
+          disabled={isPosting}
         />
 
-        {/* use imageUrl to display the image */}
-        {/* props: imageUrl, onClose */}
         {file && imageUrl && (
           <ImageContainer
             imageUrl={imageUrl}
@@ -76,6 +97,7 @@ function CreatePost({ onPostSubmit }: CreatePostProps) {
               setFile(undefined);
               setImageUrl(undefined);
             }}
+            disabled={isPosting}
           />
         )}
 
@@ -89,7 +111,12 @@ function CreatePost({ onPostSubmit }: CreatePostProps) {
             alignItems: "center",
           }}
         >
-          <Box id="icon-pickers-container" display="flex" gap={2}>
+          <Box
+            id="icon-pickers-container"
+            display="flex"
+            alignItems="center"
+            gap={2}
+          >
             <MuiButton
               component="label"
               role={undefined}
@@ -103,20 +130,38 @@ function CreatePost({ onPostSubmit }: CreatePostProps) {
                   backgroundColor: "transparent",
                 },
               }}
+              disabled={isPosting}
             >
               <ImageIcon fontSize="small" />
-              <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+              <VisuallyHiddenInput
+                type="file"
+                onChange={handleFileChange}
+                accept={PictureExtensions.join(",")}
+              />
             </MuiButton>
 
-            <EmojiPicker onChange={handleEmojiChange}>
-              <EmojiEmotionsIcon fontSize="small" />
-            </EmojiPicker>
+            <EmojiPicker onChange={handleEmojiChange} disabled={isPosting} />
           </Box>
-          <Box id="post-button-container">
+          <Box
+            id="post-button-container"
+            display="flex"
+            alignItems="center"
+            gap={1}
+          >
+            <Typography
+              id="char-count"
+              variant="body2"
+              color={theme.palette.grey[500]}
+            >{`${postContent.length}/${POST_CHAR_LIMIT}`}</Typography>
             <Button
-              disabled={!postContent && !file}
-              text="Post"
+              disabled={(!postContent && !file) || isPosting}
+              text={isPosting ? "Posting..." : "Post"}
               onClick={handlePostClick}
+              startIcon={
+                isPosting ? (
+                  <CircularProgress size={20} sx={{ color: "white" }} />
+                ) : undefined
+              }
             />
           </Box>
         </Box>

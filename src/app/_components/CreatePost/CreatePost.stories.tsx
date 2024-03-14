@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
-import { CreatePost } from "./CreatePost";
+import { CreatePost, type PostContent } from "./CreatePost";
 import { Box } from "@mui/material";
 
 const meta = {
@@ -12,7 +12,7 @@ const meta = {
   tags: ["autodocs"],
   decorators: [
     (Story) => (
-      <Box width={"350px"}>
+      <Box width={"500px"}>
         <Story />
       </Box>
     ),
@@ -23,5 +23,16 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {},
+  args: {
+    onPostSubmit: (postContent: PostContent) => {
+      console.log("Submitting post", postContent);
+
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          console.log("Post submitted");
+          resolve();
+        }, 3000);
+      });
+    },
+  },
 };

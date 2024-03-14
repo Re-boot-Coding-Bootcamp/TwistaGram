@@ -12,7 +12,11 @@ const meta = {
   tags: ["autodocs"],
   decorators: [
     (Story) => (
-      <Box width={"350px"}>
+      <Box
+        width="500px"
+        sx={{ border: "1px solid black" }}
+        id="image-container-container"
+      >
         <Story />
       </Box>
     ),
