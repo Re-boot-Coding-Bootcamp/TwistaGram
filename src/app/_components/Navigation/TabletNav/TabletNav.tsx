@@ -61,7 +61,9 @@ const TabletNav = () => {
                       : "transparent",
                 }}
               >
-                <ListItemIcon sx={{ color: "black", minWidth: "unset", mr: 1.5 }}>
+                <ListItemIcon
+                  sx={{ color: "black", minWidth: "unset", mr: 1.5 }}
+                >
                   {selectedPage === text ? selectedIcon : icon}
                 </ListItemIcon>
               </ListItemButton>
