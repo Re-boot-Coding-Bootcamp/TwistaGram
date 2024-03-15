@@ -5,27 +5,11 @@ import { Grid, Typography, Box, Divider, useMediaQuery } from "@mui/material";
 import Logo from "~/assets/images/logo_full.svg";
 import Image from "next/image";
 import theme from "~/theme";
+import { EmailSignin, GoogleLoginButton } from "..";
+import { signIn } from "next-auth/react";
 
 const SignInPage = (): JSX.Element => {
   const mobileSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const FooterContainer = () => (
-    <Box
-      id="have-an-account"
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        borderTop: "1px solid #CCC",
-        marginTop: "20px",
-        paddingTop: mobileSmallScreen ? "20px" : "none",
-        width: mobileSmallScreen ? "100vw" : "100%",
-        height: mobileSmallScreen ? "10px" : "40px",
-      }}
-    >
-      Have an account? Container
-    </Box>
-  );
 
   return (
     <Grid
@@ -54,7 +38,6 @@ const SignInPage = (): JSX.Element => {
         <Typography
           variant="h6"
           color="#B5B5B5"
-          fontWeight="bold"
           sx={{
             textAlign: "center",
             fontSize: "17px",
@@ -62,25 +45,18 @@ const SignInPage = (): JSX.Element => {
             marginBottom: "15px",
           }}
         >
-          Sign up to see posts, photos, and videos from your friends.
+          Connect and share in real-time, bringing everyone, everywhere closer
+          together.
         </Typography>
 
-        <form style={{ width: "100%", textAlign: "center" }}>
+        <Box sx={{ width: "100%", textAlign: "center" }}>
           <Box
             id="google-login"
             sx={{
               width: "100%",
-              maxWidth: "343px",
-              height: "47px",
-              backgroundColor: "#E0E0E0",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              border: "1px dashed #9E9E9E",
-              margin: "15px auto",
             }}
           >
-            Google login container
+            <GoogleLoginButton onLogin={() => signIn("google")} />
           </Box>
 
           <Box
@@ -110,26 +86,19 @@ const SignInPage = (): JSX.Element => {
             id="registration-form"
             sx={{
               width: "100%",
-              maxWidth: "343px",
-              height: "266px",
-              backgroundColor: "#E0E0E0",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              border: "1px dashed #9E9E9E",
-              margin: "35px auto 23px",
+              mb: 3,
             }}
           >
-            Registration container
+            <EmailSignin
+              onSubmit={(email) => signIn("email", { email: email })}
+            />
           </Box>
 
           <Typography sx={{ marginBottom: "15px" }}>
-            By signing up, you agree to our terms, data policy, and cookies
+            By signing in, you agree to our terms, data policy, and cookies
             policy.
           </Typography>
-        </form>
-
-        <FooterContainer />
+        </Box>
       </Box>
     </Grid>
   );

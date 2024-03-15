@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import React from "react";
-import { RegistrationForm } from "./RegistrationForm";
+import { EmailSignin } from "./EmailSignin";
 import { Box } from "@mui/material";
 
 const meta = {
-  title: "Authentication/RegistrationForm",
-  component: RegistrationForm,
+  title: "Authentication/EmailSignin",
+  component: EmailSignin,
   parameters: {
     layout: "centered",
   },
@@ -19,7 +19,7 @@ const meta = {
       </Box>
     ),
   ],
-} satisfies Meta<typeof RegistrationForm>;
+} satisfies Meta<typeof EmailSignin>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
