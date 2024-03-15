@@ -9,7 +9,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { ThemeProvider } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import theme from "~/theme";
-import { Authenticated, MainLayout } from "./_layouts";
+import { ServerAuthenticated, MainLayout } from "./_layouts";
 import { getServerAuthSession } from "~/server/auth";
 
 export const metadata = {
@@ -31,13 +31,9 @@ export default async function RootLayout({
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <TRPCReactProvider>
-              {session ? (
-                <Authenticated>
-                  <MainLayout>{children}</MainLayout>
-                </Authenticated>
-              ) : (
-                children
-              )}
+              <ServerAuthenticated>
+                {session ? <MainLayout>{children}</MainLayout> : children}
+              </ServerAuthenticated>
             </TRPCReactProvider>
           </ThemeProvider>
         </AppRouterCacheProvider>
