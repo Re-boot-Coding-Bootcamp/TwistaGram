@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Typography, Button } from "@mui/material";
 import React from "react";
 
@@ -5,7 +7,7 @@ interface Props {
   onConfirm: () => void;
 }
 
-const ForgotPassword = ({ onConfirm }: Props): JSX.Element => {
+const ForgotPasswordConfirm = ({ onConfirm }: Props): JSX.Element => {
   return (
     <Box display="flex" flexDirection="column">
       <Typography mb={1} variant="h5" sx={{ fontWeight: "bold" }}>
@@ -27,4 +29,4 @@ const ForgotPassword = ({ onConfirm }: Props): JSX.Element => {
   );
 };
 
-export { ForgotPassword };
+export { ForgotPasswordConfirm };

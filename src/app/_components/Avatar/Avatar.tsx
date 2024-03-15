@@ -1,3 +1,5 @@
+"use client";
+
 import { default as MuiAvatar } from "@mui/material/Avatar";
 import type { AvatarProps as MuiAvatarProps } from "@mui/material/Avatar";
 

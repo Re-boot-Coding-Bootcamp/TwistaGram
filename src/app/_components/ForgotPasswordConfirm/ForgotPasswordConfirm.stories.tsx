@@ -2,15 +2,16 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import React from "react";
 import { Box } from "@mui/material";
-import { Avatar } from "./Avatar";
+import { ForgotPasswordConfirm } from "./ForgotPasswordConfirm";
 
 const meta = {
-  title: "Components/Avatar",
-  component: Avatar,
+  title: "Authentication/ForgotPasswordConfirm",
+  component: ForgotPasswordConfirm,
   parameters: {
     layout: "centered",
   },
   tags: ["autodocs"],
+  argTypes: {},
   decorators: [
     (Story) => (
       <Box width={"350px"}>
@@ -18,22 +19,11 @@ const meta = {
       </Box>
     ),
   ],
-} satisfies Meta<typeof Avatar>;
+} satisfies Meta<typeof ForgotPasswordConfirm>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Unclickable: Story = {
-  args: {
-    size: "small",
-    onProfileClick: undefined,
-  },
-};
-export const Clickable: Story = {
-  args: {
-    size: "small",
-    onProfileClick: () => {
-      alert("Avatar has been clicked");
-    },
-  },
+export const Default: Story = {
+  args: {},
 };

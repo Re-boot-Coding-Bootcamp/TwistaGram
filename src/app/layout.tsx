@@ -9,7 +9,8 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { ThemeProvider } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import theme from "~/theme";
-import { MainLayout } from "./_layouts";
+import { ServerAuthenticated, MainLayout } from "./_layouts";
+import { getServerAuthSession } from "~/server/auth";
 
 export const metadata = {
   title: "Twistagram",
@@ -17,18 +18,22 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerAuthSession();
+
   return (
     <html lang="en">
       <body id="body-id">
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <TRPCReactProvider>
-              <MainLayout>{children}</MainLayout>
+              <ServerAuthenticated>
+                {session ? <MainLayout>{children}</MainLayout> : children}
+              </ServerAuthenticated>
             </TRPCReactProvider>
           </ThemeProvider>
         </AppRouterCacheProvider>
