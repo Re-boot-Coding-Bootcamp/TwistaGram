@@ -42,7 +42,7 @@ const TabletNav = () => {
         pt={5}
         pb={3}
       >
-        <Image src={Logo as string} alt="Your Logo" width={100} height={100} />
+        <Image src={Logo as string} alt="twistigram-logo" width={65} />
       </Box>
       <List>
         {NavigationItems.map(({ text, icon, selectedIcon, path }) => (
@@ -62,7 +62,15 @@ const TabletNav = () => {
                 }}
               >
                 <ListItemIcon
-                  sx={{ color: "black", minWidth: "unset", mr: 1.5 }}
+                  sx={{
+                    color: "black",
+                    minWidth: "unset",
+                    mr: 1.5,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                  }}
                 >
                   {selectedPage === text ? selectedIcon : icon}
                 </ListItemIcon>
