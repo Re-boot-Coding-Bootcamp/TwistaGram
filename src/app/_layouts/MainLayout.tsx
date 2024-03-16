@@ -3,7 +3,7 @@
 import React from "react";
 import { Box } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { MobileNav, DesktopNav } from "~/app/_components";
+import { MobileNav, DesktopNav, TabletNav } from "~/app/_components";
 import theme from "~/theme";
 
 interface Props {
@@ -12,6 +12,8 @@ interface Props {
 
 const MainLayout = ({ children }: Props) => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+
 
   if (isMobile) {
     return (
@@ -21,6 +23,18 @@ const MainLayout = ({ children }: Props) => {
           {children}
         </Box>
       </>
+    );
+  } else if (isTablet) {
+    return (
+      <Box display="flex">
+        <TabletNav />
+        <Box
+          component="main"
+          sx={{ flexGrow: 1, bgcolor: "background.default", p: 3, pt: 5 }}
+        >
+          {children}
+        </Box>
+      </Box>
     );
   }
 
