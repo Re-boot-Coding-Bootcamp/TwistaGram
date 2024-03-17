@@ -19,3 +19,4 @@ export { ImageContainer } from "./ImageContainer";
 export { MoreActionsMenu } from "./MoreActionsMenu";
 export { DeletePostComment } from "./DeletePostComment";
 export { CommentIcon } from "./CommentIcon";
+export { UserIcon } from "./UserIcon";
