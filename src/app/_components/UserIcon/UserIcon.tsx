@@ -1,7 +1,14 @@
-import { Box, SxProps, Typography, useMediaQuery } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  Popover,
+  SxProps,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
+import React, { useState } from "react";
 import { Avatar } from "..";
 import theme from "~/theme";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 // interface UserIconProps {
 // //   name: string;
@@ -9,31 +16,61 @@ import theme from "~/theme";
 // }
 
 function UserIcon(): JSX.Element {
-  const desktopLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null); //   const desktopLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
+  const [open, setOpen] = useState(false);
+  const desktopLargeScreen = true;
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setOpen(true);
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setAnchorEl(null);
+  };
+
   const desktopStyling: SxProps = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-evenly",
-    bgcolor: "gray",
-    p: 1,
+    p: 1.5,
+    borderRadius: 10,
+    "&:hover": {
+      bgcolor: theme.palette.grey[300],
+    },
+    cursor: "pointer",
   };
 
   return (
-    <Box sx={desktopLargeScreen ? desktopStyling : undefined}>
+    <Box
+      sx={desktopLargeScreen ? desktopStyling : { cursor: "pointer" }}
+      onClick={handleClick}
+    >
       <Avatar size="medium" sx={{ mr: 1 }} />
       {desktopLargeScreen && (
         <>
           <Box id="name-username" width="65%">
-            <Typography noWrap>
-              Muradd'flkas'pokposdkfpoqkwdpofkpokjhkjljhklhjlhkjlh;
+            <Typography noWrap>Muradasdfasdfasdfasdfasdfasdf</Typography>
+            <Typography noWrap variant="body2" color={theme.palette.grey[500]}>
+              @Muradil_erkin_r
             </Typography>
-            <Typography noWrap>@Muradil_erkin_r</Typography>
           </Box>
-          <Typography ml="1" color="white" fontWeight="700">
-            ...
-          </Typography>
+          <MoreHorizIcon fontSize="small" />
         </>
       )}
+      <Popover
+        id="menu-items"
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+      >
+        <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
+      </Popover>
     </Box>
   );
 }
