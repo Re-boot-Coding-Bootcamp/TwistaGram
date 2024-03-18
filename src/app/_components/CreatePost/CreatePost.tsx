@@ -20,6 +20,7 @@ import {
 import { type EmojiClickData } from "emoji-picker-react";
 import { PictureExtensions } from "~/constants";
 import theme from "~/theme";
+import { useSnackbar } from "notistack";
 
 export type PostContent =
   | { content?: string; image: File }
@@ -37,6 +38,7 @@ function CreatePost({ onPostSubmit }: CreatePostProps) {
   const [imageUrl, setImageUrl] = useState<string>();
   const [isPosting, setIsPosting] = useState(false);
   const textFieldRef = useRef<HTMLDivElement>(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   const handlePostClick = async () => {
     setIsPosting(true);
@@ -52,7 +54,19 @@ function CreatePost({ onPostSubmit }: CreatePostProps) {
 
   const handleEmojiChange = (emojiData: EmojiClickData) => {
     if (emojiData.emoji.length + postContent.length > POST_CHAR_LIMIT) {
-      // TODO: error message snackbar
+      enqueueSnackbar(
+        <Box display="flex" flexDirection="column">
+          <Typography>
+            {"The emoji is too long to be added to the post."}
+          </Typography>
+          <Typography>
+            {"(FYI: Most emojis are actually counted more than 1 character 👀)"}
+          </Typography>
+        </Box>,
+        {
+          variant: "warning",
+        }
+      );
       return;
     }
 

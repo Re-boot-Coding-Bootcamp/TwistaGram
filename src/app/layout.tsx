@@ -6,11 +6,12 @@ import "@fontsource/roboto/700.css";
 import "~/styles/globals.css";
 
 import { TRPCReactProvider } from "~/trpc/react";
-import { ThemeProvider } from "@mui/material";
+import { Grow, ThemeProvider } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import theme from "~/theme";
 import { ServerAuthenticated, MainLayout } from "./_layouts";
 import { getServerAuthSession } from "~/server/auth";
+import { SnackbarProvider } from "notistack";
 
 export const metadata = {
   title: "Twistagram",
@@ -30,11 +31,16 @@ export default async function RootLayout({
       <body id="body-id">
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
-            <TRPCReactProvider>
-              <ServerAuthenticated>
-                {session ? <MainLayout>{children}</MainLayout> : children}
-              </ServerAuthenticated>
-            </TRPCReactProvider>
+            <SnackbarProvider
+              TransitionComponent={Grow}
+              anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+            >
+              <TRPCReactProvider>
+                <ServerAuthenticated>
+                  {session ? <MainLayout>{children}</MainLayout> : children}
+                </ServerAuthenticated>
+              </TRPCReactProvider>
+            </SnackbarProvider>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
