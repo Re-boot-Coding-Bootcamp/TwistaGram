@@ -1,16 +1,17 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { GoogleLoginButton } from "./GoogleLoginButton";
-import { Box } from "@mui/material";
 import React from "react";
+import { Box } from "@mui/material";
+import { ForgotPasswordConfirm } from "./ForgotPasswordConfirm";
 
 const meta = {
-  title: "Authentication/GoogleLoginButton",
-  component: GoogleLoginButton,
+  title: "Authentication/ForgotPasswordConfirm",
+  component: ForgotPasswordConfirm,
   parameters: {
     layout: "centered",
   },
   tags: ["autodocs"],
+  argTypes: {},
   decorators: [
     (Story) => (
       <Box width={"350px"}>
@@ -18,15 +19,11 @@ const meta = {
       </Box>
     ),
   ],
-} satisfies Meta<typeof GoogleLoginButton>;
+} satisfies Meta<typeof ForgotPasswordConfirm>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {
-    onLogin: () => {
-      alert("Google login triggered");
-    },
-  },
+  args: {},
 };
