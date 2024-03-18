@@ -9,7 +9,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import ImageIcon from "@mui/icons-material/Image";
-import { type ChangeEvent, useEffect, useState } from "react";
+import { type ChangeEvent, useEffect, useState, useRef } from "react";
 import {
   VisuallyHiddenInput,
   Avatar,
@@ -36,6 +36,7 @@ function CreatePost({ onPostSubmit }: CreatePostProps) {
   const [file, setFile] = useState<File>();
   const [imageUrl, setImageUrl] = useState<string>();
   const [isPosting, setIsPosting] = useState(false);
+  const textFieldRef = useRef<HTMLDivElement>(null);
 
   const handlePostClick = async () => {
     setIsPosting(true);
@@ -50,7 +51,21 @@ function CreatePost({ onPostSubmit }: CreatePostProps) {
   };
 
   const handleEmojiChange = (emojiData: EmojiClickData) => {
-    setPostContent((prevContent) => prevContent + emojiData.emoji);
+    if (emojiData.emoji.length + postContent.length > POST_CHAR_LIMIT) {
+      // TODO: error message snackbar
+      return;
+    }
+
+    const emojiStartIndex = (
+      textFieldRef.current?.firstElementChild as HTMLTextAreaElement
+    )?.selectionStart;
+
+    setPostContent(
+      (prevContent) =>
+        prevContent.slice(0, emojiStartIndex) +
+        emojiData.emoji +
+        prevContent.slice(emojiStartIndex)
+    );
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -82,11 +97,13 @@ function CreatePost({ onPostSubmit }: CreatePostProps) {
           variant="standard"
           fullWidth
           inputProps={{ maxLength: POST_CHAR_LIMIT }}
-          InputProps={{ disableUnderline: true }}
+          InputProps={{ disableUnderline: true, ref: textFieldRef }}
           multiline
           placeholder="What is happening?!"
           value={postContent}
-          onChange={(e) => setPostContent(e.target.value)}
+          onChange={(e) => {
+            setPostContent(e.target.value);
+          }}
           disabled={isPosting}
         />
 
