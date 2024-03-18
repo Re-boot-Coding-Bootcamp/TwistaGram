@@ -17,6 +17,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface ViewPostProps {
   username: string;
@@ -26,6 +27,7 @@ interface ViewPostProps {
   textContent: string;
   imageUrl: string;
   onMore: () => void;
+  onProfile: () => void;
 }
 
 const ViewPost: React.FC<ViewPostProps> = ({
@@ -36,6 +38,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
   textContent,
   imageUrl,
   onMore,
+  onProfile,
 }) => {
   const theme = useTheme();
 
@@ -72,15 +75,11 @@ const ViewPost: React.FC<ViewPostProps> = ({
     handleCloseDeleteModal();
   };
 
-  const handleProfileClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-  };
-
   const isCurrentUserPost = username === currentUserId;
 
   const imageModalStyle = {
     position: "absolute",
-    top: "40%",
+    top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: "90%",
@@ -126,7 +125,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
         <Box
           id="profile-container"
           sx={{ display: "flex", mb: 2, cursor: "pointer", width: "100%" }}
-          onClick={handleProfileClick}
+          onClick={onProfile}
         >
           <Box id="avatar" marginRight={2}>
             <Avatar size="large" />
@@ -176,14 +175,17 @@ const ViewPost: React.FC<ViewPostProps> = ({
                   color: theme.palette.text.disabled,
                 }}
               >
-                · {postedTime}
+                ·{postedTime}
               </Typography>
               <Box sx={{ flexGrow: 1 }} />
               {isCurrentUserPost && (
                 <Tooltip title="More" placement="top">
                   <IconButton
                     id="more-dots-button"
-                    onClick={onMore}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onMore();
+                    }}
                     sx={{ p: 0 }}
                   >
                     <MoreHorizIcon />
@@ -202,8 +204,18 @@ const ViewPost: React.FC<ViewPostProps> = ({
                   onChange={handleTextChange}
                   margin="normal"
                 />
-                <input type="file" onChange={handleImageChange} />
-                <Button onClick={handleEdit} color="primary">
+                <input
+                  type="file"
+                  onChange={handleImageChange}
+                  onClick={(e) => e.stopPropagation()}
+                />
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleEdit();
+                  }}
+                  color="primary"
+                >
                   Save Changes
                 </Button>
               </>
@@ -225,19 +237,23 @@ const ViewPost: React.FC<ViewPostProps> = ({
                     sx={{
                       position: "relative",
                       width: "100%",
-                      height: { xs: 188, sm: 250, md: 300 },
-                      mb: 2,
-                      borderRadius: 4,
                       overflow: "hidden",
                       cursor: "pointer",
                     }}
-                    onClick={handleOpenImageModal}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleOpenImageModal();
+                    }}
                   >
                     <Image
                       src={imageUrl}
                       alt="Uploaded image"
-                      layout="fill"
-                      objectFit="cover"
+                      layout="responsive"
+                      width={100}
+                      height={100}
+                      objectFit="contain"
+                      objectPosition="center"
+                      style={{ borderRadius: 15 }}
                     />
                   </Box>
                 )}
@@ -255,7 +271,10 @@ const ViewPost: React.FC<ViewPostProps> = ({
               >
                 <Tooltip title="Edit">
                   <IconButton
-                    onClick={toggleEditMode}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleEditMode();
+                    }}
                     disableRipple
                     sx={{ color: theme.palette.primary.main }}
                   >
@@ -264,7 +283,10 @@ const ViewPost: React.FC<ViewPostProps> = ({
                 </Tooltip>
                 <Tooltip title="Delete">
                   <IconButton
-                    onClick={handleOpenDeleteModal}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleOpenDeleteModal();
+                    }}
                     disableRipple
                     sx={{ color: theme.palette.error.main }}
                   >
@@ -284,6 +306,12 @@ const ViewPost: React.FC<ViewPostProps> = ({
         aria-describedby="enlarged-image-from-post"
       >
         <Box sx={imageModalStyle}>
+          <IconButton
+            sx={{ position: "absolute", top: 5, right: 5, zIndex: 1 }}
+            onClick={handleCloseImageModal}
+          >
+            <CloseIcon />
+          </IconButton>
           <Image
             src={editMode ? editedImage : imageUrl}
             alt="Enlarged uploaded image"

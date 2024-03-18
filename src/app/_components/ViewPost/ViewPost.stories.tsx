@@ -33,6 +33,22 @@ export const Default: Story = {
       "https://static1.cbrimages.com/wordpress/wp-content/uploads/2020/07/Dragon-Ball-Z-Cover-Wallpaper-Cast.jpg",
 
     onMore: () => alert("More clicked"),
+    onProfile: () => alert("Profile clicked"),
+  },
+};
+
+export const VerticalImage: Story = {
+  args: {
+    name: "John Doe",
+    username: "johndoe",
+    currentUserId: "johndoe",
+    postedTime: "1hr ago",
+    textContent:
+      "Dragon Ball is a Japanese media franchise created by Akira Toriyama in 1984. The initial manga, written and illustrated by Toriyama, was serialized in Weekly Shōnen Jump from 1984 to 1995, with the 519 individual chapters collected in 42 tankōbon volumes by its publisher Shueisha.",
+    imageUrl: "https://wallpapercave.com/wp/wp7206666.jpg",
+
+    onMore: () => alert("More clicked"),
+    onProfile: () => alert("Profile clicked"),
   },
 };
 
