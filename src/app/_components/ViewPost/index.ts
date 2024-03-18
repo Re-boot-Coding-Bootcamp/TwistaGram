@@ -1,0 +1,1 @@
+export { ViewPost } from "./ViewPost";
