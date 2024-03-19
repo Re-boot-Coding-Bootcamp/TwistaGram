@@ -1,3 +1,5 @@
+"use client";
+
 import { styled } from "@mui/material";
 
 const VisuallyHiddenInput = styled("input")({

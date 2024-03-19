@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Box, Paper, Popper } from "@mui/material";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
