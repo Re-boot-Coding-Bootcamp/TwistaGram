@@ -34,6 +34,7 @@ export const Default: Story = {
 
     onMore: () => alert("More clicked"),
     onProfile: () => alert("Profile clicked"),
+    onImageModal: () => alert("Image clicked"),
   },
 };
 
@@ -49,6 +50,7 @@ export const VerticalImage: Story = {
 
     onMore: () => alert("More clicked"),
     onProfile: () => alert("Profile clicked"),
+    onImageModal: () => alert("Image clicked"),
   },
 };
 

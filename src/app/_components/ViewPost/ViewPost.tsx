@@ -17,7 +17,6 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
-import CloseIcon from "@mui/icons-material/Close";
 
 interface ViewPostProps {
   username: string;
@@ -28,6 +27,8 @@ interface ViewPostProps {
   imageUrl: string;
   onMore: () => void;
   onProfile: () => void;
+  onImageModal: () => void;
+  onChooseFile: () => void;
 }
 
 const ViewPost: React.FC<ViewPostProps> = ({
@@ -39,17 +40,15 @@ const ViewPost: React.FC<ViewPostProps> = ({
   imageUrl,
   onMore,
   onProfile,
+  onImageModal,
+  onChooseFile,
 }) => {
   const theme = useTheme();
 
-  const [openImageModal, setOpenImageModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [editedText, setEditedText] = useState(textContent);
-  const [editedImage, setEditedImage] = useState(imageUrl);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-  const handleOpenImageModal = () => setOpenImageModal(true);
-  const handleCloseImageModal = () => setOpenImageModal(false);
   const handleOpenDeleteModal = () => setOpenDeleteModal(true);
   const handleCloseDeleteModal = () => setOpenDeleteModal(false);
 
@@ -59,15 +58,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
     setEditedText(e.target.value);
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const newImageUrl = URL.createObjectURL(file);
-      setEditedImage(newImageUrl);
-    }
-  };
-
-  const handleEdit = () => {
+  const saveChanges = () => {
     setEditMode(false);
   };
 
@@ -76,19 +67,6 @@ const ViewPost: React.FC<ViewPostProps> = ({
   };
 
   const isCurrentUserPost = username === currentUserId;
-
-  const imageModalStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: "90%",
-    maxHeight: "70vh",
-    overflowY: "none",
-    p: 1,
-    outline: "none",
-    borderRadius: 2,
-  };
 
   const deleteModalStyle = {
     position: "absolute",
@@ -201,18 +179,26 @@ const ViewPost: React.FC<ViewPostProps> = ({
                   multiline
                   variant="outlined"
                   value={editedText}
-                  onChange={handleTextChange}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    e.stopPropagation();
+                    handleTextChange(e);
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
                   margin="normal"
                 />
                 <input
                   type="file"
-                  onChange={handleImageChange}
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onChooseFile();
+                  }}
                 />
                 <Button
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleEdit();
+                    saveChanges();
                   }}
                   color="primary"
                 >
@@ -240,12 +226,12 @@ const ViewPost: React.FC<ViewPostProps> = ({
                       overflow: "hidden",
                       cursor: "pointer",
                     }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleOpenImageModal();
-                    }}
                   >
                     <Image
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onImageModal();
+                      }}
                       src={imageUrl}
                       alt="Uploaded image"
                       layout="responsive"
@@ -298,30 +284,6 @@ const ViewPost: React.FC<ViewPostProps> = ({
           </Box>
         </Box>
       </Card>
-
-      <Modal
-        open={openImageModal}
-        onClose={handleCloseImageModal}
-        aria-labelledby="post-image-modal"
-        aria-describedby="enlarged-image-from-post"
-      >
-        <Box sx={imageModalStyle}>
-          <IconButton
-            sx={{ position: "absolute", top: 5, right: 5, zIndex: 1 }}
-            onClick={handleCloseImageModal}
-          >
-            <CloseIcon />
-          </IconButton>
-          <Image
-            src={editMode ? editedImage : imageUrl}
-            alt="Enlarged uploaded image"
-            layout="responsive"
-            width={500}
-            height={500}
-            objectFit="contain"
-          />
-        </Box>
-      </Modal>
 
       <Modal
         open={openDeleteModal}
