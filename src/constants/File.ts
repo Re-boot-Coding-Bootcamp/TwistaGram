@@ -1,3 +1,11 @@
-const PictureExtensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".heic"];
+const PictureExtensions = [
+  ".jpg",
+  ".jpeg",
+  ".png",
+  ".gif",
+  ".bmp",
+  ".heic",
+  ".webp",
+];
 
 export { PictureExtensions };
