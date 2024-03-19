@@ -1,42 +1,51 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Box, Backdrop, IconButton } from "@mui/material";
 import { Close } from "@mui/icons-material";
-import Image from "next/image";
 
 interface ImageViewerProps {
   imageUrl: string;
+  triggerElement?: React.ReactNode;
 }
 
-const ImageViewer: React.FC<ImageViewerProps> = ({ imageUrl }) => {
+const ImageViewer: React.FC<ImageViewerProps> = ({
+  imageUrl,
+  triggerElement,
+}) => {
   const [open, setOpen] = useState(false);
+  const backdropRef = useRef(null);
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleImageClick = () => {
+  const handleOpen = () => {
     setOpen(true);
   };
 
   return (
     <>
+      <Box onClick={handleOpen} sx={{ cursor: "pointer" }}>
+        {triggerElement}
+      </Box>
+
       {open && (
         <Backdrop
           open={open}
           sx={{
             zIndex: (theme) => theme.zIndex.drawer + 1,
-            backgroundColor: "red",
           }}
           onClick={handleClose}
+          ref={backdropRef}
         >
           <Box
             sx={{
               position: "absolute",
               top: 0,
               right: 0,
-              zIndex: 1,
+              m: 1,
+              zIndex: (theme) => theme.zIndex.drawer + 2,
             }}
           >
             <IconButton
@@ -50,33 +59,26 @@ const ImageViewer: React.FC<ImageViewerProps> = ({ imageUrl }) => {
           </Box>
           <Box
             sx={{
-              maxWidth: "80vw",
-              maxHeight: "80vh",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src={imageUrl}
-              alt="Image"
-              fill={true}
-              objectFit="contain"
-              style={{ cursor: "pointer" }}
+              alt="image-viewer"
+              style={{
+                maxHeight: "100vh",
+                maxWidth: "100vw",
+                aspectRatio: "auto",
+                objectFit: "contain",
+              }}
+              onClick={(e) => e.stopPropagation()}
             />
           </Box>
         </Backdrop>
       )}
-      <Box>
-        <Image
-          src={imageUrl}
-          alt="Default Image"
-          width={250}
-          height={150}
-          onClick={handleImageClick}
-          style={{ cursor: "pointer" }}
-        />
-      </Box>
     </>
   );
 };
