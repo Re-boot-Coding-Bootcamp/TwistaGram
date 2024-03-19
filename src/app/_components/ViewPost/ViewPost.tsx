@@ -223,6 +223,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
                     sx={{
                       position: "relative",
                       width: "100%",
+                      maxHeight: "70%",
                       overflow: "hidden",
                       cursor: "pointer",
                     }}
