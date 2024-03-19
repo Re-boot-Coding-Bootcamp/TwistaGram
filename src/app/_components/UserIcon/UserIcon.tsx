@@ -1,33 +1,52 @@
 import {
   Box,
-  Popover,
-  SxProps,
+  Fade,
+  Paper,
+  Popper,
+  type SxProps,
   Typography,
   useMediaQuery,
+  ClickAwayListener,
+  Drawer,
+  Divider,
 } from "@mui/material";
 import React, { useState } from "react";
 import { Avatar } from "..";
 import theme from "~/theme";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
-// interface UserIconProps {
-// //   name: string;
-// //   username: string;
-// }
+interface UserSectionIconProps {
+  name: string;
+  username: string;
+  onLogOut: () => void;
+}
 
-function UserIcon(): JSX.Element {
-  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null); //   const desktopLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
+function UserIcon({
+  name,
+  username,
+  onLogOut,
+}: UserSectionIconProps): JSX.Element {
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [open, setOpen] = useState(false);
-  const desktopLargeScreen = true;
+
+  const isDesktopLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
+  const isTabletMediumScreen = useMediaQuery(
+    theme.breakpoints.between("sm", "lg")
+  );
+  const isMobileSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setOpen(true);
+    toggleDrawer(true);
     setAnchorEl(event.currentTarget);
+    setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-    setAnchorEl(null);
+  const handleLogOut = () => {
+    onLogOut();
+  };
+
+  const toggleDrawer = (newOpen: boolean) => () => {
+    setOpen(newOpen);
   };
 
   const desktopStyling: SxProps = {
@@ -43,35 +62,103 @@ function UserIcon(): JSX.Element {
   };
 
   return (
-    <Box
-      sx={desktopLargeScreen ? desktopStyling : { cursor: "pointer" }}
-      onClick={handleClick}
-    >
-      <Avatar size="medium" sx={{ mr: 1 }} />
-      {desktopLargeScreen && (
-        <>
-          <Box id="name-username" width="65%">
-            <Typography noWrap>Muradasdfasdfasdfasdfasdfasdf</Typography>
-            <Typography noWrap variant="body2" color={theme.palette.grey[500]}>
-              @Muradil_erkin_r
-            </Typography>
-          </Box>
-          <MoreHorizIcon fontSize="small" />
-        </>
-      )}
-      <Popover
-        id="menu-items"
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "left",
+    <>
+      <ClickAwayListener
+        onClickAway={() => {
+          setOpen(false);
         }}
       >
-        <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
-      </Popover>
-    </Box>
+        <Box
+          sx={
+            isDesktopLargeScreen
+              ? desktopStyling
+              : {
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  cursor: "pointer",
+                }
+          }
+          onClick={handleClick}
+        >
+          <Avatar
+            size={isMobileSmallScreen ? "small" : "medium"}
+            sx={{ mr: 1 }}
+          />
+          {isDesktopLargeScreen && (
+            <>
+              <Box id="name-username" width="65%">
+                <Typography noWrap>{name}</Typography>
+                <Typography
+                  noWrap
+                  variant="body2"
+                  color={theme.palette.grey[500]}
+                >
+                  {username}
+                </Typography>
+              </Box>
+              <MoreHorizIcon fontSize="small" />
+            </>
+          )}
+          {(isDesktopLargeScreen || isTabletMediumScreen) && (
+            <Popper
+              // Note: The following zIndex style is specifically for documentation purposes and may not be necessary in your application.
+              open={open}
+              anchorEl={anchorEl}
+              placement={isDesktopLargeScreen ? "top" : "right"}
+              transition
+            >
+              {({ TransitionProps }) => (
+                <Fade {...TransitionProps} timeout={350}>
+                  <Paper>
+                    <Typography
+                      sx={{ p: 2, cursor: "pointer", width: "150" }}
+                      onClick={handleLogOut}
+                      fontWeight="bold"
+                    >
+                      {`Log Out ${username}`}
+                    </Typography>
+                  </Paper>
+                </Fade>
+              )}
+            </Popper>
+          )}
+        </Box>
+      </ClickAwayListener>
+      {/* placed the drawer outsize of the click away listener because it was causing issues with how drawer was closing */}
+      {isMobileSmallScreen && (
+        <Drawer
+          open={open}
+          onClose={toggleDrawer(false)}
+          sx={{ width: "200px", maxWidth: "200px" }}
+        >
+          <Box
+            id="user-icon-header"
+            display="flex"
+            flexDirection="column"
+            px={1}
+            my={1}
+          >
+            <Avatar size="medium" />
+            <Typography noWrap fontWeight="bold">
+              {name}
+            </Typography>
+            <Typography noWrap variant="body2" color={theme.palette.grey[500]}>
+              {username}
+            </Typography>
+          </Box>
+          <Divider />
+          <Typography
+            px={1}
+            sx={{ cursor: "pointer", px: 1, mt: 1 }}
+            onClick={handleLogOut}
+            fontWeight="bold"
+          >
+            Log Out
+          </Typography>
+        </Drawer>
+      )}
+    </>
   );
 }
 

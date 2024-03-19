@@ -24,5 +24,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {},
+  args: {
+    name: "Jack",
+    username: "@TemporaryUsernameJack",
+    onLogOut: () => alert("Log out has been clicked"),
+  },
 };
