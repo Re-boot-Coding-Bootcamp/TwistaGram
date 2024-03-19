@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { type SxProps, type Theme, styled } from "@mui/material/styles";
+import { type SxProps, type Theme } from "@mui/material/styles";
 import {
   Box,
   Modal,
@@ -13,7 +13,7 @@ import {
   Alert,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { Avatar, Button } from "..";
+import { Avatar, Button, VisuallyHiddenInput } from "..";
 import { type ChangeEvent, useEffect, useState } from "react";
 import theme from "~/theme";
 import { PictureExtensions } from "~/constants";
@@ -184,15 +184,3 @@ const fileUploadModalContainerStyles: SxProps<Theme> = {
   padding: 2,
   width: 350,
 };
-
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
