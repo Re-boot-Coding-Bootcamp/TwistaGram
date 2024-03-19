@@ -10,7 +10,6 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
-import { Box } from "@mui/material";
 
 interface Props {
   type: "Post" | "Comment";
@@ -22,23 +21,29 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     padding: theme.spacing(2),
   },
   "& .MuiDialogActions-root": {
-    padding: theme.spacing(1),
+    padding: theme.spacing(2),
   },
 }));
 
 const DeletePostComment = ({ type, onDeleteClick }: Props) => {
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
+  const handleOpen = () => {
     setOpen(true);
   };
+
   const handleClose = () => {
     setOpen(false);
   };
 
+  const handleDeleteClick = () => {
+    onDeleteClick?.();
+    handleClose();
+  };
+
   return (
     <React.Fragment>
-      <Button variant="text" onClick={handleClickOpen}>
+      <Button variant="text" onClick={handleOpen}>
         Delete
       </Button>
       <BootstrapDialog
@@ -47,11 +52,10 @@ const DeletePostComment = ({ type, onDeleteClick }: Props) => {
         open={open}
       >
         <DialogTitle
-          sx={{ m: 0, p: 2, fontSize: "25px", fontWeight: "bold" }}
+          sx={{ m: 0, p: 2, fontSize: "25px" }}
           id="customized-dialog-title"
-          //   color={"white"}
         >
-          Delete post?
+          Delete {type}?
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -70,22 +74,13 @@ const DeletePostComment = ({ type, onDeleteClick }: Props) => {
             Are you sure you want to delete this {type}?
           </Typography>
         </DialogContent>
-        <DialogActions sx={{ justifyContent: "center" }}>
-          <Box>
-            <Button
-              sx={{
-                background: "red",
-                borderRadius: "33px",
-              }}
-              variant="contained"
-              onClick={onDeleteClick}
-            >
-              Delete
-            </Button>
-            <Button sx={{ borderRadius: "33px" }} variant="contained">
-              Cancel
-            </Button>
-          </Box>
+        <DialogActions>
+          <Button variant="outlined" color="inherit" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="contained" color="error" onClick={handleDeleteClick}>
+            Delete
+          </Button>
         </DialogActions>
       </BootstrapDialog>
     </React.Fragment>

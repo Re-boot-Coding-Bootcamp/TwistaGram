@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 import { DeletePostComment } from "./DeletePostComment";
 
 const meta = {
-  title: "Authentication/DeletePostComment",
+  title: "Components/DeletePostComment",
   component: DeletePostComment,
   parameters: {
     layout: "centered",
