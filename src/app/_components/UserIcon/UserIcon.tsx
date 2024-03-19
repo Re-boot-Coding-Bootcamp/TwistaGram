@@ -105,7 +105,7 @@ function UserIcon({
               // Note: The following zIndex style is specifically for documentation purposes and may not be necessary in your application.
               open={open}
               anchorEl={anchorEl}
-              placement={isDesktopLargeScreen ? "top" : "top-start"}
+              placement={isDesktopLargeScreen ? "top" : "right"}
               transition
             >
               {({ TransitionProps }) => (
