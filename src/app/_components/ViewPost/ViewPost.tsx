@@ -223,9 +223,13 @@ const ViewPost: React.FC<ViewPostProps> = ({
                     sx={{
                       position: "relative",
                       width: "100%",
-                      maxHeight: "70%",
+                      maxHeight: { xs: 500, sm: 600, md: 700 },
                       overflow: "hidden",
                       cursor: "pointer",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: 5,
                     }}
                   >
                     <Image
@@ -239,8 +243,6 @@ const ViewPost: React.FC<ViewPostProps> = ({
                       width={100}
                       height={100}
                       objectFit="contain"
-                      objectPosition="center"
-                      style={{ borderRadius: 15 }}
                     />
                   </Box>
                 )}
