@@ -34,16 +34,11 @@ function UserIcon({
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setOpen(true);
-    toggleDrawer(true);
     setAnchorEl(event.currentTarget);
   };
 
   const handleLogOut = () => {
     onLogOut();
-  };
-
-  const toggleDrawer = (newOpen: boolean) => () => {
-    setOpen(newOpen);
   };
 
   const desktopStyling: SxProps = {
