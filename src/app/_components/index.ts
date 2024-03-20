@@ -18,6 +18,5 @@ export { ImageContainer } from "./ImageContainer";
 export { MoreActionsMenu } from "./MoreActionsMenu";
 export { DeletePostComment } from "./DeletePostComment";
 export { UserIcon } from "./UserIcon";
-export { ViewPost} from "./ViewPost"
-export { ForgotPasswordConfirm } from "./ForgotPasswordConfirm";
+export { ViewPost } from "./ViewPost";
 export { CommentIcon } from "./CommentIcon";

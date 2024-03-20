@@ -18,24 +18,8 @@ const CreateUpdateProfileForm = ({
   const [bio, setBio] = useState("");
 
   return (
-    <Box>
-      <Box display="flex" justifyContent="space-between" marginBottom={3}>
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={onCancel}
-          text="Cancel"
-          style={{ width: 70, backgroundColor: "white" }}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={onSave}
-          text="Done"
-          style={{ width: 70, color: "white" }}
-        />
-      </Box>
-      <Box display={"flex"} flexDirection={"column"} marginBottom={2} gap={1}>
+    <Box id="create-update-profile-form-container">
+      <Box display={"flex"} flexDirection={"column"} marginBottom={2} gap={2}>
         <TextField
           label="Name"
           fullWidth
@@ -74,6 +58,22 @@ const CreateUpdateProfileForm = ({
           value={bio}
           onChange={(e) => setBio(e.target.value)}
           variant="outlined"
+        />
+      </Box>
+      <Box display="flex" gap={2}>
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={onCancel}
+          text="Cancel"
+          style={{ backgroundColor: "white" }}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={onSave}
+          text="Done"
+          style={{ color: "white" }}
         />
       </Box>
     </Box>
