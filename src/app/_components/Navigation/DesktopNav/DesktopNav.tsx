@@ -16,6 +16,7 @@ import theme from "~/theme";
 import Image from "next/image";
 import Logo from "~/assets/images/logo_full.svg";
 import { useRouter } from "next/navigation";
+import { UserIcon } from "../..";
 
 const DESKTOP_NAV_WIDTH = "240px";
 
@@ -77,6 +78,15 @@ const DesktopNav = () => {
           </ListItem>
         ))}
       </List>
+      <Box sx={{ px: 1, pb: 1, mt: "auto" }}>
+        <UserIcon
+          name="tempName"
+          username="@tempUsername"
+          onLogOut={() => {
+            alert("Log out has been clicked");
+          }}
+        />
+      </Box>
     </Drawer>
   );
 };

@@ -5,7 +5,7 @@ import { ImageViewer } from "./ImageViewer";
 import { Box } from "@mui/material";
 
 const meta = {
-  title: "Common/ImageViewer",
+  title: "Component/ImageViewer",
   component: ImageViewer,
   parameters: {
     layout: "centered",

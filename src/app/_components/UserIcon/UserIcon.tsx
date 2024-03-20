@@ -2,7 +2,6 @@
 
 import {
   Box,
-  Button,
   Fade,
   Paper,
   Popper,
@@ -32,16 +31,14 @@ function UserIcon({
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [open, setOpen] = useState(false);
 
-  const isDesktopLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
-  const isTabletMediumScreen = useMediaQuery(
-    theme.breakpoints.between("sm", "lg")
-  );
-  const isMobileSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+  const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setOpen(true);
     toggleDrawer(true);
     setAnchorEl(event.currentTarget);
-    setOpen(true);
   };
 
   const handleLogOut = () => {
@@ -56,7 +53,7 @@ function UserIcon({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-evenly",
-    p: 1.5,
+    p: 1,
     borderRadius: 10,
     "&:hover": {
       bgcolor: theme.palette.grey[300],
@@ -73,7 +70,7 @@ function UserIcon({
       >
         <Box
           sx={
-            isDesktopLargeScreen
+            isDesktop
               ? desktopStyling
               : {
                   display: "flex",
@@ -85,10 +82,10 @@ function UserIcon({
           onClick={handleClick}
         >
           <Avatar
-            size={isMobileSmallScreen ? "small" : "medium"}
-            sx={{ mr: 1 }}
+            size={isDesktop ? "medium" : "small"}
+            sx={isDesktop ? { mr: 1 } : undefined}
           />
-          {isDesktopLargeScreen && (
+          {isDesktop && (
             <>
               <Box id="name-username" width="65%">
                 <Typography noWrap>{name}</Typography>
@@ -103,19 +100,18 @@ function UserIcon({
               <MoreHorizIcon fontSize="small" />
             </>
           )}
-          {(isDesktopLargeScreen || isTabletMediumScreen) && (
+          {(isDesktop || isTablet) && (
             <Popper
-              // Note: The following zIndex style is specifically for documentation purposes and may not be necessary in your application.
               open={open}
               anchorEl={anchorEl}
-              placement={isDesktopLargeScreen ? "top" : "right"}
+              placement={isDesktop ? "top" : "top-start"}
               transition
+              sx={{ zIndex: "1200" }}
             >
               {({ TransitionProps }) => (
                 <Fade {...TransitionProps} timeout={350}>
                   <Paper>
-                    <Button
-                      variant="text"
+                    <Typography
                       sx={{
                         p: 2,
                         cursor: "pointer",
@@ -125,7 +121,7 @@ function UserIcon({
                       onClick={handleLogOut}
                     >
                       {`Log Out ${username}`}
-                    </Button>
+                    </Typography>
                   </Paper>
                 </Fade>
               )}
@@ -134,7 +130,7 @@ function UserIcon({
         </Box>
       </ClickAwayListener>
       {/* placed the drawer outsize of the click away listener because it was causing issues with how drawer was closing */}
-      {isMobileSmallScreen && (
+      {isMobile && (
         <Drawer
           open={open}
           onClose={toggleDrawer(false)}
@@ -156,13 +152,12 @@ function UserIcon({
             </Typography>
           </Box>
           <Divider />
-          <Button
-            variant="text"
+          <Typography
             sx={{ cursor: "pointer", px: 1, mt: 1, fontWeight: "bold" }}
             onClick={handleLogOut}
           >
             Log Out
-          </Button>
+          </Typography>
         </Drawer>
       )}
     </>

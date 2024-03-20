@@ -16,6 +16,7 @@ import theme from "~/theme";
 import Image from "next/image";
 import Logo from "~/assets/images/logo_small.svg";
 import { useRouter } from "next/navigation";
+import { UserIcon } from "../..";
 
 const TABLET_NAV_WIDTH = "180px";
 
@@ -81,6 +82,15 @@ const TabletNav = () => {
           </Tooltip>
         ))}
       </List>
+      <Box sx={{ px: 1, pb: 2, mt: "auto" }}>
+        <UserIcon
+          name="tempName"
+          username="@tempUsername"
+          onLogOut={() => {
+            alert("Log out has been clicked");
+          }}
+        />
+      </Box>
     </Drawer>
   );
 };
