@@ -1,0 +1,1 @@
+export { DeletePostComment } from "./DeletePostComment";
