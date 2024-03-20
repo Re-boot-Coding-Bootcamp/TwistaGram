@@ -10,6 +10,7 @@ const meta: Meta<MoreActionsMenuProps> = {
   parameters: {
     layout: "centered",
   },
+  tags: ["autodocs"],
   decorators: [
     (Story) => (
       <Box width={"500px"} bgcolor={"background.paper"} p={2}>
