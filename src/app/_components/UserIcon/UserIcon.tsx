@@ -1,7 +1,8 @@
-"use client"
+"use client";
 
 import {
   Box,
+  Button,
   Fade,
   Paper,
   Popper,
@@ -113,13 +114,18 @@ function UserIcon({
               {({ TransitionProps }) => (
                 <Fade {...TransitionProps} timeout={350}>
                   <Paper>
-                    <Typography
-                      sx={{ p: 2, cursor: "pointer", width: "150" }}
+                    <Button
+                      variant="text"
+                      sx={{
+                        p: 2,
+                        cursor: "pointer",
+                        width: "150",
+                        fontWeight: "bold",
+                      }}
                       onClick={handleLogOut}
-                      fontWeight="bold"
                     >
                       {`Log Out ${username}`}
-                    </Typography>
+                    </Button>
                   </Paper>
                 </Fade>
               )}
@@ -150,14 +156,13 @@ function UserIcon({
             </Typography>
           </Box>
           <Divider />
-          <Typography
-            px={1}
-            sx={{ cursor: "pointer", px: 1, mt: 1 }}
+          <Button
+            variant="text"
+            sx={{ cursor: "pointer", px: 1, mt: 1, fontWeight: "bold" }}
             onClick={handleLogOut}
-            fontWeight="bold"
           >
             Log Out
-          </Typography>
+          </Button>
         </Drawer>
       )}
     </>
