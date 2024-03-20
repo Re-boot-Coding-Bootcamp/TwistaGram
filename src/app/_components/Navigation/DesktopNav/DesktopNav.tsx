@@ -78,7 +78,7 @@ const DesktopNav = () => {
           </ListItem>
         ))}
       </List>
-      <Box sx={{ px: 1, pb: 1, mt: "auto" }}>
+      <Box sx={{ mx: 1, mb: 1, mt: "auto" }}>
         <UserIcon
           name="tempName"
           username="@tempUsername"

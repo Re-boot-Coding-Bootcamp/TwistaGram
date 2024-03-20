@@ -9,8 +9,6 @@ import {
   Typography,
   useMediaQuery,
   ClickAwayListener,
-  Drawer,
-  Divider,
 } from "@mui/material";
 import React, { useState } from "react";
 import { Avatar } from "..";
@@ -33,7 +31,6 @@ function UserIcon({
 
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setOpen(true);
@@ -100,66 +97,33 @@ function UserIcon({
               <MoreHorizIcon fontSize="small" />
             </>
           )}
-          {(isDesktop || isTablet) && (
-            <Popper
-              open={open}
-              anchorEl={anchorEl}
-              placement={isDesktop ? "top" : "top-start"}
-              transition
-              sx={{ zIndex: "1200" }}
-            >
-              {({ TransitionProps }) => (
-                <Fade {...TransitionProps} timeout={350}>
-                  <Paper>
-                    <Typography
-                      sx={{
-                        p: 2,
-                        cursor: "pointer",
-                        width: "150",
-                        fontWeight: "bold",
-                      }}
-                      onClick={handleLogOut}
-                    >
-                      {`Log Out ${username}`}
-                    </Typography>
-                  </Paper>
-                </Fade>
-              )}
-            </Popper>
-          )}
+          <Popper
+            open={open}
+            anchorEl={anchorEl}
+            placement={isTablet ? "right" : undefined}
+            transition
+            sx={{ zIndex: "1200" }}
+          >
+            {({ TransitionProps }) => (
+              <Fade {...TransitionProps} timeout={350}>
+                <Paper>
+                  <Typography
+                    sx={{
+                      p: 2,
+                      cursor: "pointer",
+                      width: "150",
+                      fontWeight: "bold",
+                    }}
+                    onClick={handleLogOut}
+                  >
+                    {`Log Out ${username}`}
+                  </Typography>
+                </Paper>
+              </Fade>
+            )}
+          </Popper>
         </Box>
       </ClickAwayListener>
-      {/* placed the drawer outsize of the click away listener because it was causing issues with how drawer was closing */}
-      {isMobile && (
-        <Drawer
-          open={open}
-          onClose={toggleDrawer(false)}
-          sx={{ width: "200px", maxWidth: "200px" }}
-        >
-          <Box
-            id="user-icon-header"
-            display="flex"
-            flexDirection="column"
-            px={1}
-            my={1}
-          >
-            <Avatar size="medium" />
-            <Typography noWrap fontWeight="bold">
-              {name}
-            </Typography>
-            <Typography noWrap variant="body2" color={theme.palette.grey[500]}>
-              {username}
-            </Typography>
-          </Box>
-          <Divider />
-          <Typography
-            sx={{ cursor: "pointer", px: 1, mt: 1, fontWeight: "bold" }}
-            onClick={handleLogOut}
-          >
-            Log Out
-          </Typography>
-        </Drawer>
-      )}
     </>
   );
 }
