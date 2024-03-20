@@ -10,22 +10,19 @@ import {
   useMediaQuery,
   ClickAwayListener,
 } from "@mui/material";
-import React, { useState } from "react";
-import { Avatar } from "..";
+import React, { useMemo, useState } from "react";
+import { Avatar, Button } from "..";
 import theme from "~/theme";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import LogoutIcon from "@mui/icons-material/Logout";
+import Link from "next/link";
 
 interface UserSectionIconProps {
   name: string;
   username: string;
-  onLogOut: () => void;
 }
 
-function UserIcon({
-  name,
-  username,
-  onLogOut,
-}: UserSectionIconProps): JSX.Element {
+function UserIcon({ name, username }: UserSectionIconProps): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -35,10 +32,6 @@ function UserIcon({
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setOpen(true);
     setAnchorEl(event.currentTarget);
-  };
-
-  const handleLogOut = () => {
-    onLogOut();
   };
 
   const desktopStyling: SxProps = {
@@ -52,6 +45,17 @@ function UserIcon({
     },
     cursor: "pointer",
   };
+
+  const popperPlacement = useMemo(() => {
+    switch (true) {
+      case isDesktop:
+        return "top";
+      case isTablet:
+        return "right";
+      default:
+        return "bottom";
+    }
+  }, [isDesktop, isTablet]);
 
   return (
     <>
@@ -95,24 +99,35 @@ function UserIcon({
           <Popper
             open={open}
             anchorEl={anchorEl}
-            placement={isTablet ? "right" : undefined}
+            placement={popperPlacement}
             transition
             sx={{ zIndex: "1200" }}
+            modifiers={[
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 10],
+                },
+              },
+            ]}
           >
             {({ TransitionProps }) => (
               <Fade {...TransitionProps} timeout={350}>
-                <Paper>
-                  <Typography
-                    sx={{
-                      p: 2,
-                      cursor: "pointer",
-                      width: "150",
-                      fontWeight: "bold",
-                    }}
-                    onClick={handleLogOut}
-                  >
-                    {`Log Out ${username}`}
-                  </Typography>
+                <Paper
+                  sx={{
+                    p: 1,
+                    px: 0,
+                    minWidth: "130px",
+                  }}
+                >
+                  <Button
+                    component={Link}
+                    href="/api/auth/signout"
+                    startIcon={<LogoutIcon />}
+                    variant="text"
+                    text="Log Out"
+                    color="inherit"
+                  />
                 </Paper>
               </Fade>
             )}

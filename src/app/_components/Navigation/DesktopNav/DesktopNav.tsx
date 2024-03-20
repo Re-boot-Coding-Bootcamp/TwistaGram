@@ -78,14 +78,8 @@ const DesktopNav = () => {
           </ListItem>
         ))}
       </List>
-      <Box sx={{ mx: 1, mb: 1, mt: "auto" }}>
-        <UserIcon
-          name="tempName"
-          username="@tempUsername"
-          onLogOut={() => {
-            alert("Log out has been clicked");
-          }}
-        />
+      <Box sx={{ m: 2, mt: "auto" }}>
+        <UserIcon name="tempName" username="@tempUsername" />
       </Box>
     </Drawer>
   );

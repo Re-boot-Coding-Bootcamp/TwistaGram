@@ -4,7 +4,6 @@ import {
   BottomNavigation,
   BottomNavigationAction,
   Box,
-  Divider,
   Paper,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -20,16 +19,9 @@ const MobileNav = () => {
     <>
       <Box display="flex">
         <Box sx={{ p: 1 }}>
-          <UserIcon
-            name="tempName"
-            username="@tempUsername"
-            onLogOut={() => {
-              alert("Log out has been clicked");
-            }}
-          />
+          <UserIcon name="tempName" username="@tempUsername" />
         </Box>
       </Box>
-      <Divider />
       <Paper
         sx={{
           position: "fixed",

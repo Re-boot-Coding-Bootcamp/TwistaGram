@@ -27,6 +27,5 @@ export const Default: Story = {
   args: {
     name: "Jack",
     username: "@TemporaryUsernameJack",
-    onLogOut: () => alert("Log out has been clicked"),
   },
 };
