@@ -26,7 +26,6 @@ interface ViewPostProps {
   imageUrl: string;
   onMore: () => void;
   onProfile: () => void;
-  onImage: () => void;
   onChooseFile: () => void;
   onDelete: () => void;
 }
@@ -39,7 +38,6 @@ const ViewPost: React.FC<ViewPostProps> = ({
   textContent,
   imageUrl,
   onProfile,
-  onImage,
   onChooseFile,
   onDelete,
 }) => {
@@ -237,30 +235,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
                   >
                     {textContent}
                   </Typography>
-                  {imageUrl && (
-                    <Box
-                      sx={{
-                        position: "relative",
-                        width: "100%",
-                        maxHeight: { xs: 500, sm: 600, md: 700 },
-                        overflow: "hidden",
-                        cursor: "pointer",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        borderRadius: 5,
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onImage();
-                      }}
-                    >
-                      <ImageContainer
-                        imageUrl={imageUrl}
-                        onCloseImage={onImage}
-                      />
-                    </Box>
-                  )}
+                  {imageUrl && <ImageContainer imageUrl={imageUrl} />}
                 </>
               )}
             </Box>
