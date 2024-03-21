@@ -7,7 +7,6 @@ import {
   Typography,
   useTheme,
   IconButton,
-  Modal,
   TextField,
   Button,
 } from "@mui/material";
@@ -29,6 +28,7 @@ interface ViewPostProps {
   onProfile: () => void;
   onImageModal: () => void;
   onChooseFile: () => void;
+  onDelete: () => void;
 }
 
 const ViewPost: React.FC<ViewPostProps> = ({
@@ -42,17 +42,14 @@ const ViewPost: React.FC<ViewPostProps> = ({
   onProfile,
   onImageModal,
   onChooseFile,
+  onDelete,
 }) => {
   const theme = useTheme();
 
+  const toggleEditMode = () => setEditMode(!editMode);
+
   const [editMode, setEditMode] = useState(false);
   const [editedText, setEditedText] = useState(textContent);
-  const [openDeleteModal, setOpenDeleteModal] = useState(false);
-
-  const handleOpenDeleteModal = () => setOpenDeleteModal(true);
-  const handleCloseDeleteModal = () => setOpenDeleteModal(false);
-
-  const toggleEditMode = () => setEditMode(!editMode);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedText(e.target.value);
@@ -62,22 +59,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
     setEditMode(false);
   };
 
-  const handleDelete = () => {
-    handleCloseDeleteModal();
-  };
-
   const isCurrentUserPost = username === currentUserId;
-
-  const deleteModalStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    bgcolor: "background.paper",
-    boxShadow: 24,
-    p: 4,
-    borderRadius: 2,
-  };
 
   return (
     <Box
@@ -172,82 +154,85 @@ const ViewPost: React.FC<ViewPostProps> = ({
               )}
             </Box>
 
-            {editMode ? (
-              <>
-                <TextField
-                  fullWidth
-                  multiline
-                  variant="outlined"
-                  value={editedText}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    e.stopPropagation();
-                    handleTextChange(e);
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                  margin="normal"
-                />
-                <input
-                  type="file"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onChooseFile();
-                  }}
-                />
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    saveChanges();
-                  }}
-                  color="primary"
-                >
-                  Save Changes
-                </Button>
-              </>
-            ) : (
-              <>
-                <Typography
-                  id="text-content"
-                  sx={{
-                    mt: 1,
-                    mb: 2,
-                    color: theme.palette.text.primary,
-                    maxWidth: "100%",
-                  }}
-                >
-                  {textContent}
-                </Typography>
-                {imageUrl && (
-                  <Box
+            <Box onClick={(e) => e.stopPropagation()}>
+              {editMode ? (
+                <>
+                  <TextField
+                    fullWidth
+                    multiline
+                    variant="outlined"
+                    value={editedText}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      e.stopPropagation();
+                      handleTextChange(e);
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                    margin="normal"
+                  />
+                  <input
+                    type="file"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onChooseFile();
+                    }}
+                  />
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      saveChanges();
+                    }}
+                    color="primary"
+                  >
+                    Save Changes
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Typography
+                    id="text-content"
                     sx={{
-                      position: "relative",
-                      width: "100%",
-                      maxHeight: { xs: 500, sm: 600, md: 700 },
-                      overflow: "hidden",
-                      cursor: "pointer",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: 5,
+                      mt: 1,
+                      mb: 2,
+                      color: theme.palette.text.primary,
+                      maxWidth: "100%",
+                      cursor: "default",
                     }}
                   >
-                    <Image
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onImageModal();
+                    {textContent}
+                  </Typography>
+                  {imageUrl && (
+                    <Box
+                      sx={{
+                        position: "relative",
+                        width: "100%",
+                        maxHeight: { xs: 500, sm: 600, md: 700 },
+                        overflow: "hidden",
+                        cursor: "pointer",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: 5,
                       }}
-                      src={imageUrl}
-                      alt="Uploaded image"
-                      layout="responsive"
-                      width={100}
-                      height={100}
-                      objectFit="contain"
-                    />
-                  </Box>
-                )}
-              </>
-            )}
+                    >
+                      <Image
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onImageModal();
+                        }}
+                        src={imageUrl}
+                        alt="Uploaded image"
+                        layout="responsive"
+                        width={100}
+                        height={100}
+                        objectFit="contain"
+                      />
+                    </Box>
+                  )}
+                </>
+              )}
+            </Box>
 
             {isCurrentUserPost && !editMode && (
               <Box
@@ -274,7 +259,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
                   <IconButton
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleOpenDeleteModal();
+                      onDelete();
                     }}
                     disableRipple
                     sx={{ color: theme.palette.error.main }}
@@ -287,34 +272,6 @@ const ViewPost: React.FC<ViewPostProps> = ({
           </Box>
         </Box>
       </Card>
-
-      <Modal
-        open={openDeleteModal}
-        onClose={handleCloseDeleteModal}
-        aria-labelledby="delete-confirmation-modal"
-        aria-describedby="delete-confirmation-description"
-      >
-        <Box sx={deleteModalStyle}>
-          <Typography
-            id="delete-confirmation-modal"
-            variant="h6"
-            component="h2"
-          >
-            Are you sure?
-          </Typography>
-          <Typography id="delete-confirmation-description" sx={{ mt: 2 }}>
-            This process cannot be undone.
-          </Typography>
-          <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
-            <Button sx={{ mr: 1 }} onClick={handleCloseDeleteModal}>
-              Cancel
-            </Button>
-            <Button variant="contained" color="error" onClick={handleDelete}>
-              Delete
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
     </Box>
   );
 };
