@@ -15,16 +15,75 @@ datasource db {
 }
 
 model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
+    id       String    @id @default(cuid())
+    content  String?
+    image    String?
+    comments Comment[]
+    likes    Like[]
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     createdBy   User   @relation(fields: [createdById], references: [id])
     createdById String
 
-    @@index([name])
+    @@index([content])
     @@index([createdById])
+}
+
+model Comment {
+    id        String   @id @default(cuid())
+    comment   String
+    createdAt DateTime @default(now())
+
+    postId String
+    post   Post   @relation(fields: [postId], references: [id])
+    userId String
+    user   User   @relation(fields: [userId], references: [id])
+
+    @@index([postId])
+    @@index([userId])
+}
+
+model Like {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+
+    postId String
+    post   Post   @relation(fields: [postId], references: [id])
+    userId String
+    user   User   @relation(fields: [userId], references: [id])
+
+    @@index([userId])
+    @@index([postId])
+}
+
+model Message {
+    id        String   @id @default(uuid())
+    message   String
+    read      Boolean  @default(false)
+    createdAt DateTime @default(now())
+
+    senderId   String
+    sender     User   @relation(name: "senderId", fields: [senderId], references: [id])
+    receiverId String
+    receiver   User   @relation(name: "receiverId", fields: [receiverId], references: [id])
+
+    @@index([receiverId])
+    @@index([senderId])
+}
+
+model Notification {
+    id          String   @id @default(uuid())
+    type        String // Consider using an ENUM type if your database supports it
+    referenceId String // Generic reference ID, could be postId, userId, etc.
+    read        Boolean  @default(false)
+    createdAt   DateTime @default(now())
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id])
+
+    @@index([userId])
 }
 
 // Necessary for Next auth
@@ -58,14 +117,27 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    posts         Post[]
+    id               String         @id @default(cuid())
+    name             String?
+    username         String?        @unique
+    email            String?        @unique
+    emailVerified    DateTime?
+    image            String?
+    accounts         Account[]
+    sessions         Session[]
+    posts            Post[]
+    bio              String?
+    comments         Comment[]
+    likes            Like[]
+    sentMessages     Message[]      @relation("senderId")
+    receivedMessages Message[]      @relation("receiverId")
+    notifications    Notification[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([id])
+    @@index([username])
 }
 
 model VerificationToken {
