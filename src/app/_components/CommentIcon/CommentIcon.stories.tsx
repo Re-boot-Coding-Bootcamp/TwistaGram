@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { CommentIcon } from "./CommentIcon";
 
 const meta = {
-  title: "Common/CommentIcon",
+  title: "Components/CommentIcon",
   component: CommentIcon,
   parameters: {
     layout: "centered",
@@ -12,4 +12,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    number: 100
+  },
+};
