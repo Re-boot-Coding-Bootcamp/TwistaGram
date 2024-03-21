@@ -17,7 +17,11 @@ export { EmojiPicker } from "./EmojiPicker";
 export { ImageContainer } from "./ImageContainer";
 export { MoreActionsMenu } from "./MoreActionsMenu";
 export { DeletePostComment } from "./DeletePostComment";
+<<<<<<< HEAD
 export { UserIcon } from "./UserIcon";
 export { ViewPost } from "./ViewPost";
 export { CommentIcon } from "./CommentIcon";
 export { ChangeProfilePhoto } from "./ChangeProfilePhoto";
+=======
+export { NewMessageModal } from "./NewMessageModal"
+>>>>>>> 7bc5f94 (created new-message-modal)
