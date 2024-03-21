@@ -10,9 +10,11 @@ export { CreateUpdateProfileForm } from "./CreateUpdateProfileForm";
 export { ForgotPasswordForm } from "./ForgotPasswordForm";
 export { SignInPage } from "./SignInPage";
 export { ProfilePageHeader } from "./ProfilePageHeader";
+export { ImageViewer } from "./ImageViewer";
 export { CreatePost } from "./CreatePost";
 export { VisuallyHiddenInput } from "./VisuallyHiddenInput";
 export { EmojiPicker } from "./EmojiPicker";
 export { ImageContainer } from "./ImageContainer";
+export { DeletePostComment } from "./DeletePostComment";
 export { ViewPost} from "./ViewPost"
 export { ForgotPasswordConfirm } from "./ForgotPasswordConfirm";

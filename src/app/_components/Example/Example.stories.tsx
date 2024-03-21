@@ -4,7 +4,7 @@ import React from "react";
 import { Example } from "./Example";
 
 const meta = {
-  title: "Components/Example",
+  title: "Components/Example/Example1",
   component: Example,
   parameters: {
     layout: "centered",
