@@ -11,7 +11,7 @@ import {
   Button,
   Tooltip,
 } from "@mui/material";
-import Image from "next/image";
+import { ImageContainer } from "../ImageContainer";
 import { Avatar } from "../Avatar";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import EditIcon from "@mui/icons-material/Edit";
@@ -255,13 +255,9 @@ const ViewPost: React.FC<ViewPostProps> = ({
                         onImage();
                       }}
                     >
-                      <Image
-                        src={imageUrl}
-                        alt="Uploaded image"
-                        layout="responsive"
-                        width={100}
-                        height={100}
-                        objectFit="contain"
+                      <ImageContainer
+                        imageUrl={imageUrl}
+                        onCloseImage={onImage}
                       />
                     </Box>
                   )}
