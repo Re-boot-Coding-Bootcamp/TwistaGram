@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from "react";
 import {
   Box,
@@ -9,13 +7,13 @@ import {
   IconButton,
   TextField,
   Button,
+  Tooltip,
 } from "@mui/material";
 import Image from "next/image";
 import { Avatar } from "../Avatar";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Tooltip from "@mui/material/Tooltip";
 
 interface ViewPostProps {
   username: string;
@@ -38,18 +36,18 @@ const ViewPost: React.FC<ViewPostProps> = ({
   postedTime,
   textContent,
   imageUrl,
-  onMore,
+
   onProfile,
   onImageModal,
   onChooseFile,
   onDelete,
 }) => {
   const theme = useTheme();
-
-  const toggleEditMode = () => setEditMode(!editMode);
-
   const [editMode, setEditMode] = useState(false);
   const [editedText, setEditedText] = useState(textContent);
+  const [showOptions, setShowOptions] = useState(false);
+
+  const toggleEditMode = () => setEditMode(!editMode);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedText(e.target.value);
@@ -60,6 +58,11 @@ const ViewPost: React.FC<ViewPostProps> = ({
   };
 
   const isCurrentUserPost = username === currentUserId;
+
+  const toggleMoreOptions = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setShowOptions((prev) => !prev);
+  };
 
   return (
     <Box
@@ -139,21 +142,43 @@ const ViewPost: React.FC<ViewPostProps> = ({
               </Typography>
               <Box sx={{ flexGrow: 1 }} />
               {isCurrentUserPost && (
-                <Tooltip title="More" placement="top">
-                  <IconButton
-                    id="more-dots-button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onMore();
-                    }}
-                    sx={{ p: 0 }}
-                  >
-                    <MoreHorizIcon />
-                  </IconButton>
-                </Tooltip>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  {showOptions && (
+                    <Box sx={{ display: "flex", mr: 2, gap: 2 }}>
+                      <Tooltip title="Edit" placement="top">
+                        <IconButton
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleEditMode();
+                          }}
+                          disableRipple
+                          sx={{ p: 0, color: theme.palette.primary.main }}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Delete" placement="top">
+                        <IconButton
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onDelete();
+                          }}
+                          disableRipple
+                          sx={{ p: 0, color: theme.palette.error.main }}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                  )}
+                  <Tooltip title="More" placement="top">
+                    <IconButton onClick={toggleMoreOptions} sx={{ p: 0 }}>
+                      <MoreHorizIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
               )}
             </Box>
-
             <Box onClick={(e) => e.stopPropagation()}>
               {editMode ? (
                 <>
@@ -162,13 +187,8 @@ const ViewPost: React.FC<ViewPostProps> = ({
                     multiline
                     variant="outlined"
                     value={editedText}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      e.stopPropagation();
-                      handleTextChange(e);
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
+                    onChange={handleTextChange}
+                    onClick={(e) => e.stopPropagation()}
                     margin="normal"
                   />
                   <input
@@ -215,12 +235,12 @@ const ViewPost: React.FC<ViewPostProps> = ({
                         alignItems: "center",
                         borderRadius: 5,
                       }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onImageModal();
+                      }}
                     >
                       <Image
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onImageModal();
-                        }}
                         src={imageUrl}
                         alt="Uploaded image"
                         layout="responsive"
@@ -233,42 +253,6 @@ const ViewPost: React.FC<ViewPostProps> = ({
                 </>
               )}
             </Box>
-
-            {isCurrentUserPost && !editMode && (
-              <Box
-                id="edit-delete-buttons"
-                sx={{
-                  display: "flex",
-                  justifyContent: "start",
-                  gap: 1,
-                }}
-              >
-                <Tooltip title="Edit">
-                  <IconButton
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleEditMode();
-                    }}
-                    disableRipple
-                    sx={{ color: theme.palette.primary.main }}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Delete">
-                  <IconButton
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDelete();
-                    }}
-                    disableRipple
-                    sx={{ color: theme.palette.error.main }}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </Tooltip>
-              </Box>
-            )}
           </Box>
         </Box>
       </Card>
