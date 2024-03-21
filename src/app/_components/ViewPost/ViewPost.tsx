@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import {
   Box,
@@ -24,7 +26,7 @@ interface ViewPostProps {
   imageUrl: string;
   onMore: () => void;
   onProfile: () => void;
-  onImageModal: () => void;
+  onImage: () => void;
   onChooseFile: () => void;
   onDelete: () => void;
 }
@@ -36,9 +38,8 @@ const ViewPost: React.FC<ViewPostProps> = ({
   postedTime,
   textContent,
   imageUrl,
-
   onProfile,
-  onImageModal,
+  onImage,
   onChooseFile,
   onDelete,
 }) => {
@@ -87,11 +88,14 @@ const ViewPost: React.FC<ViewPostProps> = ({
       >
         <Box
           id="profile-container"
-          sx={{ display: "flex", mb: 2, cursor: "pointer", width: "100%" }}
-          onClick={onProfile}
+          sx={{ display: "flex", mb: 2, width: "100%" }}
         >
-          <Box id="avatar" marginRight={2}>
-            <Avatar size="large" />
+          <Box id="avatar" mr={2}>
+            <Avatar
+              size="large"
+              onClick={onProfile}
+              style={{ cursor: "pointer" }}
+            />
           </Box>
           <Box
             sx={{
@@ -108,38 +112,49 @@ const ViewPost: React.FC<ViewPostProps> = ({
                 maxWidth: "100%",
               }}
             >
-              <Typography
-                id="name"
-                sx={{
-                  fontSize: 20,
-                  fontWeight: "500",
-                  color: theme.palette.text.primary,
-                  mr: 0.5,
-                }}
+              <Box onClick={onProfile}>
+                <Typography
+                  id="name"
+                  sx={{
+                    fontSize: 20,
+                    fontWeight: "500",
+                    color: theme.palette.text.primary,
+                    mr: 0.5,
+                    cursor: "pointer",
+                  }}
+                >
+                  {name}
+                </Typography>
+              </Box>
+              <Box onClick={onProfile}>
+                <Typography
+                  id="username"
+                  sx={{
+                    mt: 0.3,
+                    mr: 0.5,
+                    fontSize: 14,
+                    color: theme.palette.text.secondary,
+                    cursor: "pointer",
+                  }}
+                >
+                  @{username}
+                </Typography>
+              </Box>
+              <Box
+                onClick={(e) => e.stopPropagation()}
+                sx={{ cursor: "default" }}
               >
-                {name}
-              </Typography>
-              <Typography
-                id="username"
-                sx={{
-                  mt: 0.3,
-                  mr: 0.5,
-                  fontSize: 14,
-                  color: theme.palette.text.secondary,
-                }}
-              >
-                @{username}
-              </Typography>
-              <Typography
-                id="posted-time"
-                sx={{
-                  mt: 0.3,
-                  fontSize: 14,
-                  color: theme.palette.text.disabled,
-                }}
-              >
-                ·{postedTime}
-              </Typography>
+                <Typography
+                  id="posted-time"
+                  sx={{
+                    mt: 0.3,
+                    fontSize: 14,
+                    color: theme.palette.text.disabled,
+                  }}
+                >
+                  ·{postedTime}
+                </Typography>
+              </Box>
               <Box sx={{ flexGrow: 1 }} />
               {isCurrentUserPost && (
                 <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -157,7 +172,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
                           <EditIcon />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Delete" placement="top">
+                      <Tooltip title="Delete">
                         <IconButton
                           onClick={(e) => {
                             e.stopPropagation();
@@ -237,7 +252,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
                       }}
                       onClick={(e) => {
                         e.stopPropagation();
-                        onImageModal();
+                        onImage();
                       }}
                     >
                       <Image
