@@ -7,7 +7,7 @@ import UploadProfilePhotoModal from "./UploadProfilePhotoModal";
 
 interface Props {
   onUpload: (file: File) => Promise<void>;
-  currentProfileUrl: string;
+  currentProfileUrl?: string;
 }
 
 const ChangeProfilePhoto = ({ onUpload, currentProfileUrl }: Props) => {

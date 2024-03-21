@@ -3,19 +3,31 @@
 import { useState } from "react";
 import { Box, TextField } from "@mui/material";
 import { Button } from "../Button";
+import type { PartialUser, UpdateUserInput } from "~/types";
 
 interface CreateUpdateProfileFormProps {
+  user: PartialUser;
   onCancel: () => void;
-  onSave: () => void;
+  onSave: (user: UpdateUserInput) => void;
 }
 
 const CreateUpdateProfileForm = ({
+  user,
   onCancel,
   onSave,
 }: CreateUpdateProfileFormProps): JSX.Element => {
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [bio, setBio] = useState("");
+  const [name, setName] = useState(user.name ?? "");
+  const [username, setUsername] = useState(user.username ?? "");
+  const [bio, setBio] = useState(user.bio ?? "");
+
+  const handleSave = () => {
+    const updatedUser: UpdateUserInput = {
+      name: name,
+      username: username,
+      bio: bio,
+    };
+    onSave(updatedUser);
+  };
 
   return (
     <Box id="create-update-profile-form-container">
@@ -33,19 +45,21 @@ const CreateUpdateProfileForm = ({
               whiteSpace: "nowrap",
             },
           }}
+          required
         />
         <TextField
           label="Username"
           fullWidth
           value={username}
-          onChange={(e) => setUsername(e.target.value.slice(0, 15))}
+          onChange={(e) => setUsername(e.target.value)}
           variant="outlined"
           inputProps={{ maxLength: 15 }}
+          required
         />
         <TextField
           label="Email"
           fullWidth
-          value="muzappar.erkin0122@gmail.com"
+          value={user.email}
           disabled
           variant="outlined"
           required
@@ -71,7 +85,7 @@ const CreateUpdateProfileForm = ({
         <Button
           variant="contained"
           color="primary"
-          onClick={onSave}
+          onClick={handleSave}
           text="Done"
           style={{ color: "white" }}
         />
