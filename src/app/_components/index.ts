@@ -7,7 +7,6 @@ export { HaveAnAccount } from "./HaveAnAccount";
 export { LoginForm } from "./LoginForm";
 export { Avatar } from "./Avatar";
 export { CreateUpdateProfileForm } from "./CreateUpdateProfileForm";
-export { ForgotPasswordConfirm } from "./ForgotPasswordConfirm";
 export { ForgotPasswordForm } from "./ForgotPasswordForm";
 export { SignInPage } from "./SignInPage";
 export { ProfilePageHeader } from "./ProfilePageHeader";
@@ -18,5 +17,7 @@ export { EmojiPicker } from "./EmojiPicker";
 export { ImageContainer } from "./ImageContainer";
 export { MoreActionsMenu } from "./MoreActionsMenu";
 export { DeletePostComment } from "./DeletePostComment";
-export { CommentIcon } from "./CommentIcon";
 export { UserIcon } from "./UserIcon";
+export { ViewPost} from "./ViewPost"
+export { ForgotPasswordConfirm } from "./ForgotPasswordConfirm";
+export { CommentIcon } from "./CommentIcon";
