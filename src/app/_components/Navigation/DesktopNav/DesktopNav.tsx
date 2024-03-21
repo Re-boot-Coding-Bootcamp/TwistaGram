@@ -16,6 +16,7 @@ import theme from "~/theme";
 import Image from "next/image";
 import Logo from "~/assets/images/logo_full.svg";
 import { useRouter } from "next/navigation";
+import { UserIcon } from "../..";
 
 const DESKTOP_NAV_WIDTH = "240px";
 
@@ -77,6 +78,9 @@ const DesktopNav = () => {
           </ListItem>
         ))}
       </List>
+      <Box sx={{ m: 2, mt: "auto" }}>
+        <UserIcon name="tempName" username="@tempUsername" />
+      </Box>
     </Drawer>
   );
 };

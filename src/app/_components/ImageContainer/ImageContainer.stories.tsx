@@ -4,7 +4,7 @@ import { ImageContainer } from "./ImageContainer";
 import { Box } from "@mui/material";
 
 const meta = {
-  title: "Common/ImageContainer",
+  title: "Components/ImageContainer",
   component: ImageContainer,
   parameters: {
     layout: "centered",

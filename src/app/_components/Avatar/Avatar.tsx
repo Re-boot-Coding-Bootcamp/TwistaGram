@@ -24,13 +24,13 @@ function Avatar({
 }: AvatarProps): JSX.Element {
   return (
     <MuiAvatar
+      {...muiAvatarProps}
       sx={{
         width: AvatarSizingMap[size],
         height: AvatarSizingMap[size],
         cursor: onProfileClick ? "pointer" : "unset",
       }}
       onClick={onProfileClick}
-      {...muiAvatarProps}
     />
   );
 }

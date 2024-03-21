@@ -16,8 +16,9 @@ import theme from "~/theme";
 import Image from "next/image";
 import Logo from "~/assets/images/logo_small.svg";
 import { useRouter } from "next/navigation";
+import { UserIcon } from "../..";
 
-const TABLET_NAV_WIDTH = "180px";
+const TABLET_NAV_WIDTH = "80px";
 
 const TabletNav = () => {
   const [selectedPage, setSelectedPage] = useState<Pages>(Pages.Home);
@@ -61,13 +62,13 @@ const TabletNav = () => {
                     selectedPage === text
                       ? alpha(theme.palette.common.black, 0.04)
                       : "transparent",
+                  px: 0,
                 }}
               >
                 <ListItemIcon
                   sx={{
                     color: "black",
                     minWidth: "unset",
-                    mr: 1.5,
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
@@ -81,6 +82,9 @@ const TabletNav = () => {
           </Tooltip>
         ))}
       </List>
+      <Box sx={{ px: 1, pb: 2, mt: "auto" }}>
+        <UserIcon name="tempName" username="@tempUsername" />
+      </Box>
     </Drawer>
   );
 };
