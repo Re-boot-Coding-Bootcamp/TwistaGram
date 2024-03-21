@@ -16,4 +16,5 @@ export { CreatePost } from "./CreatePost";
 export { VisuallyHiddenInput } from "./VisuallyHiddenInput";
 export { EmojiPicker } from "./EmojiPicker";
 export { ImageContainer } from "./ImageContainer";
+export {MoreActionsMenu} from "./MoreActionsMenu";
 export { DeletePostComment } from "./DeletePostComment";
