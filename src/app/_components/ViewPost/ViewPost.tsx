@@ -172,7 +172,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
                           <EditIcon />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Delete">
+                      <Tooltip title="Delete" placement="top">
                         <IconButton
                           onClick={(e) => {
                             e.stopPropagation();
