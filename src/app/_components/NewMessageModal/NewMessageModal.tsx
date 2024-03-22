@@ -1,7 +1,15 @@
 "use client";
 
-import { Box, Input, Typography } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Input,
+  InputAdornment,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import React, { useState, useEffect } from "react";
+import SearchIcon from "@mui/icons-material/Search";
 
 interface User {
   id: string;
@@ -14,6 +22,7 @@ interface NewMessageModalProps {
 }
 
 const NewMessageModal: React.FC<NewMessageModalProps> = ({ onSearch }) => {
+  const theme = useTheme();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -33,7 +42,6 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ onSearch }) => {
         setSearchInitiated(true);
       } catch (error) {
         console.error("Failed to search users:", error);
-        // Optionally, update the UI to indicate an error occurred
       } finally {
         setIsLoading(false);
       }
@@ -46,34 +54,51 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ onSearch }) => {
 
   return (
     <Box
-      className="modal"
-      style={{ width: "100%", maxWidth: 500, margin: "0 auto" }}
+      sx={{
+        display: "flex",
+      }}
     >
-      <Input
-        type="text"
-        placeholder="Search people"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        style={{ width: "100%", padding: "10px" }}
-      />
-      {isLoading && <Typography>Searching…</Typography>}
-      {!isLoading && users.length === 0 && searchInitiated && (
-        <Typography>No match found</Typography>
-      )}
-      <ul>
-        {users.map((user) => (
-          <li
-            key={user.id}
-            style={{
-              listStyle: "none",
-              padding: 10,
-              borderBottom: "1 solid #ccc",
-            }}
-          >
-            {user.name}
-          </li>
-        ))}
-      </ul>
+      <Box sx={{ width: "100%", maxWidth: 500 }}>
+        <Input
+          type="text"
+          placeholder="Search people"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{ width: "100%", paddingBottom: 10 }}
+          startAdornment={
+            <InputAdornment position="start">
+              <IconButton
+                sx={{ p: 0, mr: 1, color: theme.palette.primary.main }}
+              >
+                <SearchIcon />
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+        {isLoading && <Typography>Searching…</Typography>}
+        {!isLoading && users.length === 0 && searchInitiated && (
+          <Typography sx={{ mt: 2, fontWeight: "500" }}>
+            No result for &quot;{searchTerm}&quot;{" "}
+          </Typography>
+        )}
+        <ul>
+          {users.map((user) => (
+            <li
+              key={user.id}
+              style={{
+                listStyle: "none",
+                padding: 10,
+                borderBottom: "1 solid #ccc",
+              }}
+            >
+              <Box>{user.name} </Box>
+              <Box sx={{ color: theme.palette.primary.dark, opacity: "60%" }}>
+                @{user.username}
+              </Box>
+            </li>
+          ))}
+        </ul>
+      </Box>
     </Box>
   );
 };
