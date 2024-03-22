@@ -17,13 +17,21 @@ export const userRouter = createTRPCRouter({
       z.object({
         name: z.string(),
         username: z.string(),
-        bio: z.string(),
+        bio: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       return ctx.db.user.update({
         where: { id: ctx.session.user.id },
         data: input,
+      });
+    }),
+  updateUserProfilePicture: protectedProcedure
+    .input(z.object({ url: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.user.update({
+        where: { id: ctx.session.user.id },
+        data: { image: input.url },
       });
     }),
 });

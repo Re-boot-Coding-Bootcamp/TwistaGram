@@ -57,7 +57,7 @@ export const authOptions: NextAuthOptions = {
     // signOut: "/auth/signout",
     // error: "/auth/error",
     // verifyRequest: "/auth/verify-request",
-    // newUser: "/auth/new-user",
+    newUser: "/auth/new-user",
   },
   providers: [
     GoogleProvider({

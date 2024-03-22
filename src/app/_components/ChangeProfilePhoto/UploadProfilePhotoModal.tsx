@@ -57,7 +57,7 @@ const UploadProfilePhotoModal = ({ open, onClose, onFileUpload }: Props) => {
     const lastIndexOfDot = file.name.lastIndexOf(".");
     const extension = file.name.slice(lastIndexOfDot);
 
-    if (!PictureExtensions.includes(extension)) {
+    if (!PictureExtensions.includes(extension.toLowerCase())) {
       setError([
         "Invalid file type.",
         "Please select a valid image file.",
@@ -81,6 +81,7 @@ const UploadProfilePhotoModal = ({ open, onClose, onFileUpload }: Props) => {
   const resetLocalState = () => {
     setFile(undefined);
     setPreviewUrl(undefined);
+    setError([]);
   };
 
   return (
