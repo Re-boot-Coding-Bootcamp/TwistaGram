@@ -2,6 +2,7 @@
 
 import {
   Box,
+  Button,
   IconButton,
   Input,
   InputAdornment,
@@ -11,6 +12,7 @@ import {
 import React, { useState, useEffect } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import CircularProgress from "@mui/material/CircularProgress";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface User {
   id: string;
@@ -67,31 +69,58 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ onSearch }) => {
         [theme.breakpoints.up("sm")]: {
           mt: 10,
           alignItems: "start",
-          justifyContent: "center",
+          height: "auto",
         },
 
         [theme.breakpoints.down("sm")]: {
-          ".MuiBox-root": {
-            width: "100%",
-            height: "100%",
-            margin: 0,
-            maxWidth: "none",
-          },
+          alignItems: "flex-start",
+          width: "100vw",
+          height: "100vh",
+          // Aligns the modal content to the top on smaller screens
         },
       }}
     >
       <Box
         sx={{
           width: "100%",
-          maxWidth: "400px",
+          maxWidth: "500px",
           maxHeight: "90vh",
           overflowY: "auto",
           bgcolor: "background.paper",
           boxShadow: 20,
           borderRadius: 3,
           p: 3,
+          [theme.breakpoints.down("sm")]: {
+            boxShadow: "none",
+          },
         }}
       >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            mb: 3,
+            justifyContent: "space-between",
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <IconButton sx={{ p: 0 }}>
+              <CloseIcon fontSize="small" />
+            </IconButton>
+            <Typography
+              sx={{
+                fontSize: 18,
+                fontWeight: "500",
+                color: theme.palette.grey[700],
+              }}
+            >
+              New Message
+            </Typography>
+          </Box>
+          <Button variant="contained" sx={{ width: 70, borderRadius: 20 }}>
+            Next
+          </Button>
+        </Box>
         <Input
           type="text"
           placeholder="Search people"
@@ -125,6 +154,7 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ onSearch }) => {
             No result for &quot;{searchTerm}&quot;
           </Typography>
         )}
+
         <ul>
           {users.map((user) => (
             <li
