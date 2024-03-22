@@ -1,11 +1,11 @@
+import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-
-import { RegistrationForm } from "./RegistrationForm";
+import { ForgotPasswordForm } from "./ForgotPasswordForm";
 import { Box } from "@mui/material";
 
 const meta = {
-  title: "Authentication/RegistrationForm",
-  component: RegistrationForm,
+  title: "Authentication/ForgotPasswordForm",
+  component: ForgotPasswordForm,
   parameters: {
     layout: "centered",
   },
@@ -13,20 +13,18 @@ const meta = {
   decorators: [
     (Story) => (
       <Box width={"350px"}>
-        {/* 👇 Decorators in Storybook also accept a function. Replace <Story/> with Story() to enable it  */}
         <Story />
       </Box>
     ),
   ],
-} satisfies Meta<typeof RegistrationForm>;
-
+} satisfies Meta<typeof ForgotPasswordForm>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    onSubmit: (email: string) => {
-      alert(`Submitting email: ${email} to the server`);
+    onResetPassword: (email: string) => {
+      alert("Resetting password for " + email);
     },
   },
 };

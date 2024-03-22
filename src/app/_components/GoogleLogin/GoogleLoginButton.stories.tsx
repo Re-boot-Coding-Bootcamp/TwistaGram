@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import { GoogleLoginButton } from "./GoogleLoginButton";
 import { Box } from "@mui/material";
+import React from "react";
 
 const meta = {
   title: "Authentication/GoogleLoginButton",

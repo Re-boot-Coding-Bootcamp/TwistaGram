@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Box } from "@mui/material";
 import { DontHaveAnAccount } from "./DontHaveAnAccount";
+import React from "react";
 
 const meta = {
   title: "Authentication/DontHaveAnAccount",
