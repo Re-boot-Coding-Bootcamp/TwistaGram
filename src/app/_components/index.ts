@@ -20,3 +20,4 @@ export { DeletePostComment } from "./DeletePostComment";
 export { UserIcon } from "./UserIcon";
 export { ViewPost } from "./ViewPost";
 export { CommentIcon } from "./CommentIcon";
+export { ChangeProfilePhoto } from "./ChangeProfilePhoto";

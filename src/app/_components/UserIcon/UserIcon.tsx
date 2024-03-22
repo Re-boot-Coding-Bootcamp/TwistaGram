@@ -39,6 +39,7 @@ function UserIcon({ name, username }: UserSectionIconProps): JSX.Element {
     alignItems: "center",
     justifyContent: "space-evenly",
     p: 1,
+    gap: 1,
     borderRadius: 10,
     "&:hover": {
       bgcolor: theme.palette.grey[300],

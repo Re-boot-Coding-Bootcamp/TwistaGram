@@ -28,8 +28,7 @@ const MobileNav = () => {
           bottom: 0,
           left: 0,
           right: 0,
-          pb: 4,
-          pt: "10.25px",
+          py: 1.5,
         }}
         elevation={3}
       >

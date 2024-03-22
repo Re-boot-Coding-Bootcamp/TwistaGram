@@ -45,12 +45,7 @@ const NewUser = () => {
       <Box mb={4}>
         <Divider />
       </Box>
-      <ChangeProfilePhoto
-        onUpload={async (newFile: File) => {
-          console.log(newFile.name);
-        }}
-        currentProfileUrl={data.image ?? undefined}
-      />
+      <ChangeProfilePhoto currentProfileUrl={data.image ?? undefined} />
       <Box my={4}>
         <Divider />
       </Box>

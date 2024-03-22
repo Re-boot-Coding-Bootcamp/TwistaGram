@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Box, Grow } from "@mui/material";
+import { Box, Container, Grow } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { MobileNav, DesktopNav, TabletNav } from "~/app/_components";
 import theme from "~/theme";
@@ -59,7 +59,18 @@ const MainLayout = ({ children }: Props) => {
       TransitionComponent={Grow}
       anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
     >
-      {getContent()}
+      <Container
+        maxWidth="md"
+        sx={{
+          paddingLeft: "0 !important",
+          paddingRight: "0 !important",
+          borderLeft: 1,
+          borderRight: 1,
+          borderColor: "divider",
+        }}
+      >
+        {getContent()}
+      </Container>
     </SnackbarProvider>
   );
 };

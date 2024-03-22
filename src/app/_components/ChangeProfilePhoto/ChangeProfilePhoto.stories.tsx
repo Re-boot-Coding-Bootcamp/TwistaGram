@@ -26,14 +26,5 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     currentProfileUrl: "https://via.placeholder.com/150",
-    onUpload: async (file: File) => {
-      console.log("Uploading file", file.name);
-      await new Promise((resolve) =>
-        setTimeout(() => {
-          console.log("File uploaded. ");
-          resolve(undefined);
-        }, 3000)
-      );
-    },
   },
 };
