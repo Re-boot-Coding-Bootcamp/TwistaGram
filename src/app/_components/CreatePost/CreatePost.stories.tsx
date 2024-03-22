@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 import { SnackbarProvider } from "notistack";
 
 const meta = {
-  title: "Common/CreatePost",
+  title: "Components/CreatePost",
   component: CreatePost,
   parameters: {
     layout: "centered",

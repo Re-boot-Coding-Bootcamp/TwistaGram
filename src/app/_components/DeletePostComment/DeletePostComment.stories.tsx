@@ -2,15 +2,16 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import React from "react";
 import { Box } from "@mui/material";
-import { ChangeProfilePhoto } from "./ChangeProfilePhoto";
+import { DeletePostComment } from "./DeletePostComment";
 
 const meta = {
-  title: "Components/ChangeProfilePhoto",
-  component: ChangeProfilePhoto,
+  title: "Components/DeletePostComment",
+  component: DeletePostComment,
   parameters: {
     layout: "centered",
   },
   tags: ["autodocs"],
+  argTypes: {},
   decorators: [
     (Story) => (
       <Box width={"350px"}>
@@ -18,13 +19,11 @@ const meta = {
       </Box>
     ),
   ],
-} satisfies Meta<typeof ChangeProfilePhoto>;
+} satisfies Meta<typeof DeletePostComment>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {
-    currentProfileUrl: "https://via.placeholder.com/150",
-  },
+  args: { type: "Post" },
 };

@@ -2,29 +2,30 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import React from "react";
 import { Box } from "@mui/material";
-import { ChangeProfilePhoto } from "./ChangeProfilePhoto";
+import { UserIcon } from "./UserIcon";
 
 const meta = {
-  title: "Components/ChangeProfilePhoto",
-  component: ChangeProfilePhoto,
+  title: "Components/UserIcon",
+  component: UserIcon,
   parameters: {
     layout: "centered",
   },
   tags: ["autodocs"],
   decorators: [
     (Story) => (
-      <Box width={"350px"}>
+      <Box width={"250px"}>
         <Story />
       </Box>
     ),
   ],
-} satisfies Meta<typeof ChangeProfilePhoto>;
+} satisfies Meta<typeof UserIcon>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    currentProfileUrl: "https://via.placeholder.com/150",
+    name: "Jack",
+    username: "@TemporaryUsernameJack",
   },
 };

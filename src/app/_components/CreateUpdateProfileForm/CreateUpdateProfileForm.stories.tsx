@@ -25,6 +25,13 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
+    user: {
+      id: "1",
+      email: "example@test.com",
+      name: "John Doe",
+      username: "john-doe",
+      bio: "John Doe Bio",
+    },
     onCancel: () => {
       alert("Action Canceled");
     },

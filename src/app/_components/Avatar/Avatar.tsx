@@ -4,7 +4,7 @@ import { default as MuiAvatar } from "@mui/material/Avatar";
 import type { AvatarProps as MuiAvatarProps } from "@mui/material/Avatar";
 
 // creating an avatarsize type so only these three options can be used in the size prop
-type AvatarSize = "small" | "medium" | "large" | "xlarge";
+type AvatarSize = "small" | "medium" | "large" | "xlarge" | "xxlarge";
 interface AvatarProps extends MuiAvatarProps {
   size: AvatarSize;
   onProfileClick?: () => void;
@@ -15,6 +15,7 @@ const AvatarSizingMap: Record<AvatarSize, number> = {
   medium: 40,
   large: 56,
   xlarge: 95,
+  xxlarge: 150,
 };
 
 function Avatar({
@@ -24,13 +25,13 @@ function Avatar({
 }: AvatarProps): JSX.Element {
   return (
     <MuiAvatar
+      {...muiAvatarProps}
       sx={{
         width: AvatarSizingMap[size],
         height: AvatarSizingMap[size],
         cursor: onProfileClick ? "pointer" : "unset",
       }}
       onClick={onProfileClick}
-      {...muiAvatarProps}
     />
   );
 }
