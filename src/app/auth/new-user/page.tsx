@@ -42,7 +42,7 @@ const NewUser = () => {
     <Box id="update-profile-page">
       <Box
         sx={{
-          background: `linear-gradient(to top, #fff, #fff 50%, ${theme.palette.primary.main} 51%, ${theme.palette.primary.main})`,
+          background: `linear-gradient(to top, #fff, #fff 50%, ${theme.palette.primary.main} 50%, ${theme.palette.primary.main})`,
           pt: 4,
           pb: 2,
         }}
