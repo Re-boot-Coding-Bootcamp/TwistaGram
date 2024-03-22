@@ -54,7 +54,7 @@ export const Default: NewMessageModalStory = {
           );
           const firstFiveFilteredUsers = filteredUsers.slice(0, 5);
           resolve(firstFiveFilteredUsers);
-        }, 5000);
+        }, 3000);
       });
     },
   },

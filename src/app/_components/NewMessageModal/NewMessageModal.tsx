@@ -42,14 +42,13 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ onSearch }) => {
         setUsers(results);
         setSearchInitiated(true);
       } catch (error) {
-        console.error("Failed to search users:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
     searchUsers().catch((error) =>
-      console.error("Error in searchUsers:", error)
+      console.error("An error occurred during search", error)
     );
   }, [searchTerm, onSearch]);
 
@@ -57,9 +56,42 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ onSearch }) => {
     <Box
       sx={{
         display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        width: "100vw",
+        position: "fixed",
+        top: 0,
+        left: 0,
+
+        [theme.breakpoints.up("sm")]: {
+          mt: 10,
+          alignItems: "start",
+          justifyContent: "center",
+        },
+
+        [theme.breakpoints.down("sm")]: {
+          ".MuiBox-root": {
+            width: "100%",
+            height: "100%",
+            margin: 0,
+            maxWidth: "none",
+          },
+        },
       }}
     >
-      <Box sx={{ width: "100%", maxWidth: 500 }}>
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: "400px",
+          maxHeight: "90vh",
+          overflowY: "auto",
+          bgcolor: "background.paper",
+          boxShadow: 20,
+          borderRadius: 3,
+          p: 3,
+        }}
+      >
         <Input
           type="text"
           placeholder="Search people"
@@ -79,7 +111,7 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ onSearch }) => {
         {isLoading && (
           <Box
             display="flex"
-            justifyContent="start"
+            justifyContent="center"
             alignItems="center"
             sx={{ pt: 2 }}
           >
@@ -100,7 +132,6 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ onSearch }) => {
               style={{
                 listStyle: "none",
                 padding: 10,
-                borderBottom: "1 solid #ccc",
               }}
             >
               <Box>{user.name} </Box>
