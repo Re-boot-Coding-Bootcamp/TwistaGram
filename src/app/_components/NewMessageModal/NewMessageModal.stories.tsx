@@ -45,14 +45,17 @@ type NewMessageModalStory = StoryObj<typeof NewMessageModal>;
 export const Default: NewMessageModalStory = {
   args: {
     onSearch: (searchTerm: string) => {
-      const filteredUsers = mockUsers.filter(
-        (user) =>
-          user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          user.username.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      const firstFiveFilteredUsers = filteredUsers.slice(0, 5);
-
-      return Promise.resolve(firstFiveFilteredUsers);
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          const filteredUsers = mockUsers.filter(
+            (user) =>
+              user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              user.username.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+          const firstFiveFilteredUsers = filteredUsers.slice(0, 5);
+          resolve(firstFiveFilteredUsers);
+        }, 5000);
+      });
     },
   },
 };

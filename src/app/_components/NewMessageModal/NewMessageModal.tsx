@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import SearchIcon from "@mui/icons-material/Search";
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface User {
   id: string;
@@ -75,10 +76,21 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ onSearch }) => {
             </InputAdornment>
           }
         />
-        {isLoading && <Typography>Searching…</Typography>}
+        {isLoading && (
+          <Box
+            display="flex"
+            justifyContent="start"
+            alignItems="center"
+            sx={{ pt: 2 }}
+          >
+            <CircularProgress sx={{ mr: 2 }} />
+            Searching...
+          </Box>
+        )}
+
         {!isLoading && users.length === 0 && searchInitiated && (
           <Typography sx={{ mt: 2, fontWeight: "500" }}>
-            No result for &quot;{searchTerm}&quot;{" "}
+            No result for &quot;{searchTerm}&quot;
           </Typography>
         )}
         <ul>
