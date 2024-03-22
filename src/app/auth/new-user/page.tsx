@@ -1,8 +1,9 @@
 "use client";
 
-import { Box, CircularProgress, Divider, Typography } from "@mui/material";
+import { Box, CircularProgress, Divider } from "@mui/material";
 import React from "react";
 import { CreateUpdateProfileForm, ChangeProfilePhoto } from "~/app/_components";
+import theme from "~/theme";
 import { api } from "~/trpc/react";
 import type { UpdateUserInput } from "~/types";
 
@@ -39,23 +40,25 @@ const NewUser = () => {
 
   return (
     <Box id="update-profile-page">
-      <Typography variant="h6" fontWeight="400" textAlign="center" my={2}>
-        Update Profile
-      </Typography>
-      <Box mb={4}>
-        <Divider />
-      </Box>
-      <ChangeProfilePhoto currentProfileUrl={data.image ?? undefined} />
-      <Box my={4}>
-        <Divider />
-      </Box>
-      <CreateUpdateProfileForm
-        user={data}
-        onCancel={() => {
-          //
+      <Box
+        sx={{
+          background: `linear-gradient(to top, #fff, #fff 50%, ${theme.palette.primary.main} 51%, ${theme.palette.primary.main})`,
+          pt: 4,
+          pb: 2,
         }}
-        onSave={updateUser}
-      />
+      >
+        <ChangeProfilePhoto currentProfileUrl={data.image ?? undefined} />
+      </Box>
+      <Divider />
+      <Box my={4} mx={2}>
+        <CreateUpdateProfileForm
+          user={data}
+          onCancel={() => {
+            //
+          }}
+          onSave={updateUser}
+        />
+      </Box>
     </Box>
   );
 };

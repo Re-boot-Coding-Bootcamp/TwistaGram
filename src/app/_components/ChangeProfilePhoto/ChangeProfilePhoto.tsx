@@ -1,6 +1,6 @@
 "use client";
 
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import { Avatar, Button } from "..";
 import { useState } from "react";
 import UploadProfilePhotoModal from "./UploadProfilePhotoModal";
@@ -8,6 +8,7 @@ import { useUploadThing } from "~/utils/uploadthing";
 import { useSnackbar } from "notistack";
 import { api } from "~/trpc/react";
 import { type ClientUploadedFileData } from "uploadthing/types";
+import theme from "~/theme";
 
 interface Props {
   currentProfileUrl?: string;
@@ -16,6 +17,7 @@ interface Props {
 const ChangeProfilePhoto = ({ currentProfileUrl }: Props) => {
   const [isFileUploadModalOpen, setIsFileUploadModalOpen] = useState(false);
   const [profilePictureUrl, setProfilePictureUrl] = useState(currentProfileUrl);
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
   const { mutate } = api.user.updateUserProfilePicture.useMutation();
   const { enqueueSnackbar } = useSnackbar();
@@ -64,7 +66,12 @@ const ChangeProfilePhoto = ({ currentProfileUrl }: Props) => {
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" gap={1.5}>
-      <Avatar size="xlarge" src={profilePictureUrl} />
+      <Box p="5px" bgcolor="white" borderRadius="50%">
+        <Avatar
+          size={isDesktop ? "xxlarge" : "xlarge"}
+          src={profilePictureUrl}
+        />
+      </Box>
 
       <Button
         text="Change Profile Photo"
