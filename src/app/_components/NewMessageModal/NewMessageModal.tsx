@@ -75,7 +75,7 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({
 
         [theme.breakpoints.up("sm")]: {
           mt: 10,
-          alignItems: "start",
+          alignItems: "center",
           height: "auto",
         },
 
