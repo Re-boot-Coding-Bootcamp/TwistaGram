@@ -22,14 +22,21 @@ interface User {
 
 interface NewMessageModalProps {
   onSearch: (searchTerm: string) => Promise<User[]>;
+  onClose: () => void;
+  onNext: () => void;
 }
 
-const NewMessageModal: React.FC<NewMessageModalProps> = ({ onSearch }) => {
+const NewMessageModal: React.FC<NewMessageModalProps> = ({
+  onSearch,
+  onClose,
+  onNext,
+}) => {
   const theme = useTheme();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchInitiated, setSearchInitiated] = useState<boolean>(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   useEffect(() => {
     const searchUsers = async () => {
@@ -76,7 +83,6 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ onSearch }) => {
           alignItems: "flex-start",
           width: "100vw",
           height: "100vh",
-          // Aligns the modal content to the top on smaller screens
         },
       }}
     >
@@ -104,7 +110,7 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ onSearch }) => {
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <IconButton sx={{ p: 0 }}>
+            <IconButton sx={{ p: 0 }} onClick={onClose}>
               <CloseIcon fontSize="small" />
             </IconButton>
             <Typography
@@ -117,7 +123,18 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ onSearch }) => {
               New Message
             </Typography>
           </Box>
-          <Button variant="contained" sx={{ width: 70, borderRadius: 20 }}>
+          <Button
+            variant="contained"
+            onClick={onNext}
+            disabled={!selectedUser}
+            sx={{
+              width: 70,
+              borderRadius: 20,
+              bgcolor: selectedUser
+                ? theme.palette.primary.main
+                : theme.palette.grey[300],
+            }}
+          >
             Next
           </Button>
         </Box>
@@ -130,7 +147,13 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ onSearch }) => {
           startAdornment={
             <InputAdornment position="start">
               <IconButton
-                sx={{ p: 0, mr: 1, color: theme.palette.primary.main }}
+                disableRipple
+                sx={{
+                  p: 0,
+                  mr: 1,
+                  color: theme.palette.primary.main,
+                  cursor: "default",
+                }}
               >
                 <SearchIcon />
               </IconButton>
@@ -162,7 +185,14 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({ onSearch }) => {
               style={{
                 listStyle: "none",
                 padding: 10,
+                cursor: "pointer",
+                borderRadius: 10,
+                backgroundColor:
+                  selectedUser?.id === user.id
+                    ? theme.palette.grey[100]
+                    : "transparent",
               }}
+              onClick={() => setSelectedUser(user)}
             >
               <Box>{user.name} </Box>
               <Box sx={{ color: theme.palette.primary.dark, opacity: "60%" }}>

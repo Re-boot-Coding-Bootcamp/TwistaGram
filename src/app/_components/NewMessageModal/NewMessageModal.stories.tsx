@@ -44,6 +44,8 @@ type NewMessageModalStory = StoryObj<typeof NewMessageModal>;
 
 export const Default: NewMessageModalStory = {
   args: {
+    onClose: () => alert("Close clicked"),
+    onNext: () => alert("Next clicked"),
     onSearch: (searchTerm: string) => {
       return new Promise((resolve) => {
         setTimeout(() => {
@@ -54,7 +56,7 @@ export const Default: NewMessageModalStory = {
           );
           const firstFiveFilteredUsers = filteredUsers.slice(0, 5);
           resolve(firstFiveFilteredUsers);
-        }, 3000);
+        }, 2000);
       });
     },
   },
