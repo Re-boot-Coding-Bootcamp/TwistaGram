@@ -16,13 +16,17 @@ import theme from "~/theme";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Link from "next/link";
+import { api } from "~/trpc/react";
 
-interface UserSectionIconProps {
-  name: string;
-  username: string;
-}
+function UserIcon(): JSX.Element {
+  const { data: user, isFetching } = api.user.getCurrentUser.useQuery(
+    undefined,
+    {
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 
-function UserIcon({ name, username }: UserSectionIconProps): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -58,6 +62,10 @@ function UserIcon({ name, username }: UserSectionIconProps): JSX.Element {
     }
   }, [isDesktop, isTablet]);
 
+  if (!user || isFetching) {
+    return <></>;
+  }
+
   return (
     <>
       <ClickAwayListener
@@ -81,17 +89,18 @@ function UserIcon({ name, username }: UserSectionIconProps): JSX.Element {
           <Avatar
             size={isDesktop ? "medium" : "small"}
             sx={isDesktop ? { mr: 1 } : undefined}
+            src={user.image ?? undefined}
           />
           {isDesktop && (
             <>
               <Box id="name-username" width="65%">
-                <Typography noWrap>{name}</Typography>
+                <Typography noWrap>{user.name}</Typography>
                 <Typography
                   noWrap
                   variant="body2"
                   color={theme.palette.grey[500]}
                 >
-                  {username}
+                  {`@${user.username}`}
                 </Typography>
               </Box>
               <MoreHorizIcon fontSize="small" />
