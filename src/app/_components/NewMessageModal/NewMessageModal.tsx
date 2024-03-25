@@ -35,30 +35,26 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [searchInitiated, setSearchInitiated] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   useEffect(() => {
     const searchUsers = async () => {
       if (!searchTerm) {
         setUsers([]);
-        setSearchInitiated(false);
         return;
       }
       setIsLoading(true);
       try {
         const results = await onSearch(searchTerm);
         setUsers(results);
-        setSearchInitiated(true);
       } catch (error) {
+        console.error("An error occurred during search", error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    searchUsers().catch((error) =>
-      console.error("An error occurred during search", error)
-    );
+    void searchUsers();
   }, [searchTerm, onSearch]);
 
   return (
@@ -172,7 +168,7 @@ const NewMessageModal: React.FC<NewMessageModalProps> = ({
           </Box>
         )}
 
-        {!isLoading && users.length === 0 && searchInitiated && (
+        {!isLoading && users.length === 0 && searchTerm && (
           <Typography sx={{ mt: 2, fontWeight: "500" }}>
             No result for &quot;{searchTerm}&quot;
           </Typography>
