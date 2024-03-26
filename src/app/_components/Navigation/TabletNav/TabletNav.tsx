@@ -83,7 +83,7 @@ const TabletNav = () => {
         ))}
       </List>
       <Box sx={{ px: 1, pb: 2, mt: "auto" }}>
-        <UserIcon name="tempName" username="@tempUsername" />
+        <UserIcon />
       </Box>
     </Drawer>
   );

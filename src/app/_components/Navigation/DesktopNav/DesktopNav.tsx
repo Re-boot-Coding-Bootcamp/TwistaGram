@@ -89,7 +89,7 @@ const DesktopNav = () => {
           </List>
         </Box>
         <Box sx={{ m: 2 }}>
-          <UserIcon name="tempName" username="@tempUsername" />
+          <UserIcon />
         </Box>
       </Box>
     </Box>
