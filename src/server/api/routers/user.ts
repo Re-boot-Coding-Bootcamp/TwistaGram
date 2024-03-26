@@ -34,4 +34,11 @@ export const userRouter = createTRPCRouter({
         data: { image: input.url },
       });
     }),
+  getUserById: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.db.user.findFirst({
+        where: { id: input.userId },
+      });
+    }),
 });

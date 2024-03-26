@@ -11,9 +11,17 @@ export default meta;
 
 export const Default: StoryObj<typeof ProfilePageHeader> = {
   args: {
-    name: "Jake Sully",
-    username: "amNa'aviNow",
-    bio: "My skin is Blue #PandoraLife",
+    user: {
+      name: "John Doe",
+      username: "johndoe",
+      image: "https://via.placeholder.com/150",
+      bio: "This is a bio",
+      id: "abc123",
+      email: "john.doe@gmail.com",
+      emailVerified: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
     onEditProfile: () => {
       alert("Edit profile button triggered");
     },

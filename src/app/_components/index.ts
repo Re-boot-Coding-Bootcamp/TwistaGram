@@ -21,3 +21,4 @@ export { UserIcon } from "./UserIcon";
 export { ViewPost } from "./ViewPost";
 export { CommentIcon } from "./CommentIcon";
 export { ChangeProfilePhoto } from "./ChangeProfilePhoto";
+export { LoadingScreen } from "./LoadingScreen";

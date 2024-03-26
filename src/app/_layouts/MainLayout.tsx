@@ -34,7 +34,7 @@ const MainLayout = ({ children }: Props) => {
           <TabletNav />
           <Box
             component="main"
-            sx={{ flexGrow: 1, bgcolor: "background.default", pt: 5 }}
+            sx={{ flexGrow: 1, bgcolor: "background.default" }}
           >
             {children}
           </Box>
@@ -47,7 +47,7 @@ const MainLayout = ({ children }: Props) => {
         <DesktopNav />
         <Box
           component="main"
-          sx={{ flexGrow: 1, bgcolor: "background.default", pt: 5 }}
+          sx={{ flexGrow: 1, bgcolor: "background.default" }}
         >
           {children}
         </Box>
