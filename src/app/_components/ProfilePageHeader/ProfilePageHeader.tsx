@@ -26,6 +26,8 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.up("sm"));
 
+  const maxWidth = isMobile ? 440 : 320;
+
   const splitTextByLength = (text: string, maxLength: number) => {
     const textLines = [];
     for (let i = 0; i < text.length; i += maxLength) {
@@ -60,6 +62,7 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
         width: "100%",
         py: 5,
         borderRadius: 0,
+        background: `linear-gradient(to top, #fff, #fff 50%, ${theme.palette.primary.main} 50%, ${theme.palette.primary.main})`,
       }}
       elevation={0}
     >
@@ -69,6 +72,7 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           justifyContent: "center",
           alignItems: "center",
           width: "fit-content",
+          maxWidth,
           mb: isMobile ? 4 : 2,
         }}
       >
@@ -116,12 +120,11 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           variant="outlined"
           onClick={onEditProfile}
           sx={{
-            borderColor: theme.palette.grey[900],
-            color: theme.palette.grey[900],
+            borderColor: theme.palette.primary.main,
+            color: theme.palette.primary.main,
             fontSize: isMobile ? 16 : 12,
-            maxWidth: isMobile ? 440 : 320,
+            maxWidth,
             height: isMobile ? 44 : 30,
-            backgroundColor: "#fff",
           }}
         >
           Edit Profile
