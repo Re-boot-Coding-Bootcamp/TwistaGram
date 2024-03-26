@@ -20,6 +20,14 @@ const CreateUpdateProfileForm = ({
   const [username, setUsername] = useState(user.username ?? "");
   const [bio, setBio] = useState(user.bio ?? "");
 
+  const handleCancel = () => {
+    if (!username || !name) {
+      alert("please fill out both USERNAME and NAME");
+      return;
+    }
+    onCancel;
+  };
+
   const handleSave = () => {
     const updatedUser: UpdateUserInput = {
       name: name,
@@ -81,7 +89,7 @@ const CreateUpdateProfileForm = ({
         <Button
           variant="outlined"
           color="primary"
-          onClick={onCancel}
+          onClick={handleCancel}
           text="Cancel"
           style={{ backgroundColor: "white" }}
         />
