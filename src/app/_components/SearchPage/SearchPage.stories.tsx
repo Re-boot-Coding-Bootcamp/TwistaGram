@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@mui/material";
 import type { Meta, StoryObj } from "@storybook/react";
-import { NewMessageModal } from "./NewMessageModal";
+import { SearchPage } from "./SearchPage";
 
 const mockUsers = [
   { id: "1", name: "John", username: "JohnWick" },
@@ -26,9 +26,21 @@ const mockUsers = [
   { id: "20", name: "Jenn", username: "JennLopez" },
 ];
 
-const meta: Meta<typeof NewMessageModal> = {
-  title: "Components/NewMessageModal",
-  component: NewMessageModal,
+const mockPosts = [
+  { id: "1", title: "Hello World", content: "This is testing contents!" },
+  { id: "2", title: "Today's weather", content: "Today's weather is good" },
+  { id: "3", title: "News to share", content: "What's up today?" },
+  {
+    id: "4",
+    title: "Don't worry, be happy",
+    content: "We'all will be happy:)",
+  },
+  { id: "5", title: "What did you eat for lunch?", content: "I ate nothing" },
+];
+
+const meta: Meta<typeof SearchPage> = {
+  title: "Components/SearchPage",
+  component: SearchPage,
   decorators: [
     (Story) => (
       <Box width={"500px"}>
@@ -40,13 +52,11 @@ const meta: Meta<typeof NewMessageModal> = {
 
 export default meta;
 
-type NewMessageModalStory = StoryObj<typeof NewMessageModal>;
+type SearchPageStory = StoryObj<typeof SearchPage>;
 
-export const Default: NewMessageModalStory = {
+export const Default: SearchPageStory = {
   args: {
-    onClose: () => alert("Close clicked"),
-    onNext: () => alert("Next clicked"),
-    onSearch: (searchTerm: string) => {
+    onSearchUsers: (searchTerm: string) => {
       return new Promise((resolve) => {
         setTimeout(() => {
           const filteredUsers = mockUsers.filter(
@@ -56,6 +66,19 @@ export const Default: NewMessageModalStory = {
           );
           const firstFiveFilteredUsers = filteredUsers.slice(0, 5);
           resolve(firstFiveFilteredUsers);
+        }, 2000);
+      });
+    },
+    onSearchPosts: (searchTerm: string) => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          const filteredPosts = mockPosts.filter(
+            (post) =>
+              post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              post.content.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+
+          resolve(filteredPosts);
         }, 2000);
       });
     },
