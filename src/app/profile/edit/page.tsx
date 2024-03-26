@@ -3,7 +3,7 @@
 import { Box, CircularProgress, Divider } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
-import React from "react";
+import React, { useState } from "react";
 import { CreateUpdateProfileForm, ChangeProfilePhoto } from "~/app/_components";
 import theme from "~/theme";
 import { api } from "~/trpc/react";
@@ -14,6 +14,10 @@ const EditProfilePage = () => {
     refetchOnWindowFocus: false,
   });
   const { mutate } = api.user.updateCurrentUser.useMutation();
+
+  const [profilePictureUploaded, setProfilePictureUploaded] = useState(
+    !!data?.image
+  );
 
   const router = useRouter();
 
@@ -29,7 +33,6 @@ const EditProfilePage = () => {
       </Box>
     );
   }
-
   const updateUser = (updatedUser: UpdateUserInput) => {
     mutate(updatedUser, {
       onSuccess: () => router.push(`/profile/${data.id}`),
@@ -38,7 +41,7 @@ const EditProfilePage = () => {
       },
     });
   };
-
+  
   return (
     <Box id="update-profile-page">
       <Box
@@ -54,6 +57,8 @@ const EditProfilePage = () => {
       <Box my={4} mx={2}>
         <CreateUpdateProfileForm
           user={data}
+          profilePictureUploaded={profilePictureUploaded}
+          setProfilePictureUploaded={setProfilePictureUploaded}
           onCancel={() => router.push(`/profile/${data.id}`)}
           onSave={updateUser}
         />
