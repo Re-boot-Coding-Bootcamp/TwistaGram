@@ -1,42 +1,61 @@
 "use client";
 
-import { type Dispatch, type SetStateAction, useState } from "react";
+import { type Dispatch, type SetStateAction, useState, useEffect } from "react";
 import { Alert, Box, InputAdornment, TextField } from "@mui/material";
 import { Button } from "../Button";
 import type { PartialUser, UpdateUserInput } from "~/types";
 
 interface CreateUpdateProfileFormProps {
   user: PartialUser;
-  profilePictureUploaded: boolean;
-  setProfilePictureUploaded?: Dispatch<SetStateAction<boolean>>;
+  errorProfilePicture: boolean;
+  setErrorProfilePicture: Dispatch<SetStateAction<boolean>>;
   onCancel: () => void;
   onSave: (user: UpdateUserInput) => void;
 }
 
 const CreateUpdateProfileForm = ({
   user,
-  profilePictureUploaded,
+  errorProfilePicture,
+  setErrorProfilePicture,
   onCancel,
   onSave,
 }: CreateUpdateProfileFormProps): JSX.Element => {
-  const [name, setName] = useState(user.name ?? "");
-  const [username, setUsername] = useState(user.username ?? "");
-  const [bio, setBio] = useState(user.bio ?? "");
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [bio, setBio] = useState("");
+
+  useEffect(() => {
+    if (user) {
+      setName(user.name ?? "");
+      setUsername(user.username ?? "");
+      setBio(user.bio ?? "");
+    }
+  }, [user]);
+
   const [errorName, setErrorName] = useState(false);
   const [errorUsername, setErrorUsername] = useState(false);
 
   const handleSave = () => {
-    console.log(profilePictureUploaded);
+    let hasError = false;
+    if (!name) {
+      setErrorName(true);
+      hasError = true;
+    }
 
-    if (!name || !username || !user.image) {
-      if (!name) {
-        setErrorName(true);
-      }
-      if (!username) {
-        setErrorUsername(true);
-      }
+    if (!username) {
+      setErrorUsername(true);
+      hasError = true;
+    }
+
+    if (!user.image) {
+      setErrorProfilePicture(true);
+      hasError = true;
+    }
+
+    if (hasError) {
       return;
     }
+
     const updatedUser: UpdateUserInput = {
       name: name,
       username: username,
@@ -103,7 +122,7 @@ const CreateUpdateProfileForm = ({
           variant="outlined"
         />
       </Box>
-      {!user.image && (
+      {errorProfilePicture && (
         <Alert severity="error">
           Profile Picture is required to save profile.
         </Alert>
