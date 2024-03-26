@@ -22,7 +22,6 @@ const CreateUpdateProfileForm = ({
 
   const handleCancel = () => {
     if (!username || !name) {
-      alert("please fill out both USERNAME and NAME");
       return;
     }
     onCancel;
