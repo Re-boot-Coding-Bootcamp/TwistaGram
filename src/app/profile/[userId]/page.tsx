@@ -4,14 +4,20 @@ import { Box, Typography } from "@mui/material";
 import { LoadingScreen, ProfilePageHeader } from "~/app/_components";
 import { api } from "~/trpc/react";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Profile({ params }: { params: { userId: string } }) {
+  const { data } = useSession();
+  const isCurrentUser = data?.user.id === params.userId;
+
+  const router = useRouter();
+
   const { data: user, isFetching } = api.user.getUserById.useQuery(
     {
       userId: params.userId,
     },
     {
-      refetchOnMount: false,
       refetchOnWindowFocus: false,
     }
   );
@@ -45,10 +51,11 @@ export default function Profile({ params }: { params: { userId: string } }) {
   return (
     <>
       <ProfilePageHeader
+        isCurrentUser={isCurrentUser}
         user={user}
-        onEditProfile={() => {
-          console.log("navigating to edit profile page");
-        }}
+        onEditProfile={
+          isCurrentUser ? () => router.push("/profile/edit") : undefined
+        }
       />
     </>
   );

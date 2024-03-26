@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Box, TextField } from "@mui/material";
+import { Box, InputAdornment, TextField } from "@mui/material";
 import { Button } from "../Button";
 import type { PartialUser, UpdateUserInput } from "~/types";
 
@@ -49,6 +49,9 @@ const CreateUpdateProfileForm = ({
         />
         <TextField
           label="Username"
+          InputProps={{
+            startAdornment: <InputAdornment position="start">@</InputAdornment>,
+          }}
           fullWidth
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -86,7 +89,7 @@ const CreateUpdateProfileForm = ({
           variant="contained"
           color="primary"
           onClick={handleSave}
-          text="Done"
+          text="Save"
           style={{ color: "white" }}
         />
       </Box>

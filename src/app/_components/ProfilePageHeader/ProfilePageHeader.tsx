@@ -14,12 +14,14 @@ import type { User } from "@prisma/client";
 
 interface ProfilePageHeaderProps {
   user: User;
-  onEditProfile: () => void;
+  isCurrentUser?: boolean;
+  onEditProfile?: () => void;
 }
 
 const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
   user,
   onEditProfile,
+  isCurrentUser = false,
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.up("sm"));
@@ -109,20 +111,22 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           {renderBio(user.bio ?? "")}
         </Box>
       </Box>
-      <Button
-        variant="outlined"
-        onClick={onEditProfile}
-        sx={{
-          borderColor: theme.palette.grey[900],
-          color: theme.palette.grey[900],
-          fontSize: isMobile ? 16 : 12,
-          maxWidth: isMobile ? 440 : 320,
-          height: isMobile ? 44 : 30,
-          backgroundColor: "#fff",
-        }}
-      >
-        Edit Profile
-      </Button>
+      {isCurrentUser && (
+        <Button
+          variant="outlined"
+          onClick={onEditProfile}
+          sx={{
+            borderColor: theme.palette.grey[900],
+            color: theme.palette.grey[900],
+            fontSize: isMobile ? 16 : 12,
+            maxWidth: isMobile ? 440 : 320,
+            height: isMobile ? 44 : 30,
+            backgroundColor: "#fff",
+          }}
+        >
+          Edit Profile
+        </Button>
+      )}
     </Card>
   );
 };
