@@ -35,6 +35,13 @@ const CreateUpdateProfileForm = ({
   const [errorName, setErrorName] = useState(false);
   const [errorUsername, setErrorUsername] = useState(false);
 
+  const handleCancel = () => {
+    if (!username || !name) {
+      return;
+    }
+    onCancel;
+  };
+
   const handleSave = () => {
     let hasError = false;
     if (!name) {
@@ -131,7 +138,7 @@ const CreateUpdateProfileForm = ({
         <Button
           variant="outlined"
           color="primary"
-          onClick={onCancel}
+          onClick={handleCancel}
           text="Cancel"
           style={{ backgroundColor: "white" }}
         />
