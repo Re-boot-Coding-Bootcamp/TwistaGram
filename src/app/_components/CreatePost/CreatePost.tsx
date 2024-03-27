@@ -21,18 +21,16 @@ import { type EmojiClickData } from "emoji-picker-react";
 import { PictureExtensions } from "~/constants";
 import theme from "~/theme";
 import { useSnackbar } from "notistack";
-
-export type PostContent =
-  | { content?: string; image: File }
-  | { content: string; image?: File };
+import type { PostContent } from "~/types";
 
 interface CreatePostProps {
+  userImage: string;
   onPostSubmit: (postContent: PostContent) => Promise<void>;
 }
 
 const POST_CHAR_LIMIT = 250;
 
-function CreatePost({ onPostSubmit }: CreatePostProps) {
+function CreatePost({ userImage, onPostSubmit }: CreatePostProps) {
   const [postContent, setPostContent] = useState("");
   const [file, setFile] = useState<File>();
   const [imageUrl, setImageUrl] = useState<string>();
@@ -103,7 +101,7 @@ function CreatePost({ onPostSubmit }: CreatePostProps) {
   return (
     <Box id="create-post-main-container" display="flex" p={2} gap={1}>
       <Box id="avatar-container">
-        <Avatar size="medium" />
+        <Avatar size="medium" src={userImage} />
       </Box>
 
       <Box id="context-container" flexGrow={1}>
