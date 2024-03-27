@@ -22,7 +22,6 @@ function UserIcon(): JSX.Element {
   const { data: user, isFetching } = api.user.getCurrentUser.useQuery(
     undefined,
     {
-      refetchOnMount: false,
       refetchOnWindowFocus: false,
     }
   );
@@ -62,7 +61,11 @@ function UserIcon(): JSX.Element {
     }
   }, [isDesktop, isTablet]);
 
-  if (!user || isFetching) {
+  if (isFetching) {
+    return <></>;
+  }
+
+  if (!user?.name || !user?.username || !user?.image) {
     return <></>;
   }
 

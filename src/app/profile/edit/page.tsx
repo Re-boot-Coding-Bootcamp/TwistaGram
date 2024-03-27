@@ -22,13 +22,7 @@ const EditProfilePage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log("==> in use effect");
-    console.log("==> data", data);
-    console.log("==> localUser", localUser);
-
     if (data && data !== localUser) {
-      console.log("==> setting local user");
-
       setLocalUser(data);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -55,8 +49,6 @@ const EditProfilePage = () => {
       },
     });
   };
-
-  console.log("==> localUser", localUser);
 
   return (
     <Box id="update-profile-page">
