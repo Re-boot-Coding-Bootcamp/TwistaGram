@@ -203,7 +203,7 @@ const SearchPage: React.FC<SearchPageProps> = ({
           </Typography>
         )}
 
-        <ul>
+        <ul style={{ paddingLeft: 30 }}>
           {activeTab === 0 &&
             users.map((user) => (
               <li
