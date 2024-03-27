@@ -192,13 +192,13 @@ const SearchPage: React.FC<SearchPageProps> = ({
         )}
 
         {!isLoading && activeTab === 0 && users.length === 0 && searchTerm && (
-          <Typography sx={{ mt: 2, fontWeight: "500" }}>
+          <Typography sx={{ mt: 2, fontWeight: "500", pl: 5 }}>
             No result for &quot;{searchTerm}&quot;
           </Typography>
         )}
 
         {!isLoading && activeTab === 1 && posts.length === 0 && searchTerm && (
-          <Typography sx={{ mt: 2, fontWeight: "500" }}>
+          <Typography sx={{ mt: 2, fontWeight: "500", pl: 5 }}>
             No result for &quot;{searchTerm}&quot;
           </Typography>
         )}
