@@ -23,3 +23,4 @@ export { CommentIcon } from "./CommentIcon";
 export { ChangeProfilePhoto } from "./ChangeProfilePhoto";
 export { LoadingScreen } from "./LoadingScreen";
 export { ErrorScreen } from "./ErrorScreen";
+export { BackButton } from "./BackButton";
