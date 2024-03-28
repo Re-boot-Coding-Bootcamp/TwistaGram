@@ -33,7 +33,6 @@ const ViewPost: React.FC<ViewPostProps> = ({
   const [editMode, setEditMode] = useState(false);
   const [editedText, setEditedText] = useState(post.content);
 
-  const toggleEditMode = () => setEditMode(!editMode);
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedText(e.target.value);
   };
@@ -121,6 +120,14 @@ const ViewPost: React.FC<ViewPostProps> = ({
                 @{post.createdBy.username}
               </Typography>
             </Box>
+            <Box
+              mx={0.5}
+              sx={{
+                color: theme.palette.text.disabled,
+              }}
+            >
+              ·
+            </Box>
             <Box id="timestamp-container">
               <Typography
                 id="posted-time"
@@ -198,7 +205,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
               alignItems: "center",
               justifyContent: "flex-start",
               gap: 1,
-              maxHeight: "20px",
+              mt: 0,
             }}
             onClick={(e) => {
               e.stopPropagation();

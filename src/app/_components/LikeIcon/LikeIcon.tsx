@@ -1,9 +1,9 @@
 "use client";
 
-import { Box, IconButton, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Tooltip, Typography } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import React from "react";
+import React, { useState } from "react";
 import { api } from "~/trpc/react";
 import { enqueueSnackbar } from "notistack";
 import type { User } from "@prisma/client";
@@ -15,18 +15,31 @@ interface Props {
 }
 
 const LikeIcon = ({ user, post }: Props): JSX.Element => {
-  const { mutateAsync } = api.post.likePost.useMutation();
+  const { mutateAsync: mutateLike } = api.post.likePost.useMutation();
+  const { mutateAsync: mutateUnlike } = api.post.unlikePost.useMutation();
 
-  const userLikedPost = post.likes
-    .map((object) => object?.userId)
-    .includes(user.id);
-  console.log(userLikedPost);
-  
+  const [likeObject, setLikeObject] = useState(
+    post.likes.find((like) => like?.userId === user.id)
+  );
+  const [likesCount, setLikesCount] = useState(post.likes.length);
+  const isLikedByMe = !!likeObject;
+
   const handelLike = async () => {
-
-    if (!userLikedPost) {
+    if (likeObject) {
       try {
-        await mutateAsync({ postId: post.id });
+        setLikesCount((prev) => prev - 1);
+        await mutateUnlike({ likeId: likeObject.id });
+        setLikeObject(undefined);
+      } catch (error) {
+        enqueueSnackbar("Failed to like post, please try again.", {
+          variant: "error",
+        });
+      }
+    } else {
+      try {
+        setLikesCount((prev) => prev + 1);
+        const newLikeObject = await mutateLike({ postId: post.id });
+        setLikeObject(newLikeObject);
       } catch (error) {
         enqueueSnackbar("Failed to like post, please try again.", {
           variant: "error",
@@ -37,12 +50,25 @@ const LikeIcon = ({ user, post }: Props): JSX.Element => {
 
   return (
     <Box display="flex" justifyContent="center" alignItems="center">
-      <Tooltip title={userLikedPost ? "Unlike" : "Like"} placement="bottom" arrow>
-        <IconButton color="error" aria-label="delete" onClick={handelLike}>
-          {userLikedPost ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-        </IconButton>
+      <Tooltip title={isLikedByMe ? "Unlike" : "Like"} placement="bottom" arrow>
+        <Button
+          sx={{ fontSize: 16 }}
+          color="secondary"
+          aria-label="delete"
+          onClick={handelLike}
+          startIcon={
+            isLikedByMe ? (
+              <FavoriteIcon fontSize="inherit" />
+            ) : (
+              <FavoriteBorderIcon fontSize="inherit" />
+            )
+          }
+        >
+          <Typography fontSize="inherit" color="secondary">
+            {likesCount}
+          </Typography>
+        </Button>
       </Tooltip>
-      <Typography color="error">{post.likes.length}</Typography>
     </Box>
   );
 };

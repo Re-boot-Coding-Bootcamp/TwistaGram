@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import Tooltip from "@mui/material/Tooltip";
 
@@ -18,11 +18,16 @@ const CommentIcon = ({ onCommentIcon, number }: Props): JSX.Element => {
   return (
     <Box display="flex" justifyContent="center" alignItems="center">
       <Tooltip title="Reply" placement="bottom" arrow>
-        <IconButton onClick={handleMessageBubble}>
-          <ChatBubbleOutlineIcon color="primary" sx={{ cursor: "pointer" }} />
-        </IconButton>
+        <Button
+          sx={{ fontSize: 16 }}
+          onClick={handleMessageBubble}
+          startIcon={
+            <ChatBubbleOutlineIcon color="primary" sx={{ cursor: "pointer" }} />
+          }
+        >
+          <Typography color="primary">{number}</Typography>
+        </Button>
       </Tooltip>
-      <Typography color="primary">{number}</Typography>
     </Box>
   );
 };
