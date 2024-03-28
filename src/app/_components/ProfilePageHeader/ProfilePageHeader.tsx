@@ -60,6 +60,7 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
         justifyContent: "center",
         backgroundColor: theme.palette.grey[50],
         width: "100%",
+
         py: 5,
         borderRadius: 0,
         background: `linear-gradient(to top, #fff, #fff 50%, ${theme.palette.primary.main} 50%, ${theme.palette.primary.main})`,
@@ -71,7 +72,7 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          width: "fit-content",
+          //width: "fit-content",
           maxWidth,
           mb: isMobile ? 4 : 2,
         }}
@@ -85,8 +86,8 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: theme.palette.grey[50],
-            border: `1px solid ${theme.palette.grey[400]}`,
             mr: isMobile ? 4 : 3,
+            mt: isMobile ? 9 : 7,
           }}
         >
           <Avatar
@@ -97,7 +98,11 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
         <Box>
           <Typography
             noWrap
-            sx={{ fontSize: isMobile ? 18 : 14, fontWeight: "bold" }}
+            sx={{
+              fontSize: isMobile ? 18 : 14,
+              fontWeight: "bold",
+              mt: isMobile ? 11 : 7,
+            }}
           >
             {user.name}
           </Typography>
@@ -122,8 +127,8 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           sx={{
             borderColor: theme.palette.primary.main,
             color: theme.palette.primary.main,
-            fontSize: isMobile ? 16 : 12,
-            maxWidth,
+            fontSize: isMobile ? 12 : 6,
+            width: isMobile ? 95 : 50,
             height: isMobile ? 44 : 30,
           }}
         >
