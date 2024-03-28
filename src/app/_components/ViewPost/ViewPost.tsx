@@ -14,7 +14,7 @@ import { ImageContainer } from "../ImageContainer";
 import { Avatar } from "../Avatar";
 import type { User } from "@prisma/client";
 import type { HomePagePost } from "~/types";
-import { MoreActionsMenu } from "..";
+import { CommentIcon, LikeIcon, MoreActionsMenu } from "..";
 import { useRouter } from "next/navigation";
 
 interface ViewPostProps {
@@ -129,7 +129,6 @@ const ViewPost: React.FC<ViewPostProps> = ({
                   color: theme.palette.text.disabled,
                 }}
               >
-                ·{" "}
                 {formatDistanceToNowStrict(post.createdAt, {
                   addSuffix: true,
                 })}
@@ -189,6 +188,28 @@ const ViewPost: React.FC<ViewPostProps> = ({
                 {post.image && <ImageContainer imageUrl={post.image} />}
               </>
             )}
+          </Box>
+          <Box
+            id="like-comment-container"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-start",
+              gap: 1,
+              maxHeight: "20px",
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <LikeIcon
+              user={currentUser}
+              post={post}
+            />
+            <CommentIcon
+              number={post.comments.length}
+              onCommentIcon={navigateToPostDetails}
+            />
           </Box>
         </Box>
       </Box>

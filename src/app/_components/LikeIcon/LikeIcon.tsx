@@ -4,17 +4,31 @@ import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import React, { useState } from "react";
+import { api } from "~/trpc/react";
+import { enqueueSnackbar } from "notistack";
+import type { User } from "@prisma/client";
+import type { HomePagePost } from "~/types";
 
 interface Props {
-  onLike: () => void;
-  number: number;
+  user: User;
+  post: HomePagePost;
 }
 
-const LikeIcon = ({ onLike, number }: Props): JSX.Element => {
+const LikeIcon = ({ user, post }: Props): JSX.Element => {
+  const { mutateAsync } = api.post.likePost.useMutation();
   const [liked, setLiked] = useState(false);
-  const handelLike = () => {
+  const handelLike = async () => {
     setLiked((prev) => !prev);
-    onLike;
+
+    try {
+      await mutateAsync({ postId: post.id });
+
+      enqueueSnackbar("Post created.", { variant: "success" });
+    } catch (error) {
+      enqueueSnackbar("Failed to create post, please try again.", {
+        variant: "error",
+      });
+    }
   };
 
   return (
@@ -24,7 +38,7 @@ const LikeIcon = ({ onLike, number }: Props): JSX.Element => {
           {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
       </Tooltip>
-      <Typography color="error">{number}</Typography>
+      <Typography color="error">{post.likes.length}</Typography>
     </Box>
   );
 };
