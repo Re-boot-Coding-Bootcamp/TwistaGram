@@ -24,3 +24,5 @@ export { ChangeProfilePhoto } from "./ChangeProfilePhoto";
 export { SearchPage } from "./SearchPage";
 export { LoadingScreen } from "./LoadingScreen";
 export { ErrorScreen } from "./ErrorScreen";
+export { InlineReply } from "./InlineReply";
+
