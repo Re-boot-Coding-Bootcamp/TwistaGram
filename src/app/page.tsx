@@ -54,7 +54,7 @@ export default function Home() {
       {posts.map((post) => {
         return (
           <Fragment key={post.id}>
-            <ViewPost post={post} currentUser={user} />
+            <ViewPost post={post} currentUser={user} containerHover={true} />
             <Divider />
           </Fragment>
         );

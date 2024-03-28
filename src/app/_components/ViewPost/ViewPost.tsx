@@ -14,7 +14,7 @@ import { ImageContainer } from "../ImageContainer";
 import { Avatar } from "../Avatar";
 import type { User } from "@prisma/client";
 import type { HomePagePost } from "~/types";
-import { MoreActionsMenu } from "..";
+import { CommentIcon, LikeIcon, MoreActionsMenu } from "..";
 import { useRouter } from "next/navigation";
 
 interface ViewPostProps {
@@ -33,7 +33,6 @@ const ViewPost: React.FC<ViewPostProps> = ({
   const [editMode, setEditMode] = useState(false);
   const [editedText, setEditedText] = useState(post.content);
 
-  const toggleEditMode = () => setEditMode(!editMode);
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedText(e.target.value);
   };
@@ -121,6 +120,14 @@ const ViewPost: React.FC<ViewPostProps> = ({
                 @{post.createdBy.username}
               </Typography>
             </Box>
+            <Box
+              mx={0.5}
+              sx={{
+                color: theme.palette.text.disabled,
+              }}
+            >
+              ·
+            </Box>
             <Box id="timestamp-container">
               <Typography
                 id="posted-time"
@@ -129,7 +136,6 @@ const ViewPost: React.FC<ViewPostProps> = ({
                   color: theme.palette.text.disabled,
                 }}
               >
-                ·{" "}
                 {formatDistanceToNowStrict(post.createdAt, {
                   addSuffix: true,
                 })}
@@ -137,12 +143,14 @@ const ViewPost: React.FC<ViewPostProps> = ({
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             {isCurrentUserPost && (
-              <MoreActionsMenu
-                onDelete={function (): void {
-                  throw new Error("Function not implemented.");
-                }}
-                onEdit={toggleEditMode}
-              />
+              <Box onClick={(e) => e.stopPropagation()}>
+                <MoreActionsMenu
+                  onDelete={function (): void {
+                    throw new Error("Function not implemented.");
+                  }}
+                  onEdit={navigateToPostDetails}
+                />
+              </Box>
             )}
           </Box>
           <Box>
@@ -189,6 +197,25 @@ const ViewPost: React.FC<ViewPostProps> = ({
                 {post.image && <ImageContainer imageUrl={post.image} />}
               </>
             )}
+          </Box>
+          <Box
+            id="like-comment-container"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-start",
+              gap: 1,
+              mt: 0,
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <LikeIcon user={currentUser} post={post} />
+            <CommentIcon
+              number={post.comments.length}
+              onCommentIcon={navigateToPostDetails}
+            />
           </Box>
         </Box>
       </Box>
