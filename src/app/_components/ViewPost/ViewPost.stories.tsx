@@ -5,7 +5,7 @@ import { ViewPost } from "./ViewPost";
 
 const meta: Meta<typeof ViewPost> = {
   title: "Components/ViewPost",
-  component: ViewPost,
+  component: ,
   parameters: {
     layout: "centered",
   },

@@ -1,7 +1,12 @@
 "use client";
 
 import { Divider } from "@mui/material";
-import { ErrorScreen, LoadingScreen, ViewPost } from "~/app/_components";
+import {
+  BackButton,
+  ErrorScreen,
+  LoadingScreen,
+  ViewPost,
+} from "~/app/_components";
 import { api } from "~/trpc/react";
 
 export default function PostDetailsPage({
@@ -34,6 +39,7 @@ export default function PostDetailsPage({
 
   return (
     <>
+      <BackButton />
       <ViewPost post={post} currentUser={user} />
       <Divider />
       Comments go here

@@ -13,6 +13,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    text: "Click me",
+    onBack: () => {
+      alert("Back button clicked")
+    },
   },
 };
