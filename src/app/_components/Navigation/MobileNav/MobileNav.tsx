@@ -19,7 +19,7 @@ const MobileNav = () => {
     <>
       <Box display="flex">
         <Box sx={{ p: 1 }}>
-          <UserIcon name="tempName" username="@tempUsername" />
+          <UserIcon />
         </Box>
       </Box>
       <Paper
