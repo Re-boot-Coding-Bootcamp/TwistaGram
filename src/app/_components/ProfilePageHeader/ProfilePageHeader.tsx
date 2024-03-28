@@ -26,6 +26,8 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.up("sm"));
 
+  const maxWidth = isMobile ? 440 : 320;
+
   const splitTextByLength = (text: string, maxLength: number) => {
     const textLines = [];
     for (let i = 0; i < text.length; i += maxLength) {
@@ -58,8 +60,10 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
         justifyContent: "center",
         backgroundColor: theme.palette.grey[50],
         width: "100%",
+
         py: 5,
         borderRadius: 0,
+        background: `linear-gradient(to top, #fff, #fff 50%, ${theme.palette.primary.main} 50%, ${theme.palette.primary.main})`,
       }}
       elevation={0}
     >
@@ -68,7 +72,7 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          width: "fit-content",
+          maxWidth,
           mb: isMobile ? 4 : 2,
         }}
       >
@@ -81,8 +85,8 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: theme.palette.grey[50],
-            border: `1px solid ${theme.palette.grey[400]}`,
             mr: isMobile ? 4 : 3,
+            mt: isMobile ? 9 : 7,
           }}
         >
           <Avatar
@@ -93,7 +97,11 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
         <Box>
           <Typography
             noWrap
-            sx={{ fontSize: isMobile ? 18 : 14, fontWeight: "bold" }}
+            sx={{
+              fontSize: isMobile ? 18 : 14,
+              fontWeight: "bold",
+              mt: isMobile ? 11 : 7,
+            }}
           >
             {user.name}
           </Typography>
@@ -108,7 +116,7 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           >
             {`@${user.username}`}
           </Typography>
-          {renderBio(user.bio ?? "")}
+          <Box sx={{ width: 95 }}>{renderBio(user.bio ?? "")}</Box>
         </Box>
       </Box>
       {isCurrentUser && (
@@ -116,12 +124,11 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           variant="outlined"
           onClick={onEditProfile}
           sx={{
-            borderColor: theme.palette.grey[900],
-            color: theme.palette.grey[900],
-            fontSize: isMobile ? 16 : 12,
-            maxWidth: isMobile ? 440 : 320,
+            borderColor: theme.palette.primary.main,
+            color: theme.palette.primary.main,
+            fontSize: isMobile ? 12 : 6,
+            width: isMobile ? 95 : 50,
             height: isMobile ? 44 : 30,
-            backgroundColor: "#fff",
           }}
         >
           Edit Profile

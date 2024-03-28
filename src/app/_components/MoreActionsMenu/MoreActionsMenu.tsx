@@ -3,7 +3,6 @@ import {
   ClickAwayListener,
   IconButton,
   Popper,
-  Tooltip,
   Paper,
   List,
   ListItemIcon,
@@ -39,17 +38,21 @@ const MoreActionsMenu: React.FC<MoreActionsMenuProps> = ({
 
   return (
     <>
-      <Tooltip title="More">
-        <IconButton color="primary" ref={anchorRef} onClick={handleToggle}>
-          <MoreHorizIcon />
-        </IconButton>
-      </Tooltip>
+      <IconButton
+        sx={{ p: 0 }}
+        disableRipple
+        color="inherit"
+        ref={anchorRef}
+        onClick={handleToggle}
+      >
+        <MoreHorizIcon />
+      </IconButton>
 
       <Popper
         open={open}
         anchorEl={anchorRef.current}
         role={undefined}
-        placement="bottom-start"
+        placement="bottom-end"
       >
         <Paper>
           <ClickAwayListener onClickAway={handleClose}>

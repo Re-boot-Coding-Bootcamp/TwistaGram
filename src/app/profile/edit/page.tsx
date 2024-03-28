@@ -1,9 +1,10 @@
 "use client";
 
 import { Box, CircularProgress, Divider } from "@mui/material";
+import type { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CreateUpdateProfileForm, ChangeProfilePhoto } from "~/app/_components";
 import theme from "~/theme";
 import { api } from "~/trpc/react";
@@ -15,9 +16,19 @@ const EditProfilePage = () => {
   });
   const { mutate } = api.user.updateCurrentUser.useMutation();
 
+  const [localUser, setLocalUser] = useState<User>();
+  const [errorProfilePicture, setErrorProfilePicture] = useState(false);
+
   const router = useRouter();
 
-  if (isFetching || !data) {
+  useEffect(() => {
+    if (data && data !== localUser) {
+      setLocalUser(data);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
+  if (isFetching || !localUser) {
     return (
       <Box
         display="flex"
@@ -32,7 +43,7 @@ const EditProfilePage = () => {
 
   const updateUser = (updatedUser: UpdateUserInput) => {
     mutate(updatedUser, {
-      onSuccess: () => router.push(`/profile/${data.id}`),
+      onSuccess: () => router.push(`/profile/${localUser.id}`),
       onError: () => {
         enqueueSnackbar("Failed to update profile", { variant: "error" });
       },
@@ -48,13 +59,21 @@ const EditProfilePage = () => {
           pb: 2,
         }}
       >
-        <ChangeProfilePhoto currentProfileUrl={data.image ?? undefined} />
+        <ChangeProfilePhoto
+          currentProfileUrl={localUser.image ?? undefined}
+          onUploadSuccess={(updatedUser: User) => {
+            setLocalUser(updatedUser);
+            setErrorProfilePicture(false);
+          }}
+        />
       </Box>
       <Divider />
       <Box my={4} mx={2}>
         <CreateUpdateProfileForm
-          user={data}
-          onCancel={() => router.push(`/profile/${data.id}`)}
+          user={localUser}
+          errorProfilePicture={errorProfilePicture}
+          setErrorProfilePicture={setErrorProfilePicture}
+          onCancel={() => router.push(`/profile/${localUser.id}`)}
           onSave={updateUser}
         />
       </Box>

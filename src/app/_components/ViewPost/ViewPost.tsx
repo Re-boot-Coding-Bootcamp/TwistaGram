@@ -1,248 +1,198 @@
 "use client";
 
 import React, { useState } from "react";
+import { formatDistanceToNowStrict } from "date-fns";
 import {
   Box,
   Card,
   Typography,
   useTheme,
-  IconButton,
   TextField,
   Button,
-  Tooltip,
 } from "@mui/material";
 import { ImageContainer } from "../ImageContainer";
 import { Avatar } from "../Avatar";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import type { User } from "@prisma/client";
+import type { HomePagePost } from "~/types";
+import { MoreActionsMenu } from "..";
+import { useRouter } from "next/navigation";
 
 interface ViewPostProps {
-  username: string;
-  currentUserId: string;
-  name: string;
-  postedTime: string;
-  textContent: string;
-  imageUrl: string;
-  onMore: () => void;
-  onProfile: () => void;
-  onChooseFile: () => void;
-  onDelete: () => void;
+  currentUser: User;
+  post: HomePagePost;
+  containerHover?: boolean;
 }
 
 const ViewPost: React.FC<ViewPostProps> = ({
-  username,
-  currentUserId,
-  name,
-  postedTime,
-  textContent,
-  imageUrl,
-  onProfile,
-  onChooseFile,
-  onDelete,
+  currentUser,
+  post,
+  containerHover,
 }) => {
   const theme = useTheme();
+  const router = useRouter();
   const [editMode, setEditMode] = useState(false);
-  const [editedText, setEditedText] = useState(textContent);
-  const [showOptions, setShowOptions] = useState(false);
+  const [editedText, setEditedText] = useState(post.content);
 
   const toggleEditMode = () => setEditMode(!editMode);
-
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedText(e.target.value);
   };
-
   const saveChanges = () => {
     setEditMode(false);
   };
 
-  const isCurrentUserPost = username === currentUserId;
+  const isCurrentUserPost = currentUser.id === post.createdById;
 
-  const toggleMoreOptions = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    setShowOptions((prev) => !prev);
+  const navigateToUserProfile = () => {
+    router.push(`/profile/${post.createdBy.id}`);
+  };
+
+  const navigateToPostDetails = () => {
+    router.push(`/post/${post.id}`);
   };
 
   return (
-    <Box
-      id="main-container"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      width="100%"
+    <Card
+      id="post-container"
+      sx={{
+        p: 2,
+        width: "100%",
+        maxWidth: "100%",
+        flexDirection: "column",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        cursor: containerHover ? "pointer" : "default",
+        "&:hover": {
+          backgroundColor: containerHover ? theme.palette.action.hover : "none",
+        },
+      }}
+      elevation={0}
+      onClick={containerHover ? navigateToPostDetails : undefined}
     >
-      <Card
-        id="contents-container"
-        sx={{
-          p: 2,
-          minWidth: { xs: "100%", sm: 600, md: 800 },
-          maxWidth: "100%",
-          flexDirection: "column",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        elevation={0}
-      >
+      <Box id="profile-container" sx={{ display: "flex", width: "100%" }}>
+        <Box id="avatar" mr={2}>
+          <Avatar
+            size="large"
+            onClick={navigateToUserProfile}
+            style={{ cursor: "pointer" }}
+            src={post.createdBy.image ?? undefined}
+          />
+        </Box>
         <Box
-          id="profile-container"
-          sx={{ display: "flex", mb: 2, width: "100%" }}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+          }}
         >
-          <Box id="avatar" mr={2}>
-            <Avatar
-              size="large"
-              onClick={onProfile}
-              style={{ cursor: "pointer" }}
-            />
-          </Box>
           <Box
+            id="name-username-time"
             sx={{
               display: "flex",
-              flexDirection: "column",
-              width: "100%",
+              alignItems: "center",
+              maxWidth: "100%",
             }}
           >
             <Box
-              id="name-username-time"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                maxWidth: "100%",
-              }}
+              onClick={navigateToUserProfile}
+              id="name-username-container"
+              display="flex"
+              alignItems="center"
+              gap={0.5}
             >
-              <Box onClick={onProfile}>
-                <Typography
-                  id="name"
-                  sx={{
-                    fontSize: 20,
-                    fontWeight: "500",
-                    color: theme.palette.text.primary,
-                    mr: 0.5,
-                    cursor: "pointer",
-                  }}
-                >
-                  {name}
-                </Typography>
-              </Box>
-              <Box onClick={onProfile}>
-                <Typography
-                  id="username"
-                  sx={{
-                    mt: 0.3,
-                    mr: 0.5,
-                    fontSize: 14,
-                    color: theme.palette.text.secondary,
-                    cursor: "pointer",
-                  }}
-                >
-                  @{username}
-                </Typography>
-              </Box>
-              <Box
-                onClick={(e) => e.stopPropagation()}
-                sx={{ cursor: "default" }}
+              <Typography
+                id="name"
+                variant="subtitle1"
+                sx={{
+                  cursor: "pointer",
+                }}
               >
+                {post.createdBy.name}
+              </Typography>
+              <Typography
+                id="username"
+                variant="body2"
+                sx={{
+                  color: theme.palette.text.secondary,
+                  cursor: "pointer",
+                }}
+              >
+                @{post.createdBy.username}
+              </Typography>
+            </Box>
+            <Box id="timestamp-container">
+              <Typography
+                id="posted-time"
+                variant="body2"
+                sx={{
+                  color: theme.palette.text.disabled,
+                }}
+              >
+                ·{" "}
+                {formatDistanceToNowStrict(post.createdAt, {
+                  addSuffix: true,
+                })}
+              </Typography>
+            </Box>
+            <Box sx={{ flexGrow: 1 }} />
+            {isCurrentUserPost && (
+              <MoreActionsMenu
+                onDelete={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+                onEdit={toggleEditMode}
+              />
+            )}
+          </Box>
+          <Box>
+            {editMode ? (
+              <>
+                <TextField
+                  fullWidth
+                  multiline
+                  variant="outlined"
+                  value={editedText}
+                  onChange={handleTextChange}
+                  onClick={(e) => e.stopPropagation()}
+                  margin="normal"
+                />
+                <input
+                  type="file"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // onChooseFile();
+                  }}
+                />
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    saveChanges();
+                  }}
+                  color="primary"
+                >
+                  Save Changes
+                </Button>
+              </>
+            ) : (
+              <>
                 <Typography
-                  id="posted-time"
+                  id="text-content"
                   sx={{
-                    mt: 0.3,
-                    fontSize: 14,
-                    color: theme.palette.text.disabled,
+                    my: 1,
+                    color: theme.palette.text.primary,
+                    maxWidth: "100%",
                   }}
                 >
-                  ·{postedTime}
+                  {post.content}
                 </Typography>
-              </Box>
-              <Box sx={{ flexGrow: 1 }} />
-              {isCurrentUserPost && (
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  {showOptions && (
-                    <Box sx={{ display: "flex", mr: 2, gap: 2 }}>
-                      <Tooltip title="Edit" placement="top">
-                        <IconButton
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleEditMode();
-                          }}
-                          disableRipple
-                          sx={{ p: 0, color: theme.palette.primary.main }}
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Delete" placement="top">
-                        <IconButton
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onDelete();
-                          }}
-                          disableRipple
-                          sx={{ p: 0, color: theme.palette.error.main }}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </Box>
-                  )}
-                  <Tooltip title="More" placement="top">
-                    <IconButton onClick={toggleMoreOptions} sx={{ p: 0 }}>
-                      <MoreHorizIcon />
-                    </IconButton>
-                  </Tooltip>
-                </Box>
-              )}
-            </Box>
-            <Box onClick={(e) => e.stopPropagation()}>
-              {editMode ? (
-                <>
-                  <TextField
-                    fullWidth
-                    multiline
-                    variant="outlined"
-                    value={editedText}
-                    onChange={handleTextChange}
-                    onClick={(e) => e.stopPropagation()}
-                    margin="normal"
-                  />
-                  <input
-                    type="file"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onChooseFile();
-                    }}
-                  />
-                  <Button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      saveChanges();
-                    }}
-                    color="primary"
-                  >
-                    Save Changes
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Typography
-                    id="text-content"
-                    sx={{
-                      mt: 1,
-                      mb: 2,
-                      color: theme.palette.text.primary,
-                      maxWidth: "100%",
-                      cursor: "default",
-                    }}
-                  >
-                    {textContent}
-                  </Typography>
-                  {imageUrl && <ImageContainer imageUrl={imageUrl} />}
-                </>
-              )}
-            </Box>
+                {post.image && <ImageContainer imageUrl={post.image} />}
+              </>
+            )}
           </Box>
         </Box>
-      </Card>
-    </Box>
+      </Box>
+    </Card>
   );
 };
 

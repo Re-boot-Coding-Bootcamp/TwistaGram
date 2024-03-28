@@ -9,14 +9,15 @@ import { useSnackbar } from "notistack";
 import { api } from "~/trpc/react";
 import { type ClientUploadedFileData } from "uploadthing/types";
 import theme from "~/theme";
+import type { User } from "@prisma/client";
 
 interface Props {
   currentProfileUrl?: string;
+  onUploadSuccess?: (user: User) => void;
 }
 
-const ChangeProfilePhoto = ({ currentProfileUrl }: Props) => {
+const ChangeProfilePhoto = ({ currentProfileUrl, onUploadSuccess }: Props) => {
   const [isFileUploadModalOpen, setIsFileUploadModalOpen] = useState(false);
-  const [profilePictureUrl, setProfilePictureUrl] = useState(currentProfileUrl);
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
   const { mutate } = api.user.updateUserProfilePicture.useMutation();
@@ -38,8 +39,8 @@ const ChangeProfilePhoto = ({ currentProfileUrl }: Props) => {
       mutate(
         { url: newProfilePictureUrl },
         {
-          onSuccess: () => {
-            setProfilePictureUrl(newProfilePictureUrl);
+          onSuccess(data) {
+            onUploadSuccess?.(data);
             enqueueSnackbar("Profile picture updated.", {
               variant: "success",
             });
@@ -69,7 +70,7 @@ const ChangeProfilePhoto = ({ currentProfileUrl }: Props) => {
       <Box p="5px" bgcolor="white" borderRadius="50%">
         <Avatar
           size={isDesktop ? "xxlarge" : "xlarge"}
-          src={profilePictureUrl}
+          src={currentProfileUrl}
         />
       </Box>
 
