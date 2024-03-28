@@ -7,19 +7,68 @@ import {
 } from "~/server/api/trpc";
 
 export const postRouter = createTRPCRouter({
-  getAllPosts: protectedProcedure.query(async ({ ctx }) => {
-    return ctx.db.post.findMany({
-      orderBy: { createdAt: "desc" },
-    });
-  }),
-  getPegenatedPosts: protectedProcedure
-    .input(z.object({ take: z.number().min(0), skip: z.number().min(0) }))
+  getPostById: protectedProcedure
+    .input(z.object({ postId: z.string() }))
     .query(async ({ ctx, input }) => {
-      return ctx.db.post.findMany({
-        take: input.take,
-        skip: input.skip,
-        orderBy: { createdAt: "desc" },
+      return ctx.db.post.findUnique({
+        where: { id: input.postId },
+        include: {
+          createdBy: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+              username: true,
+            },
+          },
+          likes: true,
+          comments: {
+            orderBy: {
+              createdAt: "desc",
+            },
+            include: {
+              user: true,
+            },
+          },
+        },
       });
+    }),
+  getPosts: protectedProcedure
+    .input(
+      z.object({
+        cursor: z.string().nullish(),
+      })
+    )
+    .query(async ({ ctx, input: { cursor } }) => {
+      const limit = 5;
+      const items = await ctx.db.post.findMany({
+        take: limit + 1,
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          createdBy: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+              username: true,
+            },
+          },
+          likes: true,
+          comments: true,
+        },
+      });
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (items.length > limit) {
+        const nextItem = items.pop();
+        nextCursor = nextItem?.id;
+      }
+      return {
+        items,
+        nextCursor,
+      };
     }),
   createPost: protectedProcedure
     .input(z.object({ content: z.string(), image: z.string() }))
