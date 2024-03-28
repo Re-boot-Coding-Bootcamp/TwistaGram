@@ -3,7 +3,7 @@
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { api } from "~/trpc/react";
 import { enqueueSnackbar } from "notistack";
 import type { User } from "@prisma/client";
@@ -16,7 +16,6 @@ interface Props {
 
 const LikeIcon = ({ user, post }: Props): JSX.Element => {
   const { mutateAsync } = api.post.likePost.useMutation();
-  const [displayLikedNumber, setDisplayLikedNumber] = useState(0);
 
   const userLikedPost = post.likes
     .map((object) => object?.userId)
@@ -36,10 +35,6 @@ const LikeIcon = ({ user, post }: Props): JSX.Element => {
     }
   };
 
-  useEffect(() => {
-    setDisplayLikedNumber(post.likes.length);
-  }, [post]);
-
   return (
     <Box display="flex" justifyContent="center" alignItems="center">
       <Tooltip title={userLikedPost ? "Unlike" : "Like"} placement="bottom" arrow>
@@ -47,7 +42,7 @@ const LikeIcon = ({ user, post }: Props): JSX.Element => {
           {userLikedPost ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
       </Tooltip>
-      <Typography color="error">{displayLikedNumber}</Typography>
+      <Typography color="error">{post.likes.length}</Typography>
     </Box>
   );
 };

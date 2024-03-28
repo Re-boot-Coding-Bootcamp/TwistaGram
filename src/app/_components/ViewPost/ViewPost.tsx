@@ -136,12 +136,14 @@ const ViewPost: React.FC<ViewPostProps> = ({
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             {isCurrentUserPost && (
-              <MoreActionsMenu
-                onDelete={function (): void {
-                  throw new Error("Function not implemented.");
-                }}
-                onEdit={toggleEditMode}
-              />
+              <Box onClick={(e) => e.stopPropagation()}>
+                <MoreActionsMenu
+                  onDelete={function (): void {
+                    throw new Error("Function not implemented.");
+                  }}
+                  onEdit={navigateToPostDetails}
+                />
+              </Box>
             )}
           </Box>
           <Box>
@@ -202,10 +204,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
               e.stopPropagation();
             }}
           >
-            <LikeIcon
-              user={currentUser}
-              post={post}
-            />
+            <LikeIcon user={currentUser} post={post} />
             <CommentIcon
               number={post.comments.length}
               onCommentIcon={navigateToPostDetails}
