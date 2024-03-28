@@ -34,13 +34,7 @@ export default function PostDetailsPage({
 
   return (
     <>
-      <ViewPost
-        post={post}
-        currentUser={user}
-        onDelete={function (): void {
-          throw new Error("Function not implemented.");
-        }}
-      />
+      <ViewPost post={post} currentUser={user} />
       <Divider />
       Comments go here
     </>
