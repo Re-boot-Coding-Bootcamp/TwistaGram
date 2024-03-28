@@ -1,143 +1,7 @@
-// import React, { useState } from "react";
-// import {
-//   Box,
-//   Button,
-//   Dialog,
-//   DialogActions,
-//   DialogContent,
-//   DialogTitle,
-//   IconButton,
-//   Snackbar,
-//   TextField,
-//   Typography,
-// } from "@mui/material";
-// import CloseIcon from "@mui/icons-material/Close";
-// import Image from "next/image";
-
-// interface ReplyModalProps {
-//   open: boolean;
-//   onClose: () => void;
-// }
-
-// const ReplyModal: React.FC<ReplyModalProps> = ({ open, onClose }) => {
-//   const [reply, setReply] = useState("");
-//   const [replyPosted, setReplyPosted] = useState(false);
-
-//   const handleReplyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-//     setReply(event.target.value);
-//   };
-
-//   const handleReply = () => {
-//     // Simulating reply submission
-//     setTimeout(() => {
-//       setReplyPosted(true);
-//       setTimeout(() => {
-//         onClose();
-//         setReply("");
-//         setReplyPosted(false);
-//       }, 3000); // Close the modal after 3 seconds
-//     }, 1000); // Simulate delay for reply submission
-//   };
-
-//   const handleCloseSnackbar = () => {
-//     setReplyPosted(false);
-//   };
-
-//   // Format date function using JavaScript's built-in Date object
-//   const formatDate = (date: Date): string => {
-//     const monthNames = [
-//       "Jan",
-//       "Feb",
-//       "Mar",
-//       "Apr",
-//       "May",
-//       "Jun",
-//       "Jul",
-//       "Aug",
-//       "Sep",
-//       "Oct",
-//       "Nov",
-//       "Dec",
-//     ];
-//     const day = date.getDate();
-//     const monthIndex = date.getMonth();
-//     const year = date.getFullYear();
-//     return `${monthNames[monthIndex]} ${day}, ${year}`;
-//   };
-
-//   return (
-//     <>
-//       <Dialog open={open} onClose={onClose} fullWidth>
-//         <DialogTitle>
-//           <IconButton
-//             sx={{ position: "absolute", top: 5, right: 5 }}
-//             onClick={onClose}
-//           >
-//             <CloseIcon />
-//           </IconButton>
-//         </DialogTitle>
-//         <DialogContent>
-//           {/* Replace this with actual post person's avatar, name, username, time of post, and post content */}
-//           <Box sx={{ display: "flex", alignItems: "center", marginBottom: 10 }}>
-//             <Image
-//               src="/avatar.png"
-//               alt="Avatar"
-//               width="50"
-//               height="50"
-//               //   borderRadius="50"
-//               //marginRight="10"
-//             />
-//             <Box>
-//               <Typography>Name</Typography>
-//               <Typography>Username</Typography>
-//               <Typography>{formatDate(new Date())}</Typography>
-//               <Typography>Post content</Typography>
-//             </Box>
-//           </Box>
-//           <TextField
-//             autoFocus
-//             margin="dense"
-//             id="reply"
-//             label="Your Reply"
-//             fullWidth
-//             multiline
-//             rows={4}
-//             value={reply}
-//             onChange={handleReplyChange}
-//           />
-//         </DialogContent>
-//         <DialogActions>
-//           <Button onClick={onClose}>Cancel</Button>
-//           <Button
-//             onClick={handleReply}
-//             variant="contained"
-//             color="primary"
-//             disabled={!reply.trim()}
-//           >
-//             Reply
-//           </Button>
-//         </DialogActions>
-//       </Dialog>
-//       <Snackbar
-//         open={replyPosted}
-//         autoHideDuration={3000}
-//         onClose={handleCloseSnackbar}
-//         message="Your reply was posted!"
-//       />
-//     </>
-//   );
-// };
-
-// export { ReplyModal };
-
+"use client";
 import React, { useState } from "react";
 import {
   Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   IconButton,
   Snackbar,
   TextField,
@@ -147,123 +11,159 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Avatar } from "../Avatar";
-import theme from "~/theme";
+import { CommentIcon } from "../CommentIcon";
+import { Button } from "..";
 
 interface ReplyModalProps {
   name: string;
   userName: string;
-
-  open: boolean;
-  onClose: () => void;
+  postContent: string;
 }
 
 const ReplyModal: React.FC<ReplyModalProps> = ({
-  open,
-  onClose,
   name,
   userName,
+  postContent,
 }) => {
   const [reply, setReply] = useState("");
-  const [replyPosted, setReplyPosted] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [replyAttached, setReplyAttached] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.up("sm"));
 
   const handleReplyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setReply(event.target.value);
+    const replyContent = event.target.value;
+    setReply(replyContent);
+    setReplyAttached(!!replyContent.trim());
   };
 
   const handleReply = () => {
-    // Simulating reply submission
-    setTimeout(() => {
-      setReplyPosted(true);
-      setTimeout(() => {
-        onClose(); // Close the modal after posting reply
-        setReply("");
-        setReplyPosted(false);
-      }, 3000); // Close the modal after 3 seconds
-    }, 1000); // Simulate delay for reply submission
+    setOpen(false);
+    setReply("");
+    setReplyAttached(false);
   };
 
   const handleClose = () => {
-    onClose();
-    setReply(""); // Clear reply when closing
+    setOpen(false);
+    setReply("");
   };
 
-  const handleCloseSnackbar = () => {
-    setReplyPosted(false);
+  const handleToggleModal = () => {
+    setOpen(!open);
   };
 
   return (
     <>
-      <Dialog open={open} onClose={handleClose} fullWidth>
-        <DialogTitle>
-          <IconButton
-            sx={{ position: "absolute", top: 5, right: 5, color: "white" }}
-            onClick={handleClose}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent>
+      {open ? (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "500px",
+            height: "100%",
+            zIndex: 2,
+          }}
+        >
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              marginBottom: 5,
-              gap: 1,
+              width: isMobile ? "100%" : "100vw",
+              height: isMobile ? "100%" : "100vh",
+              padding: "10px",
+              borderRadius: "8px",
+              position: "relative",
+              backgroundColor: theme.palette.grey[50],
             }}
           >
-            <Avatar size={isMobile ? "medium" : "large"} />
-            <Typography>{name}</Typography>
-            <Typography></Typography>
-            <Typography>@{userName}</Typography>
-            <Typography>
-              {new Date().toLocaleDateString("en-US", {
-                month: "short",
-                day: "2-digit",
-                year: "numeric",
-              })}
-            </Typography>
-            <Typography>Post content</Typography>
+            <style>
+              {`
+                #storybook-root {
+                  padding: 0 !important;
+                }
+              `}
+            </style>
+            <IconButton
+              sx={{ position: "absolute", top: 5, right: 5, color: "black" }}
+              onClick={handleClose}
+            >
+              <CloseIcon />
+            </IconButton>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                marginBottom: 1,
+                gap: 1,
+              }}
+            >
+              <Avatar size={isMobile ? "large" : "medium"} />
+              <Typography
+                sx={{ fontSize: isMobile ? 18 : 14, fontWeight: "bold" }}
+              >
+                {name}
+              </Typography>
+              <Typography
+                component="span"
+                noWrap
+                sx={{
+                  fontSize: isMobile ? 18 : 14,
+                  fontWeight: "bold",
+                  color: theme.palette.grey[500],
+                }}
+              >
+                {`@${userName}`}
+              </Typography>
+              <Typography
+                id="dot"
+                sx={{ display: "inline", verticalAlign: "middle" }}
+              >
+                .
+              </Typography>
+              <Typography noWrap>
+                {new Date().toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "2-digit",
+                })}
+              </Typography>
+            </Box>
+            <Box sx={{ wordWrap: "break-word" }}>
+              <Typography>{postContent}</Typography>
+            </Box>
+            <TextField
+              variant="outlined"
+              autoFocus
+              margin="dense"
+              id="reply"
+              label="Your Reply"
+              fullWidth
+              multiline
+              rows={4}
+              value={reply}
+              onChange={handleReplyChange}
+            />
+            <Box sx={{ marginTop: "10px", textAlign: "right" }}>
+              <Button
+                onClick={handleReply}
+                variant="contained"
+                color="primary"
+                disabled={!replyAttached}
+                text={"Reply"}
+              ></Button>
+            </Box>
           </Box>
-
-          <TextField
-            variant="outlined"
-            autoFocus
-            margin="dense"
-            id="reply"
-            label="Your Reply"
-            fullWidth
-            multiline
-            rows={4}
-            value={reply}
-            onChange={handleReplyChange}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button
-            onClick={handleReply}
-            variant="contained"
-            color="primary"
-            disabled={!reply.trim()}
-            sx={{ ml: 1 }}
-          >
-            Reply
-          </Button>
-        </DialogActions>
-      </Dialog>
+        </Box>
+      ) : (
+        <CommentIcon onCommentIcon={handleToggleModal} number={1}></CommentIcon>
+      )}
       <Snackbar
-        open={replyPosted}
+        open={false}
         autoHideDuration={3000}
-        onClose={handleCloseSnackbar}
         message="Your reply was posted!"
       />
     </>
   );
 };
-
-export default ReplyModal;
 
 export { ReplyModal };

@@ -13,7 +13,7 @@ const meta = {
   argTypes: {},
   decorators: [
     (Story) => (
-      <Box width={"350px"}>
+      <Box>
         {}
         <Story />
       </Box>
@@ -25,8 +25,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
-    open: true,
     name: "Muzappar",
     userName: "SlowGTI",
+    postContent:
+      "Testingggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg",
   },
 };
