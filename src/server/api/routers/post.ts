@@ -91,6 +91,11 @@ export const postRouter = createTRPCRouter({
         },
       });
     }),
+  unlikePost: protectedProcedure
+    .input(z.object({ likeId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.like.delete({ where: { id: input.likeId } });
+    }),
   commentOnPost: protectedProcedure
     .input(z.object({ postId: z.string(), comment: z.string() }))
     .mutation(async ({ ctx, input }) => {

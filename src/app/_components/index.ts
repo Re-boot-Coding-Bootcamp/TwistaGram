@@ -25,4 +25,6 @@ export { SearchPage } from "./SearchPage";
 export { LoadingScreen } from "./LoadingScreen";
 export { PostPreviewCard } from "./PostPreviewCard";
 export { ErrorScreen } from "./ErrorScreen";
+export { BackButton } from "./BackButton";
+export { LikeIcon } from "./LikeIcon";
 export { InlineReply } from "./InlineReply";
