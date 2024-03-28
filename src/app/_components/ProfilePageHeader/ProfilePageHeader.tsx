@@ -10,20 +10,18 @@ import {
 import { contentText } from "./contentText";
 import { StyledText } from "../StyledText/StyledTextComponent";
 import { Avatar } from "../Avatar";
+import type { User } from "@prisma/client";
 
 interface ProfilePageHeaderProps {
-  name: string;
-  username: string;
-  bio: string;
-  onEditProfile: () => void;
+  user: User;
+  isCurrentUser?: boolean;
+  onEditProfile?: () => void;
 }
 
 const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
-  name,
-  username,
-  bio,
-
+  user,
   onEditProfile,
+  isCurrentUser = false,
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.up("sm"));
@@ -52,81 +50,68 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
   };
 
   return (
-    <Box
+    <Card
       sx={{
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        height: "100vh",
+        backgroundColor: theme.palette.grey[50],
+        width: "100%",
+        py: 5,
+        borderRadius: 0,
       }}
+      elevation={0}
     >
-      <Card
+      <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
           justifyContent: "center",
-          backgroundColor: theme.palette.grey[50],
-          width: "100%",
-          py: 5,
-          borderRadius: 0,
+          alignItems: "center",
+          width: "fit-content",
+          mb: isMobile ? 4 : 2,
         }}
-        elevation={0}
       >
-        <Typography
-          sx={{
-            fontSize: isMobile ? 22 : 16,
-            fontWeight: "bold",
-            mb: isMobile ? 4 : 2,
-          }}
-        >
-          {contentText(username, 30)}
-        </Typography>
         <Box
           sx={{
+            width: isMobile ? 106 : 66,
+            height: isMobile ? 106 : 66,
+            borderRadius: "50%",
             display: "flex",
-            justifyContent: "center",
             alignItems: "center",
-            width: "fit-content",
-            mb: isMobile ? 4 : 2,
+            justifyContent: "center",
+            backgroundColor: theme.palette.grey[50],
+            border: `1px solid ${theme.palette.grey[400]}`,
+            mr: isMobile ? 4 : 3,
           }}
         >
-          <Box
+          <Avatar
+            size={isMobile ? "xlarge" : "large"}
+            src={user.image ?? undefined}
+          />
+        </Box>
+        <Box>
+          <Typography
+            noWrap
+            sx={{ fontSize: isMobile ? 18 : 14, fontWeight: "bold" }}
+          >
+            {user.name}
+          </Typography>
+          <Typography
+            component="span"
+            noWrap
             sx={{
-              width: isMobile ? 106 : 66,
-              height: isMobile ? 106 : 66,
-              borderRadius: "50%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: theme.palette.grey[50],
-              border: `1px solid ${theme.palette.grey[400]}`,
-              mr: isMobile ? 4 : 3,
+              fontSize: isMobile ? 18 : 14,
+              fontWeight: "bold",
+              color: theme.palette.grey[500],
             }}
           >
-            <Avatar size={isMobile ? "xlarge" : "large"} />
-          </Box>
-          <Box>
-            <Typography
-              noWrap
-              sx={{ fontSize: isMobile ? 18 : 14, fontWeight: "bold" }}
-            >
-              {`${contentText(name, 15)} `}
-              <Typography
-                component="span"
-                noWrap
-                sx={{
-                  fontSize: isMobile ? 18 : 14,
-                  fontWeight: "bold",
-                  color: theme.palette.grey[500],
-                }}
-              >
-                @{contentText(username, 12)}
-              </Typography>
-            </Typography>
-            {renderBio(bio)}
-          </Box>
+            {`@${user.username}`}
+          </Typography>
+          {renderBio(user.bio ?? "")}
         </Box>
+      </Box>
+      {isCurrentUser && (
         <Button
           variant="outlined"
           onClick={onEditProfile}
@@ -141,8 +126,8 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
         >
           Edit Profile
         </Button>
-      </Card>
-    </Box>
+      )}
+    </Card>
   );
 };
 

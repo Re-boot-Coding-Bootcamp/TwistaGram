@@ -1,20 +1,73 @@
-import { unstable_noStore as noStore } from "next/cache";
-import Link from "next/link";
+"use client";
 
-import { getServerAuthSession } from "~/server/auth";
+import { api } from "~/trpc/react";
+import { Button, ErrorScreen, LoadingScreen, ViewPost } from "./_components";
+import { Fragment, useCallback, useEffect, useState } from "react";
+import type { HomePagePost } from "~/types";
+import { Divider } from "@mui/material";
+import { uniqBy } from "lodash";
 
-export default async function Home() {
-  noStore();
+export default function Home() {
+  const [page, setPage] = useState(0);
+  const [posts, setPosts] = useState<HomePagePost[]>([]);
 
-  const session = await getServerAuthSession();
+  const { data, isFetching, fetchNextPage } =
+    api.post.getPosts.useInfiniteQuery(
+      {},
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+        refetchOnWindowFocus: false,
+      }
+    );
+
+  const { data: user, isFetching: isFetchingUser } =
+    api.user.getCurrentUser.useQuery(undefined, {
+      refetchOnWindowFocus: false,
+    });
+
+  const handleFetchNextPage = useCallback(() => {
+    void fetchNextPage();
+    setPage((prev) => prev + 1);
+  }, [fetchNextPage]);
+
+  useEffect(() => {
+    const newItems = data?.pages[page]?.items;
+
+    if (newItems) {
+      setPosts((prev) => {
+        const combinedPosts = [...prev, ...newItems];
+        return uniqBy(combinedPosts, "id");
+      });
+    }
+  }, [data, handleFetchNextPage, page]);
+
+  if (isFetching || isFetchingUser) {
+    return <LoadingScreen />;
+  }
+
+  if (!data || !user) {
+    return <ErrorScreen />;
+  }
 
   return (
-    <div>
-      <div>{session && <span>Logged in as {session.user?.name}</span>}</div>
+    <>
+      {posts.map((post) => {
+        return (
+          <Fragment key={post.id}>
+            <ViewPost post={post} currentUser={user} />
+            <Divider />
+          </Fragment>
+        );
+      })}
 
-      <Link href={session ? "/api/auth/signout" : "/api/auth/signin"}>
-        {session ? "Sign out" : "Sign in"}
-      </Link>
-    </div>
+      {data?.pages[page]?.nextCursor && (
+        <Button
+          text="Show more"
+          variant="text"
+          color="inherit"
+          onClick={handleFetchNextPage}
+        />
+      )}
+    </>
   );
 }
