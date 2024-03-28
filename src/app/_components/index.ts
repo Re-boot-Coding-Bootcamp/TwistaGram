@@ -23,3 +23,5 @@ export { CommentIcon } from "./CommentIcon";
 export { ChangeProfilePhoto } from "./ChangeProfilePhoto";
 export { LoadingScreen } from "./LoadingScreen";
 export { ErrorScreen } from "./ErrorScreen";
+export { InlineReply } from "./InlineReply";
+
