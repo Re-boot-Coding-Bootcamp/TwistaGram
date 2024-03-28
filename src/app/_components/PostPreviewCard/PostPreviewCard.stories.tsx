@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 
 const meta: Meta<typeof PostPreviewCard> = {
     title: "Authentication/PostPreviewCard",
-    component: PostPreviewCard
+    component: PostPreviewCard,
     parameters: {
       layout: "centered",
     },
@@ -23,9 +23,11 @@ const meta: Meta<typeof PostPreviewCard> = {
   
   export const Default: Story = {
     args: {
-      name: "ABC",
+      name: "Ayy",
       username: "abc",
       postedTime: "1hr ago",
+      // textContent: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Libero similique culpa, praesentium distinctio explicabo ratione vel sed magnam, debitis, iusto sapiente quam dignissimos minima odio nisi perspiciatis sit itaque? Earum."
+      imageUrl: "hello.jpg"
       },
     };
   
