@@ -23,6 +23,6 @@ export { CommentIcon } from "./CommentIcon";
 export { ChangeProfilePhoto } from "./ChangeProfilePhoto";
 export { SearchPage } from "./SearchPage";
 export { LoadingScreen } from "./LoadingScreen";
+export { PostPreviewCard } from "./PostPreviewCard";
 export { ErrorScreen } from "./ErrorScreen";
 export { InlineReply } from "./InlineReply";
-
