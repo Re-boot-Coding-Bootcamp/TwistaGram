@@ -19,7 +19,7 @@ const PostPreviewCard = ({
   textContent,
   imageUrl,
 }: PostPreviewCardProps): JSX.Element => {
-    // const [first, setfirst] = useState(second)
+  // const [first, setfirst] = useState(second)
   const onPostPreviewClick = () => {
     //to do later
   };
@@ -31,14 +31,18 @@ const PostPreviewCard = ({
       justifyContent="center"
       gap={1}
     >
-      <Avatar size="large" />
+      <Box id="avatar" mr={2}>
+        <Avatar size="large" />
+      </Box>
+      <Box id="name-container" display="flex" alignItems="center">
+        <Typography sx={{ fontWeight: "medium" }}>{name}</Typography>
+      </Box>
       <Box>
         <Box
           display="flex"
           alignItems={textContent ? "center" : "flex-start"}
           gap={1}
         >
-          <Typography sx={{ fontWeight: "medium" }}>{name}</Typography>
           <Typography sx={{ fontWeight: "medium" }}>{username}</Typography>
           <Typography sx={{ fontWeight: "medium" }}>{postedTime}</Typography>
         </Box>
@@ -56,9 +60,7 @@ const PostPreviewCard = ({
           </Typography>
         )}
       </Box>
-      <Typography>
-        {imageUrl}
-      </Typography>
+      <Typography>{imageUrl}</Typography>
     </Box>
   );
 };
