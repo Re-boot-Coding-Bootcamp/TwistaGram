@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { BackButton } from "./BackButton";
 
 const meta = {
-  title: "Common/BackButton",
+  title: "Component/BackButton",
   component: BackButton,
   tags: ["autodocs"],
 } satisfies Meta<typeof BackButton>;
@@ -14,7 +14,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     onBack: () => {
-      alert("Back button clicked")
+      alert("Back button clicked");
     },
   },
 };
