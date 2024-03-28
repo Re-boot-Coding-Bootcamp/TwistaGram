@@ -72,7 +72,6 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          //width: "fit-content",
           maxWidth,
           mb: isMobile ? 4 : 2,
         }}
