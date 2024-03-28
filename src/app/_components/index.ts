@@ -24,3 +24,4 @@ export { ChangeProfilePhoto } from "./ChangeProfilePhoto";
 export { LoadingScreen } from "./LoadingScreen";
 export { ErrorScreen } from "./ErrorScreen";
 export { BackButton } from "./BackButton";
+export { LikeIcon } from "./LikeIcon";
