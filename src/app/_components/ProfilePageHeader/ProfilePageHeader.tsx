@@ -117,7 +117,7 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           >
             {`@${user.username}`}
           </Typography>
-          {renderBio(user.bio ?? "")}
+          <Box sx={{ width: 95 }}>{renderBio(user.bio ?? "")}</Box>
         </Box>
       </Box>
       {isCurrentUser && (
