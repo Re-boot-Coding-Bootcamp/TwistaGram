@@ -2,166 +2,145 @@
 import React, { useState } from "react";
 import {
   Box,
-  IconButton,
-  Snackbar,
-  TextField,
+  Button,
+  CircularProgress,
+  Input,
+  Modal,
+  Paper,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import { Avatar } from "../Avatar";
-import { CommentIcon } from "../CommentIcon";
-import { Button } from "..";
+import theme from "~/theme";
 
 interface ReplyModalProps {
-  name: string;
-  userName: string;
-  postContent: string;
+  userImage: string | undefined;
+  handleReply: (content: string) => Promise<void>;
 }
 
 const ReplyModal: React.FC<ReplyModalProps> = ({
-  name,
-  userName,
-  postContent,
-}) => {
-  const [reply, setReply] = useState("");
+  userImage,
+  handleReply,
+}: ReplyModalProps) => {
   const [open, setOpen] = useState(false);
-  const [replyAttached, setReplyAttached] = useState(false);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.up("sm"));
+  const [replyText, setReplyText] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleReplyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const replyContent = event.target.value;
-    setReply(replyContent);
-    setReplyAttached(!!replyContent.trim());
+  const handleReplySubmit = async () => {
+    const content = replyText.trim();
+    if (content.length > 0) {
+      setIsLoading(true);
+      await handleReply(content);
+      handleModalClose();
+      setIsLoading(false);
+    }
   };
 
-  const handleReply = () => {
+  const handleKeyDown = async (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      await handleReplySubmit();
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setReplyText(e.target.value);
+  };
+
+  const handleModalClose = () => {
     setOpen(false);
-    setReply("");
-    setReplyAttached(false);
+    setReplyText("");
   };
 
-  const handleClose = () => {
-    setOpen(false);
-    setReply("");
-  };
-
-  const handleToggleModal = () => {
+  const handleModalOpen = () => {
     setOpen(!open);
   };
 
   return (
     <>
-      {open ? (
+      <Box
+        onClick={handleModalOpen}
+        display="flex"
+        alignItems="center"
+        gap={1}
+        sx={{
+          p: 1,
+          borderRadius: 2,
+          cursor: "pointer",
+          "&:hover": {
+            backgroundColor: (theme) => theme.palette.grey[100],
+          },
+        }}
+      >
+        <Avatar size="medium" src={userImage} />
+        <Typography variant="subtitle1" color={theme.palette.text.disabled}>
+          Enter your comment here...
+        </Typography>
+      </Box>
+      <Modal
+        open={open}
+        onClose={handleModalClose}
+        aria-labelledby="reply-modal-title"
+        aria-describedby="reply-modal-description"
+      >
         <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "500px",
-            height: "100%",
-            zIndex: 2,
-          }}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
         >
-          <Box
+          <Paper
+            elevation={3}
             sx={{
-              width: isMobile ? "100%" : "100vw",
-              height: isMobile ? "100%" : "100vh",
-              padding: "10px",
-              borderRadius: "8px",
-              position: "relative",
-              backgroundColor: theme.palette.grey[50],
+              px: 2,
+              py: 3,
+              width: "400px",
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
             }}
           >
-            <style>
-              {`
-                #storybook-root {
-                  padding: 0 !important;
-                }
-              `}
-            </style>
-            <IconButton
-              sx={{ position: "absolute", top: 5, right: 5, color: "black" }}
-              onClick={handleClose}
-            >
-              <CloseIcon />
-            </IconButton>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                marginBottom: 1,
-                gap: 1,
-              }}
-            >
-              <Avatar size={isMobile ? "large" : "medium"} />
-              <Typography
-                sx={{ fontSize: isMobile ? 18 : 14, fontWeight: "bold" }}
-              >
-                {name}
-              </Typography>
-              <Typography
-                component="span"
-                noWrap
-                sx={{
-                  fontSize: isMobile ? 18 : 14,
-                  fontWeight: "bold",
-                  color: theme.palette.grey[500],
+            <Box display="flex" gap={2}>
+              <Avatar size="medium" src={userImage} />
+              <Input
+                type="text"
+                placeholder="Enter your comment here..."
+                value={replyText}
+                multiline
+                maxRows={5}
+                onChange={handleChange}
+                onKeyDown={handleKeyDown}
+                style={{ width: "100%" }}
+                inputProps={{
+                  maxLength: 250,
                 }}
-              >
-                {`@${userName}`}
-              </Typography>
-              <Typography
-                id="dot"
-                sx={{ display: "inline", verticalAlign: "middle" }}
-              >
-                .
-              </Typography>
-              <Typography noWrap>
-                {new Date().toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "2-digit",
-                })}
-              </Typography>
+              />
             </Box>
-            <Box sx={{ wordWrap: "break-word" }}>
-              <Typography>{postContent}</Typography>
-            </Box>
-            <TextField
-              variant="outlined"
-              autoFocus
-              margin="dense"
-              id="reply"
-              label="Your Reply"
-              fullWidth
-              multiline
-              rows={4}
-              value={reply}
-              onChange={handleReplyChange}
-            />
-            <Box sx={{ marginTop: "10px", textAlign: "right" }}>
+            <Box
+              id="reply-modal-actions-row"
+              display="flex"
+              justifyContent="end"
+              alignItems="center"
+              gap={1}
+            >
+              <Button variant="outlined" onClick={handleModalClose}>
+                Cancel
+              </Button>
               <Button
-                onClick={handleReply}
                 variant="contained"
-                color="primary"
-                disabled={!replyAttached}
-                text={"Reply"}
-              ></Button>
+                onClick={handleReplySubmit}
+                disabled={isLoading || replyText.trim().length === 0}
+                startIcon={
+                  isLoading ? (
+                    <CircularProgress size={16} color="inherit" />
+                  ) : null
+                }
+              >
+                {isLoading ? "Commenting" : "Comment"}
+              </Button>
             </Box>
-          </Box>
+          </Paper>
         </Box>
-      ) : (
-        <CommentIcon onCommentIcon={handleToggleModal} number={1}></CommentIcon>
-      )}
-      <Snackbar
-        open={false}
-        autoHideDuration={3000}
-        message="Your reply was posted!"
-      />
+      </Modal>
     </>
   );
 };

@@ -19,6 +19,7 @@ export { MoreActionsMenu } from "./MoreActionsMenu";
 export { DeletePostComment } from "./DeletePostComment";
 export { UserIcon } from "./UserIcon";
 export { ViewPost } from "./ViewPost";
+export { ViewComment } from "./ViewComment";
 export { CommentIcon } from "./CommentIcon";
 export { ChangeProfilePhoto } from "./ChangeProfilePhoto";
 export { SearchPage } from "./SearchPage";

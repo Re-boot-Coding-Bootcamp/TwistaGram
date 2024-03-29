@@ -12,26 +12,29 @@ import {
 } from "@mui/material";
 import { ImageContainer } from "../ImageContainer";
 import { Avatar } from "../Avatar";
-import type { User } from "@prisma/client";
-import type { HomePagePost } from "~/types";
+import type { Comment, User } from "@prisma/client";
 import { CommentIcon, LikeIcon, MoreActionsMenu } from "..";
 import { useRouter } from "next/navigation";
 
-interface ViewPostProps {
-  currentUser: User;
-  post: HomePagePost;
-  containerHover?: boolean;
+interface CommentWithUser extends Comment {
+  user: {
+    name: string | null;
+    image: string | null;
+    id: string;
+    username: string | null;
+  };
 }
 
-const ViewPost: React.FC<ViewPostProps> = ({
-  currentUser,
-  post,
-  containerHover,
-}) => {
+interface ViewCommentProps {
+  currentUser: User;
+  comment: CommentWithUser;
+}
+
+const ViewComment: React.FC<ViewCommentProps> = ({ currentUser, comment }) => {
   const theme = useTheme();
   const router = useRouter();
   const [editMode, setEditMode] = useState(false);
-  const [editedText, setEditedText] = useState(post.content);
+  const [editedText, setEditedText] = useState(comment.comment);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedText(e.target.value);
@@ -40,14 +43,10 @@ const ViewPost: React.FC<ViewPostProps> = ({
     setEditMode(false);
   };
 
-  const isCurrentUserPost = currentUser.id === post.createdById;
+  const isCurrentUserPost = currentUser.id === comment.userId;
 
   const navigateToUserProfile = () => {
-    router.push(`/profile/${post.createdBy.id}`);
-  };
-
-  const navigateToPostDetails = () => {
-    router.push(`/post/${post.id}`);
+    router.push(`/profile/${comment.userId}`);
   };
 
   return (
@@ -61,21 +60,16 @@ const ViewPost: React.FC<ViewPostProps> = ({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        cursor: containerHover ? "pointer" : "default",
-        "&:hover": {
-          backgroundColor: containerHover ? theme.palette.action.hover : "none",
-        },
       }}
       elevation={0}
-      onClick={containerHover ? navigateToPostDetails : undefined}
     >
       <Box id="profile-container" sx={{ display: "flex", width: "100%" }}>
-        <Box id="avatar" mr={2}>
+        <Box id="avatar" mr={1}>
           <Avatar
-            size="large"
+            size="medium"
             onClick={navigateToUserProfile}
             style={{ cursor: "pointer" }}
-            src={post.createdBy.image ?? undefined}
+            src={comment.user.image ?? undefined}
           />
         </Box>
         <Box
@@ -107,7 +101,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
                   cursor: "pointer",
                 }}
               >
-                {post.createdBy.name}
+                {comment.user.name}
               </Typography>
               <Typography
                 id="username"
@@ -117,7 +111,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
                   cursor: "pointer",
                 }}
               >
-                @{post.createdBy.username}
+                @{comment.user.username}
               </Typography>
             </Box>
             <Box
@@ -136,7 +130,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
                   color: theme.palette.text.disabled,
                 }}
               >
-                {formatDistanceToNowStrict(post.createdAt, {
+                {formatDistanceToNowStrict(comment.createdAt, {
                   addSuffix: true,
                 })}
               </Typography>
@@ -148,7 +142,9 @@ const ViewPost: React.FC<ViewPostProps> = ({
                   onDelete={function (): void {
                     throw new Error("Function not implemented.");
                   }}
-                  onEdit={navigateToPostDetails}
+                  onEdit={() => {
+                    // TODO: Implement edit functionality
+                  }}
                 />
               </Box>
             )}
@@ -192,17 +188,12 @@ const ViewPost: React.FC<ViewPostProps> = ({
                     maxWidth: "100%",
                   }}
                 >
-                  {post.content}
+                  {comment.comment}
                 </Typography>
-                {post.image && (
-                  <Box my={1}>
-                    <ImageContainer imageUrl={post.image} />
-                  </Box>
-                )}
               </>
             )}
           </Box>
-          <Box
+          {/* <Box
             id="like-comment-container"
             sx={{
               display: "flex",
@@ -216,15 +207,11 @@ const ViewPost: React.FC<ViewPostProps> = ({
             }}
           >
             <LikeIcon user={currentUser} post={post} />
-            <CommentIcon
-              number={post.comments.length}
-              onCommentIcon={navigateToPostDetails}
-            />
-          </Box>
+          </Box> */}
         </Box>
       </Box>
     </Card>
   );
 };
 
-export { ViewPost };
+export { ViewComment };

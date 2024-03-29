@@ -5,3 +5,5 @@ export type PostContent =
   | { content: string; image?: File };
 
 export type HomePagePost = RouterOutputs["post"]["getPosts"]["items"][0];
+
+export type DetailedPost = RouterOutputs["post"]["getPostById"];

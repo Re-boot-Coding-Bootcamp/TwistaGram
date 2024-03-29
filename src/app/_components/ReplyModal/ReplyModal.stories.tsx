@@ -25,9 +25,13 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
-    name: "Muzappar",
-    userName: "SlowGTI",
-    postContent:
-      "Testingggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg",
+    handleReply: async (content: string) => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          console.log(content);
+          resolve();
+        }, 1000);
+      });
+    },
   },
 };
