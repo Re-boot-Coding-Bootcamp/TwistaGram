@@ -16,18 +16,24 @@ import type { User } from "@prisma/client";
 import type { HomePagePost } from "~/types";
 import { CommentIcon, LikeIcon, MoreActionsMenu } from "..";
 import { useRouter } from "next/navigation";
+import { api } from "~/trpc/react";
+import { enqueueSnackbar } from "notistack";
 
 interface ViewPostProps {
   currentUser: User;
   post: HomePagePost;
   containerHover?: boolean;
+  onAfterDelete?: (deletedPostId: string) => void;
 }
 
 const ViewPost: React.FC<ViewPostProps> = ({
   currentUser,
   post,
   containerHover,
+  onAfterDelete,
 }) => {
+  const { mutateAsync: deletePost } = api.post.deletePost.useMutation();
+
   const theme = useTheme();
   const router = useRouter();
   const [editMode, setEditMode] = useState(false);
@@ -48,6 +54,15 @@ const ViewPost: React.FC<ViewPostProps> = ({
 
   const navigateToPostDetails = () => {
     router.push(`/post/${post.id}`);
+  };
+
+  const handleDeletePost = async () => {
+    try {
+      await deletePost({ postId: post.id });
+      onAfterDelete?.(post.id);
+    } catch (error) {
+      enqueueSnackbar("Failed to delete post", { variant: "error" });
+    }
   };
 
   return (
@@ -106,6 +121,8 @@ const ViewPost: React.FC<ViewPostProps> = ({
                 sx={{
                   cursor: "pointer",
                 }}
+                maxWidth={"150px"}
+                noWrap
               >
                 {post.createdBy.name}
               </Typography>
@@ -145,9 +162,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
             {isCurrentUserPost && (
               <Box onClick={(e) => e.stopPropagation()}>
                 <MoreActionsMenu
-                  onDelete={function (): void {
-                    throw new Error("Function not implemented.");
-                  }}
+                  onDelete={handleDeletePost}
                   onEdit={navigateToPostDetails}
                 />
               </Box>

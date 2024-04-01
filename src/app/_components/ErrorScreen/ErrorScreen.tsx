@@ -14,7 +14,7 @@ const ErrorScreen = (): JSX.Element => {
         gap={1}
       >
         <WarningAmberIcon color="inherit" />
-        <>Somethibg went wrong</>
+        <>Something went wrong</>
       </Typography>
     </Box>
   );

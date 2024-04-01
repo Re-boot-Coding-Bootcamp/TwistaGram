@@ -11,7 +11,7 @@ export default function Home() {
   const [page, setPage] = useState(0);
   const [posts, setPosts] = useState<HomePagePost[]>([]);
 
-  const { data, isFetching, fetchNextPage } =
+  const { data, isFetching, refetch, fetchNextPage } =
     api.post.getPosts.useInfiniteQuery(
       {},
       {
@@ -41,6 +41,11 @@ export default function Home() {
     }
   }, [data, handleFetchNextPage, page]);
 
+  const handleAfterDeletePost = (deletedPostId: string) => {
+    void refetch();
+    // setPosts((prev) => prev.filter((post) => deletedPostId !== post.id));
+  };
+
   if (isFetching || isFetchingUser) {
     return <LoadingScreen />;
   }
@@ -54,7 +59,12 @@ export default function Home() {
       {posts.map((post) => {
         return (
           <Fragment key={post.id}>
-            <ViewPost post={post} currentUser={user} containerHover={true} />
+            <ViewPost
+              post={post}
+              currentUser={user}
+              containerHover={true}
+              onAfterDelete={handleAfterDeletePost}
+            />
             <Divider />
           </Fragment>
         );

@@ -127,6 +127,8 @@ export const postRouter = createTRPCRouter({
       if (post.createdBy.id !== ctx.session.user.id) {
         throw new Error("You don't have permission to delete this post");
       }
+      await ctx.db.like.deleteMany({ where: { postId: input.postId } });
+      await ctx.db.comment.deleteMany({ where: { postId: input.postId } });
       return ctx.db.post.delete({ where: { id: input.postId } });
     }),
 });
