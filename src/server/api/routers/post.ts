@@ -47,7 +47,7 @@ export const postRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input: { cursor } }) => {
-      const limit = 5;
+      const limit = 25;
       const items = await ctx.db.post.findMany({
         take: limit + 1,
         cursor: cursor ? { id: cursor } : undefined,

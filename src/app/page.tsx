@@ -5,7 +5,7 @@ import { Button, ErrorScreen, LoadingScreen, ViewPost } from "./_components";
 import { Fragment, useCallback, useEffect, useState } from "react";
 import type { HomePagePost } from "~/types";
 import { Divider } from "@mui/material";
-import { uniqBy } from "lodash";
+import { sortBy, uniqBy } from "lodash";
 
 export default function Home() {
   const [page, setPage] = useState(0);
@@ -19,6 +19,9 @@ export default function Home() {
         refetchOnWindowFocus: false,
       }
     );
+
+  console.log("==> posts", posts);
+  console.log("==> data", isFetching, data);
 
   const { data: user, isFetching: isFetchingUser } =
     api.user.getCurrentUser.useQuery(undefined, {
@@ -36,7 +39,9 @@ export default function Home() {
     if (newItems) {
       setPosts((prev) => {
         const combinedPosts = [...prev, ...newItems];
-        return uniqBy(combinedPosts, "id");
+        const uniquePosts = uniqBy(combinedPosts, "id");
+        const sortedPosts = sortBy(uniquePosts, "createdAt").reverse();
+        return sortedPosts;
       });
     }
   }, [data, handleFetchNextPage, page]);
