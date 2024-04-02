@@ -79,7 +79,12 @@ export default function PostDetailsPage({
       <Divider />
       {post.comments.map((comment) => {
         return (
-          <ViewComment key={comment.id} currentUser={user} comment={comment} />
+          <ViewComment
+            key={comment.id}
+            currentUser={user}
+            comment={comment}
+            onAfterDelete={refetchPost}
+          />
         );
       })}
     </>

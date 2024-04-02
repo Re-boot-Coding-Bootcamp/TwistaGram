@@ -131,4 +131,19 @@ export const postRouter = createTRPCRouter({
       await ctx.db.comment.deleteMany({ where: { postId: input.postId } });
       return ctx.db.post.delete({ where: { id: input.postId } });
     }),
+  deleteComment: protectedProcedure
+    .input(z.object({ commentId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const comment = await ctx.db.comment.findUnique({
+        where: { id: input.commentId },
+        select: { id: true, userId: true },
+      });
+      if (!comment) {
+        throw new Error("Comment not found");
+      }
+      if (comment.userId !== ctx.session.user.id) {
+        throw new Error("You don't have permission to delete this comment");
+      }
+      return ctx.db.comment.delete({ where: { id: input.commentId } });
+    }),
 });

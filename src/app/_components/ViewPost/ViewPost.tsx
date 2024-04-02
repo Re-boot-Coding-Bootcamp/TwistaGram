@@ -254,12 +254,14 @@ const ViewPost: React.FC<ViewPostProps> = ({
         </Box>
       </Card>
 
-      <DeletePostComment
-        type={"Post"}
-        open={deletePostModalOpen}
-        setOpen={setDeletePostModalOpen}
-        onDeleteClick={handleDeletePost}
-      />
+      {deletePostModalOpen && (
+        <DeletePostComment
+          type={"Post"}
+          open={deletePostModalOpen}
+          setOpen={setDeletePostModalOpen}
+          onDeleteClick={handleDeletePost}
+        />
+      )}
     </>
   );
 };
