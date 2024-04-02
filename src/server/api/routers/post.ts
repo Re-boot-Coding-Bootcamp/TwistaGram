@@ -74,6 +74,46 @@ export const postRouter = createTRPCRouter({
         nextCursor,
       };
     }),
+  getPostsForCurrentUser: protectedProcedure
+    .input(
+      z.object({
+        cursor: z.string().nullish(),
+      })
+    )
+    .query(async ({ ctx, input: { cursor } }) => {
+      const limit = 25;
+      const items = await ctx.db.post.findMany({
+        take: limit + 1,
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: {
+          createdAt: "desc",
+        },
+        where: {
+          createdBy: { id: ctx.session.user.id },
+        },
+        include: {
+          createdBy: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+              username: true,
+            },
+          },
+          likes: true,
+          comments: true,
+        },
+      });
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (items.length > limit) {
+        const nextItem = items.pop();
+        nextCursor = nextItem?.id;
+      }
+      return {
+        items,
+        nextCursor,
+      };
+    }),
   createPost: protectedProcedure
     .input(z.object({ content: z.string(), image: z.string() }))
     .mutation(async ({ ctx, input }) => {
