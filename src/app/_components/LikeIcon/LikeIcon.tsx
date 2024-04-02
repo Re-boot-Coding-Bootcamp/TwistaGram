@@ -29,7 +29,10 @@ const LikeIcon = ({ user, post, onAfterLike }: Props): JSX.Element => {
     if (likeObject) {
       try {
         setLikesCount((prev) => prev - 1);
-        const unlikeResult = await mutateUnlike({ likeId: likeObject.id });
+        const unlikeResult = await mutateUnlike({
+          likeId: likeObject.id,
+          postOwnerId: post.createdBy.id,
+        });
         onAfterLike?.(unlikeResult, false);
         setLikeObject(undefined);
       } catch (error) {
@@ -40,7 +43,10 @@ const LikeIcon = ({ user, post, onAfterLike }: Props): JSX.Element => {
     } else {
       try {
         setLikesCount((prev) => prev + 1);
-        const newLikeObject = await mutateLike({ postId: post.id });
+        const newLikeObject = await mutateLike({
+          postId: post.id,
+          postOwnerId: post.createdBy.id,
+        });
         onAfterLike?.(newLikeObject, true);
         setLikeObject(newLikeObject);
       } catch (error) {

@@ -29,12 +29,14 @@ interface CommentWithUser extends Comment {
 interface ViewCommentProps {
   currentUser: User;
   comment: CommentWithUser;
+  postOwnerId: string;
   onAfterDelete?: () => void;
 }
 
 const ViewComment: React.FC<ViewCommentProps> = ({
   currentUser,
   comment,
+  postOwnerId,
   onAfterDelete,
 }) => {
   const theme = useTheme();
@@ -61,7 +63,7 @@ const ViewComment: React.FC<ViewCommentProps> = ({
 
   const handleDeleteComment = async () => {
     try {
-      await deleteComment({ commentId: comment.id });
+      await deleteComment({ commentId: comment.id, postOwnerId: postOwnerId });
       onAfterDelete?.();
     } catch (error) {
       enqueueSnackbar("Failed to delete comment", { variant: "error" });

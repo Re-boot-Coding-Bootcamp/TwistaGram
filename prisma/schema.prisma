@@ -75,8 +75,8 @@ model Message {
 
 model Notification {
     id          String   @id @default(uuid())
-    type        String // Consider using an ENUM type if your database supports it
-    referenceId String // Generic reference ID, could be postId, userId, etc.
+    type        String
+    referenceId String
     read        Boolean  @default(false)
     createdAt   DateTime @default(now())
 

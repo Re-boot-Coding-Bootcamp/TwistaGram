@@ -1,10 +1,6 @@
 import { z } from "zod";
 
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  // publicProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const postRouter = createTRPCRouter({
   getPostById: protectedProcedure
@@ -89,30 +85,74 @@ export const postRouter = createTRPCRouter({
       });
     }),
   likePost: protectedProcedure
-    .input(z.object({ postId: z.string() }))
+    .input(z.object({ postId: z.string(), postOwnerId: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      return ctx.db.like.create({
+      const like = await ctx.db.like.create({
         data: {
           post: { connect: { id: input.postId } },
           user: { connect: { id: ctx.session.user.id } },
         },
       });
+
+      if (like) {
+        await ctx.db.notification.create({
+          data: {
+            type: "LIKE",
+            referenceId: input.postId,
+            read: false,
+            user: { connect: { id: input.postOwnerId } },
+          },
+        });
+      }
+
+      return like;
     }),
   unlikePost: protectedProcedure
-    .input(z.object({ likeId: z.string() }))
+    .input(z.object({ likeId: z.string(), postOwnerId: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      return ctx.db.like.delete({ where: { id: input.likeId } });
+      const likeObj = await ctx.db.like.delete({ where: { id: input.likeId } });
+
+      if (likeObj) {
+        await ctx.db.notification.deleteMany({
+          where: {
+            type: "LIKE",
+            referenceId: likeObj.postId,
+            userId: input.postOwnerId,
+          },
+        });
+      }
+
+      return likeObj;
     }),
   commentOnPost: protectedProcedure
-    .input(z.object({ postId: z.string(), comment: z.string() }))
+    .input(
+      z.object({
+        postId: z.string(),
+        comment: z.string(),
+        postOwnerId: z.string(),
+      })
+    )
     .mutation(async ({ ctx, input }) => {
-      return ctx.db.comment.create({
+      const comment = await ctx.db.comment.create({
         data: {
           comment: input.comment,
           post: { connect: { id: input.postId } },
           user: { connect: { id: ctx.session.user.id } },
         },
       });
+
+      if (comment) {
+        await ctx.db.notification.create({
+          data: {
+            type: "COMMENT",
+            referenceId: input.postId,
+            read: false,
+            user: { connect: { id: input.postOwnerId } },
+          },
+        });
+      }
+
+      return comment;
     }),
   deletePost: protectedProcedure
     .input(z.object({ postId: z.string() }))
@@ -132,7 +172,7 @@ export const postRouter = createTRPCRouter({
       return ctx.db.post.delete({ where: { id: input.postId } });
     }),
   deleteComment: protectedProcedure
-    .input(z.object({ commentId: z.string() }))
+    .input(z.object({ commentId: z.string(), postOwnerId: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const comment = await ctx.db.comment.findUnique({
         where: { id: input.commentId },
@@ -144,6 +184,18 @@ export const postRouter = createTRPCRouter({
       if (comment.userId !== ctx.session.user.id) {
         throw new Error("You don't have permission to delete this comment");
       }
-      return ctx.db.comment.delete({ where: { id: input.commentId } });
+      const deletedComment = await ctx.db.comment.delete({
+        where: { id: input.commentId },
+      });
+
+      if (deletedComment) {
+        await ctx.db.notification.deleteMany({
+          where: {
+            type: "COMMENT",
+            referenceId: deletedComment.postId,
+            userId: input.postOwnerId,
+          },
+        });
+      }
     }),
 });

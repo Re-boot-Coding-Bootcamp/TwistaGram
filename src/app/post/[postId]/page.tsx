@@ -71,6 +71,7 @@ export default function PostDetailsPage({
             await addComment({
               postId: post.id,
               comment,
+              postOwnerId: post.createdBy.id,
             });
             void refetchPost();
           }}
@@ -83,6 +84,7 @@ export default function PostDetailsPage({
             key={comment.id}
             currentUser={user}
             comment={comment}
+            postOwnerId={post.createdBy.id}
             onAfterDelete={refetchPost}
           />
         );
