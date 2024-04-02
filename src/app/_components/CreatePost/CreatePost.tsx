@@ -9,7 +9,13 @@ import {
   CircularProgress,
 } from "@mui/material";
 import ImageIcon from "@mui/icons-material/Image";
-import { type ChangeEvent, useEffect, useState, useRef } from "react";
+import {
+  type ChangeEvent,
+  useEffect,
+  useState,
+  useRef,
+  type KeyboardEventHandler,
+} from "react";
 import {
   VisuallyHiddenInput,
   Avatar,
@@ -48,6 +54,13 @@ function CreatePost({ userImage, onPostSubmit }: CreatePostProps) {
     setFile(undefined);
     setImageUrl(undefined);
     setIsPosting(false);
+  };
+
+  const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (e) => {
+    if (e.key === "Enter" && e.ctrlKey) {
+      e.preventDefault();
+      void handlePostClick();
+    }
   };
 
   const handleEmojiChange = (emojiData: EmojiClickData) => {
@@ -117,6 +130,7 @@ function CreatePost({ userImage, onPostSubmit }: CreatePostProps) {
             setPostContent(e.target.value);
           }}
           disabled={isPosting}
+          onKeyDown={handleKeyDown}
         />
 
         {file && imageUrl && (

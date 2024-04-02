@@ -72,6 +72,7 @@ const CreateUpdateProfileForm = ({
           label="Name"
           fullWidth
           value={name}
+          inputProps={{ maxLength: 72 }}
           onChange={(e) => {
             setErrorName(false);
             setName(e.target.value);

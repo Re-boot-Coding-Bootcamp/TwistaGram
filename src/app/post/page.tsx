@@ -8,8 +8,11 @@ import { useUploadThing } from "~/utils/uploadthing";
 import { enqueueSnackbar } from "notistack";
 import { HomePageFeedContext } from "../_context/HomePageFeedContext";
 import { useContext } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Post() {
+  const router = useRouter();
+
   const { refetchCurrentPage } = useContext(HomePageFeedContext);
 
   const { data: user, isFetching } = api.user.getCurrentUser.useQuery(
@@ -54,7 +57,7 @@ export default function Post() {
 
       await refetchCurrentPage?.();
 
-      enqueueSnackbar("Post created.", { variant: "success" });
+      router.push("/");
     } catch (error) {
       enqueueSnackbar("Failed to create post, please try again.", {
         variant: "error",
