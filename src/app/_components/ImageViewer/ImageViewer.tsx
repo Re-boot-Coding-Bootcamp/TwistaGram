@@ -16,17 +16,19 @@ const ImageViewer: React.FC<ImageViewerProps> = ({
   const [open, setOpen] = useState(false);
   const backdropRef = useRef(null);
 
-  const handleClose = () => {
+  const handleClose: React.MouseEventHandler<HTMLElement> = (e) => {
+    e.stopPropagation();
     setOpen(false);
   };
 
-  const handleOpen = () => {
+  const handleOpen: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    e.stopPropagation();
     setOpen(true);
   };
 
   return (
     <>
-      <Box onClick={handleOpen} sx={{ cursor: "pointer" }}>
+      <Box onClick={handleOpen} sx={{ cursor: "zoom-in" }}>
         {triggerElement}
       </Box>
 
@@ -34,6 +36,8 @@ const ImageViewer: React.FC<ImageViewerProps> = ({
         <Backdrop
           open={open}
           sx={{
+            color: "#fff",
+            backgroundColor: "rgba(0, 0, 0, 0.7)",
             zIndex: (theme) => theme.zIndex.drawer + 1,
           }}
           onClick={handleClose}

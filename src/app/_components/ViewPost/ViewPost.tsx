@@ -14,7 +14,13 @@ import { ImageContainer } from "../ImageContainer";
 import { Avatar } from "../Avatar";
 import type { Like, User } from "@prisma/client";
 import type { HomePagePost } from "~/types";
-import { CommentIcon, DeletePostComment, LikeIcon, MoreActionsMenu } from "..";
+import {
+  CommentIcon,
+  DeletePostComment,
+  ImageViewer,
+  LikeIcon,
+  MoreActionsMenu,
+} from "..";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
 import { enqueueSnackbar } from "notistack";
@@ -219,7 +225,12 @@ const ViewPost: React.FC<ViewPostProps> = ({
                   </Typography>
                   {post.image && (
                     <Box my={1}>
-                      <ImageContainer imageUrl={post.image} />
+                      <ImageViewer
+                        imageUrl={post.image}
+                        triggerElement={
+                          <ImageContainer imageUrl={post.image} />
+                        }
+                      />
                     </Box>
                   )}
                 </>
