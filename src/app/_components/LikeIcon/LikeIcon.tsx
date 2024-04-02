@@ -6,15 +6,16 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import React, { useState } from "react";
 import { api } from "~/trpc/react";
 import { enqueueSnackbar } from "notistack";
-import type { User } from "@prisma/client";
+import type { Like, User } from "@prisma/client";
 import type { HomePagePost } from "~/types";
 
 interface Props {
   user: User;
   post: HomePagePost;
+  onAfterLike?: (like: Like, isLiked: boolean) => void;
 }
 
-const LikeIcon = ({ user, post }: Props): JSX.Element => {
+const LikeIcon = ({ user, post, onAfterLike }: Props): JSX.Element => {
   const { mutateAsync: mutateLike } = api.post.likePost.useMutation();
   const { mutateAsync: mutateUnlike } = api.post.unlikePost.useMutation();
 
@@ -28,7 +29,8 @@ const LikeIcon = ({ user, post }: Props): JSX.Element => {
     if (likeObject) {
       try {
         setLikesCount((prev) => prev - 1);
-        await mutateUnlike({ likeId: likeObject.id });
+        const unlikeResult = await mutateUnlike({ likeId: likeObject.id });
+        onAfterLike?.(unlikeResult, false);
         setLikeObject(undefined);
       } catch (error) {
         enqueueSnackbar("Failed to like post, please try again.", {
@@ -39,6 +41,7 @@ const LikeIcon = ({ user, post }: Props): JSX.Element => {
       try {
         setLikesCount((prev) => prev + 1);
         const newLikeObject = await mutateLike({ postId: post.id });
+        onAfterLike?.(newLikeObject, true);
         setLikeObject(newLikeObject);
       } catch (error) {
         enqueueSnackbar("Failed to like post, please try again.", {

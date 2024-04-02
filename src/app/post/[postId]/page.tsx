@@ -1,6 +1,8 @@
 "use client";
 
 import { Box, Divider } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { useContext } from "react";
 import {
   BackButton,
   ErrorScreen,
@@ -9,6 +11,7 @@ import {
   ViewPost,
 } from "~/app/_components";
 import { ReplyModal } from "~/app/_components/ReplyModal";
+import { HomePageFeedContext } from "~/app/_context/HomePageFeedContext";
 import { api } from "~/trpc/react";
 
 export default function PostDetailsPage({
@@ -16,6 +19,9 @@ export default function PostDetailsPage({
 }: {
   params: { postId: string };
 }) {
+  const router = useRouter();
+  const { softDeletePost } = useContext(HomePageFeedContext);
+
   const { data: user, isFetching: isFetchingUser } =
     api.user.getCurrentUser.useQuery(undefined, {
       refetchOnWindowFocus: false,
@@ -44,10 +50,19 @@ export default function PostDetailsPage({
     return <ErrorScreen />;
   }
 
+  const handleOnAfterDelete = () => {
+    softDeletePost?.(post.id);
+    router.push("/");
+  };
+
   return (
     <>
       <BackButton />
-      <ViewPost post={post} currentUser={user} />
+      <ViewPost
+        post={post}
+        currentUser={user}
+        onAfterDelete={handleOnAfterDelete}
+      />
       <Divider />
       <Box m={1}>
         <ReplyModal

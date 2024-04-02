@@ -6,8 +6,12 @@ import { Box } from "@mui/material";
 import { api } from "~/trpc/react";
 import { useUploadThing } from "~/utils/uploadthing";
 import { enqueueSnackbar } from "notistack";
+import { HomePageFeedContext } from "../_context/HomePageFeedContext";
+import { useContext } from "react";
 
 export default function Post() {
+  const { refetchCurrentPage } = useContext(HomePageFeedContext);
+
   const { data: user, isFetching } = api.user.getCurrentUser.useQuery(
     undefined,
     {
@@ -47,6 +51,8 @@ export default function Post() {
         content: postContent.content ?? "",
         image: imageUrl,
       });
+
+      await refetchCurrentPage?.();
 
       enqueueSnackbar("Post created.", { variant: "success" });
     } catch (error) {

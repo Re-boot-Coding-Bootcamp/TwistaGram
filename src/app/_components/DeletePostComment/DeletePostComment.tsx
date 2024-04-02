@@ -12,6 +12,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 
 interface Props {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   type: "Post" | "Comment";
   onDeleteClick?: () => void;
 }
@@ -25,13 +27,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-const DeletePostComment = ({ type, onDeleteClick }: Props) => {
-  const [open, setOpen] = React.useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
+const DeletePostComment = ({ open, setOpen, type, onDeleteClick }: Props) => {
   const handleClose = () => {
     setOpen(false);
   };
@@ -43,9 +39,6 @@ const DeletePostComment = ({ type, onDeleteClick }: Props) => {
 
   return (
     <React.Fragment>
-      <Button variant="text" onClick={handleOpen}>
-        Delete
-      </Button>
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"

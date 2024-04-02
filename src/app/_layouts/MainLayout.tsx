@@ -7,6 +7,7 @@ import { MobileNav, DesktopNav, TabletNav } from "~/app/_components";
 import theme from "~/theme";
 import { SnackbarProvider } from "notistack";
 import { SessionProvider } from "next-auth/react";
+import { HomePageFeedContextProvider } from "../_context/HomePageFeedContext";
 
 interface Props {
   children: React.ReactNode;
@@ -62,18 +63,20 @@ const MainLayout = ({ children }: Props) => {
         TransitionComponent={Grow}
         anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
       >
-        <Container
-          maxWidth="md"
-          sx={{
-            ...(isDesktop
-              ? { borderLeft: 1, borderRight: 1, borderColor: "divider" }
-              : {}),
-            paddingLeft: "0 !important",
-            paddingRight: "0 !important",
-          }}
-        >
-          {getContent()}
-        </Container>
+        <HomePageFeedContextProvider>
+          <Container
+            maxWidth="md"
+            sx={{
+              ...(isDesktop
+                ? { borderLeft: 1, borderRight: 1, borderColor: "divider" }
+                : {}),
+              paddingLeft: "0 !important",
+              paddingRight: "0 !important",
+            }}
+          >
+            {getContent()}
+          </Container>
+        </HomePageFeedContextProvider>
       </SnackbarProvider>
     </SessionProvider>
   );

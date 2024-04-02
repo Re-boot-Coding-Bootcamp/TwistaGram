@@ -25,7 +25,8 @@ const MoreActionsMenu: React.FC<MoreActionsMenuProps> = ({
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
 
-  const handleToggle = () => {
+  const handleToggle: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
     setOpen((prevOpen) => !prevOpen);
   };
 
@@ -34,6 +35,16 @@ const MoreActionsMenu: React.FC<MoreActionsMenuProps> = ({
       return;
     }
     setOpen(false);
+  };
+
+  const handleDeleteClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    e.stopPropagation();
+    onDelete();
+  };
+
+  const handleEditClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    e.stopPropagation();
+    onEdit();
   };
 
   return (
@@ -57,13 +68,16 @@ const MoreActionsMenu: React.FC<MoreActionsMenuProps> = ({
         <Paper>
           <ClickAwayListener onClickAway={handleClose}>
             <List component="nav" dense>
-              <ListItemButton onClick={onDelete} style={{ color: "red" }}>
+              <ListItemButton
+                onClick={handleDeleteClick}
+                style={{ color: "red" }}
+              >
                 <ListItemIcon>
                   <DeleteIcon style={{ color: "red" }} />
                 </ListItemIcon>
                 <ListItemText primary="Delete" />
               </ListItemButton>
-              <ListItemButton onClick={onEdit}>
+              <ListItemButton onClick={handleEditClick}>
                 <ListItemIcon>
                   <EditIcon />
                 </ListItemIcon>
