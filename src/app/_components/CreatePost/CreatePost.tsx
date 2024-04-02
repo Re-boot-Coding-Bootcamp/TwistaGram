@@ -99,7 +99,7 @@ function CreatePost({ userImage, onPostSubmit }: CreatePostProps) {
   }, [file]);
 
   return (
-    <Box id="create-post-main-container" display="flex" p={2} gap={1}>
+    <Box id="create-post-main-container" display="flex" gap={1}>
       <Box id="avatar-container">
         <Avatar size="medium" src={userImage} />
       </Box>

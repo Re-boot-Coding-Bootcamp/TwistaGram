@@ -23,7 +23,12 @@ const MainLayout = ({ children }: Props) => {
       return (
         <>
           <MobileNav />
-          <Box component="main" sx={{ bgcolor: "background.default" }}>
+          <Box
+            id="mobile-nav-content"
+            component="main"
+            sx={{ bgcolor: "background.default" }}
+            pb="52px"
+          >
             {children}
           </Box>
         </>

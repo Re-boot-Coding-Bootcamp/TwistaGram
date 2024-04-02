@@ -1,11 +1,15 @@
 "use client";
 
-import { Box, CircularProgress, Divider } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 import type { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { CreateUpdateProfileForm, ChangeProfilePhoto } from "~/app/_components";
+import {
+  CreateUpdateProfileForm,
+  ChangeProfilePhoto,
+  LoadingScreen,
+} from "~/app/_components";
 import theme from "~/theme";
 import { api } from "~/trpc/react";
 import type { UpdateUserInput } from "~/types";
@@ -29,16 +33,7 @@ const EditProfilePage = () => {
   }, [data]);
 
   if (isFetching || !localUser) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        mt="300px"
-      >
-        <CircularProgress color="inherit" />
-      </Box>
-    );
+    return <LoadingScreen />;
   }
 
   const updateUser = (updatedUser: UpdateUserInput) => {
