@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
@@ -84,6 +85,32 @@ export const postRouter = createTRPCRouter({
         },
       });
     }),
+  updatePost: protectedProcedure
+    .input(
+      z.object({ postId: z.string(), content: z.string(), image: z.string() })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const post = await ctx.db.post.findUnique({
+        where: { id: input.postId },
+        select: { id: true, createdBy: true },
+      });
+      if (!post) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Post not found" });
+      }
+      if (post.createdBy.id !== ctx.session.user.id) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You don't have permission to update this post",
+        });
+      }
+      return ctx.db.post.update({
+        where: { id: input.postId },
+        data: {
+          content: input.content,
+          image: input.image,
+        },
+      });
+    }),
   likePost: protectedProcedure
     .input(z.object({ postId: z.string(), postOwnerId: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -154,6 +181,32 @@ export const postRouter = createTRPCRouter({
 
       return comment;
     }),
+  updateComment: protectedProcedure
+    .input(z.object({ commentId: z.string(), comment: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const comment = await ctx.db.comment.findUnique({
+        where: { id: input.commentId },
+        select: { id: true, userId: true },
+      });
+      if (!comment) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Comment not found",
+        });
+      }
+      if (comment.userId !== ctx.session.user.id) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You don't have permission to update this comment",
+        });
+      }
+      return ctx.db.comment.update({
+        where: { id: input.commentId },
+        data: {
+          comment: input.comment,
+        },
+      });
+    }),
   deletePost: protectedProcedure
     .input(z.object({ postId: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -162,10 +215,16 @@ export const postRouter = createTRPCRouter({
         select: { id: true, createdBy: true },
       });
       if (!post) {
-        throw new Error("Post not found");
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Post not found",
+        });
       }
       if (post.createdBy.id !== ctx.session.user.id) {
-        throw new Error("You don't have permission to delete this post");
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You don't have permission to delete this post",
+        });
       }
       await ctx.db.like.deleteMany({ where: { postId: input.postId } });
       await ctx.db.comment.deleteMany({ where: { postId: input.postId } });
@@ -179,10 +238,16 @@ export const postRouter = createTRPCRouter({
         select: { id: true, userId: true },
       });
       if (!comment) {
-        throw new Error("Comment not found");
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Comment not found",
+        });
       }
       if (comment.userId !== ctx.session.user.id) {
-        throw new Error("You don't have permission to delete this comment");
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You don't have permission to delete this comment",
+        });
       }
       const deletedComment = await ctx.db.comment.delete({
         where: { id: input.commentId },
