@@ -7,21 +7,22 @@ import {
   Input,
   Modal,
   Paper,
-  Typography,
 } from "@mui/material";
 import { Avatar } from "../Avatar";
-import theme from "~/theme";
 
 interface ReplyModalProps {
+  open: boolean;
+  setOpen: (open: boolean) => void;
   userImage: string | undefined;
   handleReply: (content: string) => Promise<void>;
 }
 
 const ReplyModal: React.FC<ReplyModalProps> = ({
+  open,
+  setOpen,
   userImage,
   handleReply,
 }: ReplyModalProps) => {
-  const [open, setOpen] = useState(false);
   const [replyText, setReplyText] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -51,31 +52,8 @@ const ReplyModal: React.FC<ReplyModalProps> = ({
     setReplyText("");
   };
 
-  const handleModalOpen = () => {
-    setOpen(!open);
-  };
-
   return (
     <>
-      <Box
-        onClick={handleModalOpen}
-        display="flex"
-        alignItems="center"
-        gap={1}
-        sx={{
-          p: 1,
-          borderRadius: 2,
-          cursor: "pointer",
-          "&:hover": {
-            backgroundColor: (theme) => theme.palette.grey[100],
-          },
-        }}
-      >
-        <Avatar size="medium" src={userImage} />
-        <Typography variant="subtitle1" color={theme.palette.text.disabled}>
-          Enter your comment here...
-        </Typography>
-      </Box>
       <Modal
         open={open}
         onClose={handleModalClose}

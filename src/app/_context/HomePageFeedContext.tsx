@@ -1,4 +1,4 @@
-import type { Like } from "@prisma/client";
+import type { Comment, Like } from "@prisma/client";
 import { sortBy, uniqBy } from "lodash";
 import { createContext, useCallback, useEffect, useState } from "react";
 import { api } from "~/trpc/react";
@@ -15,6 +15,7 @@ interface HomePageFeedContextValue {
   fetchNextPage?: () => void;
   softDeletePost?: (deletedPostId: string) => void;
   softLikeUnlikePost?: (like: Like, isLiked: boolean) => void;
+  softCommentOnPost?: (comment: Comment) => void;
   refetchCurrentPage?: () => Promise<void>;
 }
 
@@ -85,6 +86,20 @@ const HomePageFeedContextProvider = ({ children }: Props) => {
     );
   }, []);
 
+  const softCommentOnPost = useCallback((comment: Comment) => {
+    setPosts((prev) =>
+      prev.map((post) => {
+        if (post.id === comment.postId) {
+          return {
+            ...post,
+            comments: [...post.comments, comment],
+          };
+        }
+        return post;
+      })
+    );
+  }, []);
+
   return (
     <HomePageFeedContext.Provider
       value={{
@@ -95,6 +110,7 @@ const HomePageFeedContextProvider = ({ children }: Props) => {
         refetchCurrentPage,
         softLikeUnlikePost,
         softDeletePost,
+        softCommentOnPost,
       }}
     >
       {children}

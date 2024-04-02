@@ -6,13 +6,13 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import Tooltip from "@mui/material/Tooltip";
 
 interface Props {
-  onCommentIcon: () => void;
   number: number;
+  onCommentIcon?: () => void;
 }
 
 const CommentIcon = ({ onCommentIcon, number }: Props): JSX.Element => {
   const handleMessageBubble = () => {
-    onCommentIcon();
+    onCommentIcon?.();
   };
 
   return (

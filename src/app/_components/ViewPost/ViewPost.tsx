@@ -31,6 +31,7 @@ interface ViewPostProps {
   containerHover?: boolean;
   onAfterDelete?: (deletedPostId: string) => void;
   onAfterLike?: (like: Like, isLiked: boolean) => void;
+  onCommentIconClick?: () => void;
 }
 
 const ViewPost: React.FC<ViewPostProps> = ({
@@ -39,6 +40,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
   containerHover,
   onAfterDelete,
   onAfterLike,
+  onCommentIconClick,
 }) => {
   const { mutateAsync: deletePost } = api.post.deletePost.useMutation();
 
@@ -256,9 +258,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
               />
               <CommentIcon
                 number={post.comments.length}
-                onCommentIcon={() => {
-                  // navigateToPostDetails
-                }}
+                onCommentIcon={onCommentIconClick}
               />
             </Box>
           </Box>

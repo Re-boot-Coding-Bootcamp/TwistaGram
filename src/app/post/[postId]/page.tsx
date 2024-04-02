@@ -1,9 +1,10 @@
 "use client";
 
-import { Box, Divider } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import {
+  Avatar,
   BackButton,
   ErrorScreen,
   LoadingScreen,
@@ -12,6 +13,7 @@ import {
 } from "~/app/_components";
 import { ReplyModal } from "~/app/_components/ReplyModal";
 import { HomePageFeedContext } from "~/app/_context/HomePageFeedContext";
+import theme from "~/theme";
 import { api } from "~/trpc/react";
 
 export default function PostDetailsPage({
@@ -19,8 +21,9 @@ export default function PostDetailsPage({
 }: {
   params: { postId: string };
 }) {
+  const [replyModalOpen, setReplyModalOpen] = useState(false);
   const router = useRouter();
-  const { softDeletePost } = useContext(HomePageFeedContext);
+  const { softDeletePost, softCommentOnPost } = useContext(HomePageFeedContext);
 
   const { data: user, isFetching: isFetchingUser } =
     api.user.getCurrentUser.useQuery(undefined, {
@@ -62,20 +65,47 @@ export default function PostDetailsPage({
         post={post}
         currentUser={user}
         onAfterDelete={handleOnAfterDelete}
+        onCommentIconClick={() => setReplyModalOpen(true)}
       />
       <Divider />
       <Box m={1}>
-        <ReplyModal
-          userImage={user.image ?? undefined}
-          handleReply={async (comment: string) => {
-            await addComment({
-              postId: post.id,
-              comment,
-              postOwnerId: post.createdBy.id,
-            });
-            void refetchPost();
+        <Box
+          onClick={() => setReplyModalOpen(true)}
+          display="flex"
+          alignItems="center"
+          gap={1}
+          sx={{
+            p: 1,
+            borderRadius: 2,
+            cursor: "pointer",
+            "&:hover": {
+              backgroundColor: (theme) => theme.palette.grey[100],
+            },
           }}
-        />
+        >
+          <Avatar size="medium" src={user.image ?? undefined} />
+          <Typography variant="subtitle1" color={theme.palette.text.disabled}>
+            Enter your comment here...
+          </Typography>
+        </Box>
+        {replyModalOpen && (
+          <ReplyModal
+            open={replyModalOpen}
+            setOpen={setReplyModalOpen}
+            userImage={user.image ?? undefined}
+            handleReply={async (comment: string) => {
+              const newComment = await addComment({
+                postId: post.id,
+                comment,
+                postOwnerId: post.createdBy.id,
+              });
+
+              softCommentOnPost?.(newComment);
+
+              void refetchPost();
+            }}
+          />
+        )}
       </Box>
       <Divider />
       {post.comments.map((comment) => {

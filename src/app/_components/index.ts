@@ -29,3 +29,4 @@ export { ErrorScreen } from "./ErrorScreen";
 export { BackButton } from "./BackButton";
 export { LikeIcon } from "./LikeIcon";
 export { InlineReply } from "./InlineReply";
+export { ReplyModal } from "./ReplyModal";
