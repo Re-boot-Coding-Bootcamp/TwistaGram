@@ -18,6 +18,7 @@ interface Props {
 const LikeIcon = ({ user, post, onAfterLike }: Props): JSX.Element => {
   const { mutateAsync: mutateLike } = api.post.likePost.useMutation();
   const { mutateAsync: mutateUnlike } = api.post.unlikePost.useMutation();
+  const [disabled, setDisabled] = useState(false);
 
   const [likeObject, setLikeObject] = useState(
     post.likes.find((like) => like?.userId === user.id)
@@ -26,6 +27,7 @@ const LikeIcon = ({ user, post, onAfterLike }: Props): JSX.Element => {
   const isLikedByMe = !!likeObject;
 
   const handelLike = async () => {
+    setDisabled(true);
     if (likeObject) {
       try {
         setLikesCount((prev) => prev - 1);
@@ -55,6 +57,7 @@ const LikeIcon = ({ user, post, onAfterLike }: Props): JSX.Element => {
         });
       }
     }
+    setDisabled(false);
   };
 
   return (
@@ -72,6 +75,7 @@ const LikeIcon = ({ user, post, onAfterLike }: Props): JSX.Element => {
               <FavoriteBorderIcon fontSize="inherit" />
             )
           }
+          disabled={disabled}
         >
           <Typography fontSize="inherit" color="secondary">
             {likesCount}
