@@ -6,7 +6,7 @@ import { Box } from "@mui/material";
 import { api } from "~/trpc/react";
 import { useUploadThing } from "~/utils/uploadthing";
 import { enqueueSnackbar } from "notistack";
-import { HomePageFeedContext } from "../_context/HomePageFeedContext";
+import { HomePageFeedContext } from "../_context";
 import { useContext } from "react";
 import { useRouter } from "next/navigation";
 

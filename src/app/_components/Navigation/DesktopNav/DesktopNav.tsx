@@ -9,18 +9,19 @@ import {
   ListItemText,
   alpha,
 } from "@mui/material";
-import React, { useState } from "react";
-import { NavigationItems, Pages } from "~/constants";
+import React, { useContext } from "react";
+import { NavigationItems } from "~/constants";
 import theme from "~/theme";
 import Image from "next/image";
 import Logo from "~/assets/images/logo_full.svg";
 import { useRouter } from "next/navigation";
 import { UserIcon } from "../..";
+import { NavigationContext } from "~/app/_context";
 
 const DESKTOP_NAV_WIDTH = "240px";
 
 const DesktopNav = () => {
-  const [selectedPage, setSelectedPage] = useState<Pages>(Pages.Home);
+  const { selectedPage, setSelectedPage } = useContext(NavigationContext);
   const router = useRouter();
 
   return (

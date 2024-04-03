@@ -1,13 +1,14 @@
 "use client";
 
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
-import React, { useState } from "react";
-import { NavigationItems, Pages } from "~/constants";
+import React, { useContext } from "react";
+import { NavigationItems, type Pages } from "~/constants";
 import { useRouter } from "next/navigation";
 import theme from "~/theme";
+import { NavigationContext } from "~/app/_context";
 
 const MobileNav = () => {
-  const [selectedPage, setSelectedPage] = useState<Pages>(Pages.Home);
+  const { selectedPage, setSelectedPage } = useContext(NavigationContext);
   const router = useRouter();
 
   return (

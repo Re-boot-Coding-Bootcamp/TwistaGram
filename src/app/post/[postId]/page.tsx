@@ -12,7 +12,7 @@ import {
   ViewPost,
 } from "~/app/_components";
 import { ReplyModal } from "~/app/_components/ReplyModal";
-import { HomePageFeedContext } from "~/app/_context/HomePageFeedContext";
+import { HomePageFeedContext } from "~/app/_context";
 import theme from "~/theme";
 import { api } from "~/trpc/react";
 
