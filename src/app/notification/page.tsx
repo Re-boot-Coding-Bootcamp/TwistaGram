@@ -16,10 +16,7 @@ export default function Notification() {
     <>
       {notifications?.map((notification) => {
         return (
-          <Link
-            key={notification.id}
-            href={`/post/${notification.referenceId}`}
-          >
+          <Link key={notification.id} href={`/post/${notification.postId}`}>
             <NotificationCard notification={notification} />
           </Link>
         );

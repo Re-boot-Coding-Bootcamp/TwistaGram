@@ -44,7 +44,7 @@ const NotificationCard = ({
       }}
     >
       <Box id="avatar">
-        <Avatar size="medium" src={notification.user.image ?? undefined} />
+        <Avatar size="medium" src={notification.fromUser.image ?? undefined} />
       </Box>
       <Box
         id="notification-text-container"
@@ -53,7 +53,7 @@ const NotificationCard = ({
         }}
       >
         <Typography component="span" variant="subtitle2">
-          {notification.user.name}
+          {notification.fromUser.name}
         </Typography>
         <Typography
           component="span"

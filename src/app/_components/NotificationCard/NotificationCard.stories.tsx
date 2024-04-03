@@ -24,18 +24,23 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     notification: {
-      user: {
-        name: "John Doe",
-        image: "https://via.placeholder.com/150",
-        id: "1",
-        username: "john_doe",
-      },
       id: "1",
-      type: "LIKE",
-      referenceId: "1",
+      type: "like",
       read: false,
       createdAt: new Date(),
-      userId: "1",
+      forUserId: "1",
+      fromUserId: "2",
+      postId: "3",
+      post: {
+        content: "This is a post content",
+        image: "https://via.placeholder.com/150",
+        id: "3",
+      },
+      fromUser: {
+        name: "John Doe",
+        image: "https://via.placeholder.com/150",
+        id: "2",
+      },
     },
   },
 };

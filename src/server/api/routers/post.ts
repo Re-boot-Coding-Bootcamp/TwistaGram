@@ -147,9 +147,10 @@ export const postRouter = createTRPCRouter({
         await ctx.db.notification.create({
           data: {
             type: "LIKE",
-            referenceId: input.postId,
             read: false,
-            user: { connect: { id: input.postOwnerId } },
+            forUserId: input.postOwnerId,
+            fromUser: { connect: { id: ctx.session.user.id } },
+            post: { connect: { id: input.postId } },
           },
         });
       }
@@ -165,8 +166,8 @@ export const postRouter = createTRPCRouter({
         await ctx.db.notification.deleteMany({
           where: {
             type: "LIKE",
-            referenceId: likeObj.postId,
-            userId: input.postOwnerId,
+            postId: likeObj.postId,
+            forUserId: input.postOwnerId,
           },
         });
       }
@@ -194,9 +195,10 @@ export const postRouter = createTRPCRouter({
         await ctx.db.notification.create({
           data: {
             type: "COMMENT",
-            referenceId: input.postId,
             read: false,
-            user: { connect: { id: input.postOwnerId } },
+            forUserId: input.postOwnerId,
+            fromUser: { connect: { id: ctx.session.user.id } },
+            post: { connect: { id: input.postId } },
           },
         });
       }
@@ -279,8 +281,8 @@ export const postRouter = createTRPCRouter({
         await ctx.db.notification.deleteMany({
           where: {
             type: "COMMENT",
-            referenceId: deletedComment.postId,
-            userId: input.postOwnerId,
+            postId: deletedComment.postId,
+            forUserId: input.postOwnerId,
           },
         });
       }

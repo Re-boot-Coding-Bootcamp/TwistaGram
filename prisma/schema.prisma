@@ -24,8 +24,9 @@ model Post {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
+    createdBy     User           @relation(fields: [createdById], references: [id])
+    createdById   String
+    notifications Notification[]
 
     @@index([content])
     @@index([createdById])
@@ -74,16 +75,20 @@ model Message {
 }
 
 model Notification {
-    id          String   @id @default(uuid())
-    type        String
-    referenceId String
-    read        Boolean  @default(false)
-    createdAt   DateTime @default(now())
+    id        String   @id @default(uuid())
+    type      String
+    read      Boolean  @default(false)
+    createdAt DateTime @default(now())
+    forUserId String
 
-    userId String
-    user   User   @relation(fields: [userId], references: [id])
+    fromUserId String
+    fromUser   User   @relation(fields: [fromUserId], references: [id])
 
-    @@index([userId])
+    postId String
+    post   Post   @relation(fields: [postId], references: [id])
+
+    @@index([fromUserId])
+    @@index([postId])
 }
 
 // Necessary for Next auth

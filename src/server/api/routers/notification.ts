@@ -4,15 +4,21 @@ export const notificationRouter = createTRPCRouter({
   getNotifications: protectedProcedure.query(async ({ ctx }) => {
     return ctx.db.notification.findMany({
       where: {
-        userId: ctx.session.user.id,
+        forUserId: ctx.session.user.id,
       },
       include: {
-        user: {
+        post: {
+          select: {
+            id: true,
+            content: true,
+            image: true,
+          },
+        },
+        fromUser: {
           select: {
             id: true,
             name: true,
             image: true,
-            username: true,
           },
         },
       },
