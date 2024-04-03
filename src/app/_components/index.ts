@@ -25,6 +25,7 @@ export { ChangeProfilePhoto } from "./ChangeProfilePhoto";
 export { SearchPage } from "./SearchPage";
 export { LoadingScreen } from "./LoadingScreen";
 export { PostPreviewCard } from "./PostPreviewCard";
+export { ProfilePreviewCard } from "./ProfilePreviewCard";
 export { ErrorScreen } from "./ErrorScreen";
 export { BackButton } from "./BackButton";
 export { LikeIcon } from "./LikeIcon";

@@ -2,52 +2,104 @@
 
 import { Box, Typography } from "@mui/material";
 import React from "react";
-import { Avatar } from "..";
+import { Avatar, ImageContainer } from "..";
+import type { SearchResultPost } from "~/types";
+import { formatDistanceToNowStrict } from "date-fns";
+import theme from "~/theme";
 
 interface PostPreviewCardProps {
-  name: string;
-  username: string;
-  postedTime: string;
-  textContent?: string;
-  imageUrl?: string;
+  post: SearchResultPost;
+  isMobile?: boolean;
 }
 
 const PostPreviewCard = ({
-  name,
-  username,
-  postedTime,
-  textContent,
-  imageUrl,
+  post,
+  isMobile,
 }: PostPreviewCardProps): JSX.Element => {
-  // const [first, setfirst] = useState(second)
-  const onPostPreviewClick = () => {
-    //to do later
-  };
   return (
     <Box
-      onClick={onPostPreviewClick}
       display="flex"
+      justifyContent="space-between"
       alignItems="center"
-      justifyContent="center"
       gap={1}
+      sx={{
+        p: 1,
+        width: "100%",
+        borderRadius: 2,
+        backgroundColor: theme.palette.background.paper,
+        cursor: "pointer",
+        "&:hover": {
+          backgroundColor: theme.palette.action.hover,
+        },
+      }}
     >
-      <Box id="avatar" mr={2}>
-        <Avatar size="large" />
-      </Box>
-      <Box id="name-container" display="flex" alignItems="center">
-        <Typography sx={{ fontWeight: "medium" }}>{name}</Typography>
-      </Box>
-      <Box>
-        <Box
-          display="flex"
-          alignItems={textContent ? "center" : "flex-start"}
-          gap={1}
-        >
-          <Typography sx={{ fontWeight: "medium" }}>{username}</Typography>
-          <Typography sx={{ fontWeight: "medium" }}>{postedTime}</Typography>
+      <Box id="left-container" display="flex" alignItems="center" gap={1}>
+        <Box id="avatar">
+          <Avatar size="medium" src={post.createdBy.image ?? undefined} />
         </Box>
-        {textContent && (
+        <Box id="center-container">
+          <Box id="head-line-container">
+            <Box
+              id="name-username-time"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                maxWidth: "100%",
+              }}
+            >
+              <Box
+                id="name-username-container"
+                display="flex"
+                alignItems="center"
+                gap={0.5}
+              >
+                <Typography
+                  id="name"
+                  variant="subtitle2"
+                  maxWidth={"150px"}
+                  noWrap
+                >
+                  {post.createdBy.name}
+                </Typography>
+                {!isMobile && (
+                  <Typography
+                    id="username"
+                    variant="body2"
+                    sx={{
+                      color: theme.palette.text.secondary,
+                      cursor: "pointer",
+                    }}
+                  >
+                    @{post.createdBy.username}
+                  </Typography>
+                )}
+              </Box>
+              <Box
+                mx={0.5}
+                sx={{
+                  color: theme.palette.text.disabled,
+                }}
+              >
+                ·
+              </Box>
+              <Box id="timestamp-container">
+                <Typography
+                  id="posted-time"
+                  variant="body2"
+                  sx={{
+                    color: theme.palette.text.disabled,
+                  }}
+                >
+                  {formatDistanceToNowStrict(post.createdAt, {
+                    addSuffix: true,
+                  })}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+
           <Typography
+            variant="caption"
             sx={{
               overflow: "hidden",
               textOverflow: "ellipsis",
@@ -56,11 +108,16 @@ const PostPreviewCard = ({
               WebkitBoxOrient: "vertical",
             }}
           >
-            {textContent}
+            {post.content}
           </Typography>
-        )}
+        </Box>
       </Box>
-      <Typography>{imageUrl}</Typography>
+
+      {!isMobile && post.image && (
+        <Box maxWidth="100px">
+          <ImageContainer imageUrl={post.image} />
+        </Box>
+      )}
     </Box>
   );
 };

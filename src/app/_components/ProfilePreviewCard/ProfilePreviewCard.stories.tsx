@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
-import { PostPreviewCard } from "./PostPreviewCard";
+import { ProfilePreviewCard } from "./ProfilePreviewCard";
 import { Box } from "@mui/material";
 
-const meta: Meta<typeof PostPreviewCard> = {
-  title: "Authentication/PostPreviewCard",
-  component: PostPreviewCard,
+const meta: Meta<typeof ProfilePreviewCard> = {
+  title: "Authentication/ProfilePreviewCard",
+  component: ProfilePreviewCard,
   parameters: {
     layout: "centered",
   },
@@ -23,17 +23,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    post: {
-      content: "This is a post content",
+    user: {
+      name: "John Doe",
       image: "https://via.placeholder.com/150",
       id: "1",
-      createdAt: new Date(),
-      createdBy: {
-        name: "John Doe",
-        image: "https://via.placeholder.com/150",
-        id: "1",
-        username: "john_doe",
-      },
+      username: "john_doe",
     },
   },
 };

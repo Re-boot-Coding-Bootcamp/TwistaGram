@@ -2,14 +2,7 @@
 
 import React, { useState } from "react";
 import { formatDistanceToNowStrict } from "date-fns";
-import {
-  Box,
-  Card,
-  Typography,
-  useTheme,
-  TextField,
-  Button,
-} from "@mui/material";
+import { Box, Card, Typography, useTheme } from "@mui/material";
 import { ImageContainer } from "../ImageContainer";
 import { Avatar } from "../Avatar";
 import type { Like, User } from "@prisma/client";
@@ -46,16 +39,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
 
   const theme = useTheme();
   const router = useRouter();
-  const [editMode, setEditMode] = useState(false);
-  const [editedText, setEditedText] = useState(post.content);
   const [deletePostModalOpen, setDeletePostModalOpen] = useState(false);
-
-  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditedText(e.target.value);
-  };
-  const saveChanges = () => {
-    setEditMode(false);
-  };
 
   const isCurrentUserPost = currentUser.id === post.createdById;
 
@@ -182,57 +166,23 @@ const ViewPost: React.FC<ViewPostProps> = ({
               )}
             </Box>
             <Box>
-              {editMode ? (
-                <>
-                  <TextField
-                    fullWidth
-                    multiline
-                    variant="outlined"
-                    value={editedText}
-                    onChange={handleTextChange}
-                    onClick={(e) => e.stopPropagation()}
-                    margin="normal"
+              <Typography
+                id="text-content"
+                sx={{
+                  my: 1,
+                  color: theme.palette.text.primary,
+                  maxWidth: "100%",
+                }}
+              >
+                {post.content}
+              </Typography>
+              {post.image && (
+                <Box my={1}>
+                  <ImageViewer
+                    imageUrl={post.image}
+                    triggerElement={<ImageContainer imageUrl={post.image} />}
                   />
-                  <input
-                    type="file"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // onChooseFile();
-                    }}
-                  />
-                  <Button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      saveChanges();
-                    }}
-                    color="primary"
-                  >
-                    Save Changes
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Typography
-                    id="text-content"
-                    sx={{
-                      my: 1,
-                      color: theme.palette.text.primary,
-                      maxWidth: "100%",
-                    }}
-                  >
-                    {post.content}
-                  </Typography>
-                  {post.image && (
-                    <Box my={1}>
-                      <ImageViewer
-                        imageUrl={post.image}
-                        triggerElement={
-                          <ImageContainer imageUrl={post.image} />
-                        }
-                      />
-                    </Box>
-                  )}
-                </>
+                </Box>
               )}
             </Box>
             <Box
