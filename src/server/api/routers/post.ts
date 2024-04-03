@@ -136,6 +136,20 @@ export const postRouter = createTRPCRouter({
   likePost: protectedProcedure
     .input(z.object({ postId: z.string(), postOwnerId: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      const existingLike = await ctx.db.like.findFirst({
+        where: {
+          postId: input.postId,
+          userId: ctx.session.user.id,
+        },
+      });
+
+      if (existingLike) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "You have already liked this post",
+        });
+      }
+
       const like = await ctx.db.like.create({
         data: {
           post: { connect: { id: input.postId } },
