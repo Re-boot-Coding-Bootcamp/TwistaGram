@@ -48,6 +48,7 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           </Typography>
           <Typography
             variant="body2"
+            mb={0.5}
             sx={{
               color: theme.palette.grey[700],
             }}

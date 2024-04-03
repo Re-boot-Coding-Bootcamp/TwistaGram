@@ -74,46 +74,28 @@ export const postRouter = createTRPCRouter({
         nextCursor,
       };
     }),
-  getPostsForCurrentUser: protectedProcedure
-    .input(
-      z.object({
-        cursor: z.string().nullish(),
-      })
-    )
-    .query(async ({ ctx, input: { cursor } }) => {
-      const limit = 25;
-      const items = await ctx.db.post.findMany({
-        take: limit + 1,
-        cursor: cursor ? { id: cursor } : undefined,
-        orderBy: {
-          createdAt: "desc",
-        },
-        where: {
-          createdBy: { id: ctx.session.user.id },
-        },
-        include: {
-          createdBy: {
-            select: {
-              id: true,
-              name: true,
-              image: true,
-              username: true,
-            },
+  getPostsForCurrentUser: protectedProcedure.query(({ ctx }) => {
+    return ctx.db.post.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      where: {
+        createdBy: { id: ctx.session.user.id },
+      },
+      include: {
+        createdBy: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+            username: true,
           },
-          likes: true,
-          comments: true,
         },
-      });
-      let nextCursor: typeof cursor | undefined = undefined;
-      if (items.length > limit) {
-        const nextItem = items.pop();
-        nextCursor = nextItem?.id;
-      }
-      return {
-        items,
-        nextCursor,
-      };
-    }),
+        likes: true,
+        comments: true,
+      },
+    });
+  }),
   createPost: protectedProcedure
     .input(z.object({ content: z.string(), image: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -161,7 +143,7 @@ export const postRouter = createTRPCRouter({
         },
       });
 
-      if (like) {
+      if (like && ctx.session.user.id !== input.postOwnerId) {
         await ctx.db.notification.create({
           data: {
             type: "LIKE",
@@ -179,7 +161,7 @@ export const postRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const likeObj = await ctx.db.like.delete({ where: { id: input.likeId } });
 
-      if (likeObj) {
+      if (likeObj && ctx.session.user.id !== input.postOwnerId) {
         await ctx.db.notification.deleteMany({
           where: {
             type: "LIKE",
@@ -208,7 +190,7 @@ export const postRouter = createTRPCRouter({
         },
       });
 
-      if (comment) {
+      if (comment && ctx.session.user.id !== input.postOwnerId) {
         await ctx.db.notification.create({
           data: {
             type: "COMMENT",
