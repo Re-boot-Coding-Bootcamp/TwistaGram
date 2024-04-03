@@ -35,9 +35,14 @@ export default function Profile({ params }: { params: { userId: string } }) {
   );
 
   const { data: userPosts, isFetching: isFetchingPosts } =
-    api.post.getPostsForCurrentUser.useQuery(undefined, {
-      refetchOnWindowFocus: false,
-    });
+    api.post.getPostsForUserById.useQuery(
+      {
+        id: params.userId,
+      },
+      {
+        refetchOnWindowFocus: false,
+      }
+    );
 
   const { mutateAsync: addComment } = api.post.commentOnPost.useMutation();
 
