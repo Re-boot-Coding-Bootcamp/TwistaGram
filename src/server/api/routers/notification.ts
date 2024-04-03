@@ -6,6 +6,9 @@ export const notificationRouter = createTRPCRouter({
       where: {
         forUserId: ctx.session.user.id,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
       include: {
         post: {
           select: {
