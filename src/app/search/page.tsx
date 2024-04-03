@@ -1,14 +1,15 @@
 "use client";
 
-import { TextField } from "@mui/material";
+import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import { SearchType } from "~/constants";
 import { api } from "~/trpc/react";
-import { LoadingScreen } from "../_components";
+import { SearchPage } from "../_components";
 import { debounce } from "lodash";
 
 export default function Search() {
   const [query, setQuery] = useState("");
+  const [searchType, setSearchType] = useState(SearchType.User);
   const [debouncedQuery, setDebouncedQuery] = useState("");
 
   const debouncedSearch = debounce((input: string) => {
@@ -24,7 +25,7 @@ export default function Search() {
 
   const { data, isFetching } = api.search.search.useQuery(
     {
-      type: SearchType.User,
+      type: searchType,
       query: debouncedQuery,
     },
     {
@@ -34,21 +35,16 @@ export default function Search() {
     }
   );
 
-  if (isFetching) {
-    return <LoadingScreen />;
-  }
-
-  console.log("==> query", query);
-  console.log("==> debouncedQuery", debouncedQuery);
-  console.log("==> data", data);
-
   return (
-    <>
-      <TextField
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search for user or keywords..."
+    <Box p={2}>
+      <SearchPage
+        result={data}
+        isFetching={isFetching}
+        query={query}
+        setQuery={setQuery}
+        searchType={searchType}
+        setSearchType={setSearchType}
       />
-    </>
+    </Box>
   );
 }

@@ -2,255 +2,150 @@
 
 import {
   Box,
-  IconButton,
+  FormControl,
+  FormControlLabel,
   Input,
   InputAdornment,
-  Tab,
-  Tabs,
+  List,
+  ListItem,
+  Radio,
+  RadioGroup,
   Typography,
-  useTheme,
 } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import FindInPageIcon from "@mui/icons-material/FindInPage";
 import CircularProgress from "@mui/material/CircularProgress";
-
-interface User {
-  id: string;
-  name: string;
-  username: string;
-}
-
-interface Post {
-  id: string;
-  title: string;
-  content: string;
-}
+import type { SearchResult, SearchResultPost, SearchResultUser } from "~/types";
+import { SearchType } from "~/constants";
 
 interface SearchPageProps {
-  onSearchUsers: (searchTerm: string) => Promise<User[]>;
-  onSearchPosts: (searchTerm: string) => Promise<Post[]>;
+  query: string;
+  result: SearchResult;
+  isFetching: boolean;
+  setQuery: Dispatch<SetStateAction<string>>;
+  searchType: SearchType;
+  setSearchType: Dispatch<SetStateAction<SearchType>>;
 }
 
 const SearchPage: React.FC<SearchPageProps> = ({
-  onSearchUsers,
-  onSearchPosts,
+  result,
+  isFetching,
+  query,
+  setQuery,
+  searchType,
+  setSearchType,
 }) => {
-  const theme = useTheme();
-  const [activeTab, setActiveTab] = useState(0);
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [users, setUsers] = useState<User[]>([]);
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [selectedResult, setSelectedResult] = useState<User | Post | null>(
-    null
-  );
+  const [isLoading, setIsLoading] = useState(false);
+  const [users, setUsers] = useState<SearchResultUser[]>([]);
+  const [posts, setPosts] = useState<SearchResultPost[]>([]);
 
   useEffect(() => {
-    const handleSearch = async () => {
-      if (!searchTerm) {
-        setUsers([]);
+    if (result) {
+      if (searchType === SearchType.User) {
+        setUsers(result as unknown as SearchResultUser[]);
         setPosts([]);
-        return;
+      } else {
+        setPosts(result as unknown as SearchResultPost[]);
+        setUsers([]);
       }
-      setIsLoading(true);
-      try {
-        if (activeTab === 0) {
-          const results = await onSearchUsers(searchTerm);
-          setUsers(results);
-          setPosts([]);
-        } else {
-          const results = await onSearchPosts(searchTerm);
-          setPosts(results);
-          setUsers([]);
-        }
-      } catch (error) {
-        console.error("An error occurred during search", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+      setIsLoading(false);
+    }
+  }, [searchType, result, isFetching]);
 
-    void handleSearch();
-  }, [searchTerm, activeTab, onSearchUsers, onSearchPosts]);
-
-  const handleChangeTab = (newValue: number) => {
-    setActiveTab(newValue);
-    setSearchTerm("");
+  const handleSearchTypeChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setSearchType(event.target.value as SearchType);
   };
 
   return (
     <Box
       sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        width: "100vw",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        flexDirection: "column",
-        [theme.breakpoints.up("sm")]: {
-          marginTop: 10,
-          height: "auto",
-          alignItems: "center",
-        },
-        [theme.breakpoints.down("sm")]: {
-          alignItems: "center",
-          justifyContent: "flex-start",
-        },
+        width: "100%",
       }}
     >
       <Box
-        sx={{
-          width: "100%",
-          maxWidth: "500px",
-          maxHeight: "90vh",
-          overflowY: "auto",
-          p: 3,
-          [theme.breakpoints.down("sm")]: {
-            maxWidth: "100vw",
-          },
-        }}
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        gap={2}
       >
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "flex-end",
-            mb: 3,
-          }}
-        >
-          <Tabs
-            value={activeTab}
-            onChange={(_, newValue) => handleChangeTab(newValue as number)}
-            sx={{
-              minHeight: 40,
-              ".MuiTab-root": {
-                minHeight: 40,
-                [theme.breakpoints.down("sm")]: {
-                  fontSize: 11,
-                },
-              },
-              ".MuiSvgIcon-root": {
-                fontSize: 20,
-                [theme.breakpoints.down("sm")]: {
-                  fontSize: 18,
-                },
-              },
-            }}
-          >
-            <Tab
-              label="Users"
-              icon={<PeopleAltIcon />}
-              iconPosition="start"
-              sx={{ p: 0, mr: 1 }}
-            />
-            <Tab
-              label="Posts"
-              icon={<FindInPageIcon />}
-              iconPosition="start"
-              sx={{ p: 0 }}
-            />
-          </Tabs>
-        </Box>
         <Input
           type="text"
-          placeholder={`Search ${activeTab === 0 ? "user" : "post"}`}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ width: "100%", paddingBottom: 10 }}
+          placeholder={`Search ${searchType}`}
+          value={query}
+          onChange={(e) => {
+            setUsers([]);
+            setPosts([]);
+            setIsLoading(true);
+            setQuery(e.target.value);
+          }}
+          sx={{ flexGrow: 1 }}
           startAdornment={
             <InputAdornment position="start">
-              <IconButton
-                disableRipple
-                sx={{
-                  p: 0,
-                  mr: 1,
-                  color: theme.palette.primary.main,
-                  cursor: "default",
-                }}
-              >
-                <SearchIcon />
-              </IconButton>
+              <SearchIcon />
             </InputAdornment>
           }
         />
-
-        {isLoading && (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ pt: 2 }}
-          >
-            <CircularProgress sx={{ mr: 2 }} />
-            Searching...
-          </Box>
-        )}
-
-        {!isLoading && activeTab === 0 && users.length === 0 && searchTerm && (
-          <Typography sx={{ mt: 2, fontWeight: "500", pl: 5 }}>
-            No result for &quot;{searchTerm}&quot;
-          </Typography>
-        )}
-
-        {!isLoading && activeTab === 1 && posts.length === 0 && searchTerm && (
-          <Typography sx={{ mt: 2, fontWeight: "500", pl: 5 }}>
-            No result for &quot;{searchTerm}&quot;
-          </Typography>
-        )}
-
-        <ul style={{ paddingLeft: 30 }}>
-          {activeTab === 0 &&
-            users.map((user) => (
-              <li
-                key={user.id}
-                style={{
-                  listStyle: "none",
-                  padding: 10,
-                  cursor: "pointer",
-                  borderRadius: 10,
-                  backgroundColor:
-                    selectedResult?.id === user.id
-                      ? theme.palette.grey[100]
-                      : "transparent",
-                }}
-                onClick={() => setSelectedResult(user)}
-              >
-                <Box>{user.name}</Box>
-                <Box sx={{ color: theme.palette.primary.dark, opacity: "60%" }}>
-                  @{user.username}
-                </Box>
-              </li>
-            ))}
-
-          {activeTab === 1 &&
-            posts.map((post) => (
-              <li
-                key={post.id}
-                style={{
-                  listStyle: "none",
-                  padding: 10,
-                  cursor: "pointer",
-                  borderRadius: 10,
-                  backgroundColor:
-                    selectedResult?.id === post.id
-                      ? theme.palette.grey[100]
-                      : "transparent",
-                }}
-                onClick={() => setSelectedResult(post)}
-              >
-                <Box>{post.title}</Box>
-                <Box sx={{ color: theme.palette.primary.dark, opacity: "60%" }}>
-                  {post.content}
-                </Box>
-              </li>
-            ))}
-        </ul>
+        <Box id="search-type-container" display="flex">
+          <FormControl>
+            <RadioGroup
+              name="search-type-radio"
+              value={searchType}
+              onChange={handleSearchTypeChange}
+              row
+            >
+              <FormControlLabel
+                value={SearchType.User}
+                control={<Radio />}
+                label="User"
+              />
+              <FormControlLabel
+                value={SearchType.Post}
+                control={<Radio />}
+                label="Post"
+              />
+            </RadioGroup>
+          </FormControl>
+        </Box>
       </Box>
+
+      {isLoading && query && (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          gap={2}
+          sx={{ mt: 2 }}
+        >
+          <CircularProgress />
+          Searching...
+        </Box>
+      )}
+
+      {!isLoading &&
+        ((searchType === SearchType.User && users.length === 0) ||
+          (searchType === SearchType.Post && posts.length === 0)) &&
+        query && (
+          <Typography sx={{ mt: 2, fontWeight: "500" }}>
+            No result for &quot;{query}&quot;
+          </Typography>
+        )}
+
+      <List>
+        {searchType === SearchType.User &&
+          users.map((user) => <ListItem key={user.id}>{user.name}</ListItem>)}
+
+        {searchType === SearchType.Post &&
+          posts.map((post) => (
+            <ListItem key={post.id}>{post.content}</ListItem>
+          ))}
+      </List>
     </Box>
   );
 };
