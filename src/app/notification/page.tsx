@@ -1,7 +1,8 @@
 "use client";
 
 import { api } from "~/trpc/react";
-import { LoadingScreen } from "../_components";
+import { LoadingScreen, NotificationCard } from "../_components";
+import Link from "next/link";
 
 export default function Notification() {
   const { data: notifications, isFetching } =
@@ -15,9 +16,12 @@ export default function Notification() {
     <>
       {notifications?.map((notification) => {
         return (
-          <div
+          <Link
             key={notification.id}
-          >{`Type: ${notification.type} By: ${notification.user.name} About: ${notification.referenceId}`}</div>
+            href={`/post/${notification.referenceId}`}
+          >
+            <NotificationCard notification={notification} />
+          </Link>
         );
       })}
     </>

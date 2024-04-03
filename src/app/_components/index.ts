@@ -31,3 +31,4 @@ export { BackButton } from "./BackButton";
 export { LikeIcon } from "./LikeIcon";
 export { InlineReply } from "./InlineReply";
 export { ReplyModal } from "./ReplyModal";
+export { NotificationCard } from "./NotificationCard";
