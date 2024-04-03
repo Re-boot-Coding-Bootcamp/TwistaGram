@@ -2,13 +2,14 @@
 
 import React, { useState } from "react";
 import { formatDistanceToNowStrict } from "date-fns";
-import { Box, Card, Typography, useTheme } from "@mui/material";
+import { Box, Card, Typography, useMediaQuery } from "@mui/material";
 import { Avatar } from "../Avatar";
 import type { Comment, User } from "@prisma/client";
 import { DeletePostComment, MoreActionsMenu, ReplyModal } from "..";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
 import { enqueueSnackbar } from "notistack";
+import theme from "~/theme";
 
 interface CommentWithUser extends Comment {
   user: {
@@ -34,7 +35,8 @@ const ViewComment: React.FC<ViewCommentProps> = ({
   onAfterDelete,
   onAfterEdit,
 }) => {
-  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const router = useRouter();
   const [replyModalOpen, setReplyModalOpen] = useState(false);
 
@@ -120,6 +122,8 @@ const ViewComment: React.FC<ViewCommentProps> = ({
                 <Typography
                   id="name"
                   variant="subtitle1"
+                  maxWidth={"150px"}
+                  noWrap
                   sx={{
                     cursor: "pointer",
                   }}
@@ -129,6 +133,8 @@ const ViewComment: React.FC<ViewCommentProps> = ({
                 <Typography
                   id="username"
                   variant="body2"
+                  maxWidth={"120px"}
+                  noWrap
                   sx={{
                     color: theme.palette.text.secondary,
                     cursor: "pointer",
@@ -137,14 +143,42 @@ const ViewComment: React.FC<ViewCommentProps> = ({
                   @{comment.user.username}
                 </Typography>
               </Box>
-              <Box
-                mx={0.5}
-                sx={{
-                  color: theme.palette.text.disabled,
-                }}
-              >
-                ·
-              </Box>
+              {!isMobile && (
+                <>
+                  <Box
+                    mx={0.5}
+                    sx={{
+                      color: theme.palette.text.disabled,
+                    }}
+                  >
+                    ·
+                  </Box>
+                  <Box id="timestamp-container">
+                    <Typography
+                      id="posted-time"
+                      variant="body2"
+                      sx={{
+                        color: theme.palette.text.disabled,
+                      }}
+                    >
+                      {formatDistanceToNowStrict(comment.createdAt, {
+                        addSuffix: true,
+                      })}
+                    </Typography>
+                  </Box>
+                </>
+              )}
+              <Box sx={{ flexGrow: 1 }} />
+              {isCurrentUserPost && (
+                <Box onClick={(e) => e.stopPropagation()}>
+                  <MoreActionsMenu
+                    onDelete={() => setDeleteCommentModalOpen(true)}
+                    onEdit={() => setReplyModalOpen(true)}
+                  />
+                </Box>
+              )}
+            </Box>
+            {isMobile && (
               <Box id="timestamp-container">
                 <Typography
                   id="posted-time"
@@ -158,16 +192,7 @@ const ViewComment: React.FC<ViewCommentProps> = ({
                   })}
                 </Typography>
               </Box>
-              <Box sx={{ flexGrow: 1 }} />
-              {isCurrentUserPost && (
-                <Box onClick={(e) => e.stopPropagation()}>
-                  <MoreActionsMenu
-                    onDelete={() => setDeleteCommentModalOpen(true)}
-                    onEdit={() => setReplyModalOpen(true)}
-                  />
-                </Box>
-              )}
-            </Box>
+            )}
             <Box>
               <Typography
                 id="text-content"

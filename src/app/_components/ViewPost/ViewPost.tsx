@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { formatDistanceToNowStrict } from "date-fns";
-import { Box, Card, Typography, useTheme } from "@mui/material";
+import { Box, Card, Typography, useMediaQuery } from "@mui/material";
 import { ImageContainer } from "../ImageContainer";
 import { Avatar } from "../Avatar";
 import type { Like, User } from "@prisma/client";
@@ -17,6 +17,7 @@ import {
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
 import { enqueueSnackbar } from "notistack";
+import theme from "~/theme";
 
 interface ViewPostProps {
   currentUser: User;
@@ -35,9 +36,9 @@ const ViewPost: React.FC<ViewPostProps> = ({
   onAfterLike,
   onCommentIconClick,
 }) => {
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { mutateAsync: deletePost } = api.post.deletePost.useMutation();
 
-  const theme = useTheme();
   const router = useRouter();
   const [deletePostModalOpen, setDeletePostModalOpen] = useState(false);
 
@@ -83,9 +84,9 @@ const ViewPost: React.FC<ViewPostProps> = ({
         onClick={containerHover ? navigateToPostDetails : undefined}
       >
         <Box id="profile-container" sx={{ display: "flex", width: "100%" }}>
-          <Box id="avatar" mr={2}>
+          <Box id="avatar" mr={isMobile ? 1 : 2}>
             <Avatar
-              size="large"
+              size={isMobile ? "medium" : "large"}
               onClick={navigateToUserProfile}
               style={{ cursor: "pointer" }}
               src={post.createdBy.image ?? undefined}
@@ -127,6 +128,8 @@ const ViewPost: React.FC<ViewPostProps> = ({
                 <Typography
                   id="username"
                   variant="body2"
+                  maxWidth={"120px"}
+                  noWrap
                   sx={{
                     color: theme.palette.text.secondary,
                     cursor: "pointer",
@@ -135,14 +138,41 @@ const ViewPost: React.FC<ViewPostProps> = ({
                   @{post.createdBy.username}
                 </Typography>
               </Box>
-              <Box
-                mx={0.5}
-                sx={{
-                  color: theme.palette.text.disabled,
-                }}
-              >
-                ·
-              </Box>
+              {!isMobile && (
+                <>
+                  <Box
+                    mx={0.5}
+                    sx={{
+                      color: theme.palette.text.disabled,
+                    }}
+                  >
+                    ·
+                  </Box>
+                  <Box id="timestamp-container">
+                    <Typography
+                      id="posted-time"
+                      variant="body2"
+                      sx={{
+                        color: theme.palette.text.disabled,
+                      }}
+                    >
+                      {formatDistanceToNowStrict(post.createdAt, {
+                        addSuffix: true,
+                      })}
+                    </Typography>
+                  </Box>
+                </>
+              )}
+              <Box sx={{ flexGrow: 1 }} />
+              {isCurrentUserPost && (
+                <Box onClick={(e) => e.stopPropagation()}>
+                  <MoreActionsMenu
+                    onDelete={() => setDeletePostModalOpen(true)}
+                  />
+                </Box>
+              )}
+            </Box>
+            {isMobile && (
               <Box id="timestamp-container">
                 <Typography
                   id="posted-time"
@@ -156,15 +186,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
                   })}
                 </Typography>
               </Box>
-              <Box sx={{ flexGrow: 1 }} />
-              {isCurrentUserPost && (
-                <Box onClick={(e) => e.stopPropagation()}>
-                  <MoreActionsMenu
-                    onDelete={() => setDeletePostModalOpen(true)}
-                  />
-                </Box>
-              )}
-            </Box>
+            )}
             <Box>
               <Typography
                 id="text-content"
