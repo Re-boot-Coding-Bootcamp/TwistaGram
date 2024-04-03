@@ -2,17 +2,10 @@
 
 import React, { useState } from "react";
 import { formatDistanceToNowStrict } from "date-fns";
-import {
-  Box,
-  Card,
-  Typography,
-  useTheme,
-  TextField,
-  Button,
-} from "@mui/material";
+import { Box, Card, Typography, useTheme } from "@mui/material";
 import { Avatar } from "../Avatar";
 import type { Comment, User } from "@prisma/client";
-import { DeletePostComment, MoreActionsMenu } from "..";
+import { DeletePostComment, MoreActionsMenu, ReplyModal } from "..";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
 import { enqueueSnackbar } from "notistack";
@@ -31,6 +24,7 @@ interface ViewCommentProps {
   comment: CommentWithUser;
   postOwnerId: string;
   onAfterDelete?: () => void;
+  onAfterEdit?: () => void;
 }
 
 const ViewComment: React.FC<ViewCommentProps> = ({
@@ -38,22 +32,16 @@ const ViewComment: React.FC<ViewCommentProps> = ({
   comment,
   postOwnerId,
   onAfterDelete,
+  onAfterEdit,
 }) => {
   const theme = useTheme();
   const router = useRouter();
-  const [editMode, setEditMode] = useState(false);
-  const [editedText, setEditedText] = useState(comment.comment);
+  const [replyModalOpen, setReplyModalOpen] = useState(false);
+
   const [deleteCommentModalOpen, setDeleteCommentModalOpen] = useState(false);
 
   const { mutateAsync: deleteComment } = api.post.deleteComment.useMutation();
-
-  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditedText(e.target.value);
-  };
-
-  const saveChanges = () => {
-    setEditMode(false);
-  };
+  const { mutateAsync: updateComment } = api.post.updateComment.useMutation();
 
   const isCurrentUserPost = currentUser.id === comment.userId;
 
@@ -67,6 +55,19 @@ const ViewComment: React.FC<ViewCommentProps> = ({
       onAfterDelete?.();
     } catch (error) {
       enqueueSnackbar("Failed to delete comment", { variant: "error" });
+    }
+  };
+
+  const handleEditComment = async (updatedComment: string) => {
+    try {
+      await updateComment({
+        commentId: comment.id,
+        comment: updatedComment,
+      });
+
+      onAfterEdit?.();
+    } catch (error) {
+      enqueueSnackbar("Failed to edit comment", { variant: "error" });
     }
   };
 
@@ -162,60 +163,37 @@ const ViewComment: React.FC<ViewCommentProps> = ({
                 <Box onClick={(e) => e.stopPropagation()}>
                   <MoreActionsMenu
                     onDelete={() => setDeleteCommentModalOpen(true)}
-                    onEdit={() => {
-                      // TODO: Implement edit functionality
-                    }}
+                    onEdit={() => setReplyModalOpen(true)}
                   />
                 </Box>
               )}
             </Box>
             <Box>
-              {editMode ? (
-                <>
-                  <TextField
-                    fullWidth
-                    multiline
-                    variant="outlined"
-                    value={editedText}
-                    onChange={handleTextChange}
-                    onClick={(e) => e.stopPropagation()}
-                    margin="normal"
-                  />
-                  <input
-                    type="file"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // onChooseFile();
-                    }}
-                  />
-                  <Button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      saveChanges();
-                    }}
-                    color="primary"
-                  >
-                    Save Changes
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Typography
-                    id="text-content"
-                    sx={{
-                      my: 1,
-                      color: theme.palette.text.primary,
-                      maxWidth: "100%",
-                    }}
-                  >
-                    {comment.comment}
-                  </Typography>
-                </>
-              )}
+              <Typography
+                id="text-content"
+                sx={{
+                  my: 1,
+                  color: theme.palette.text.primary,
+                  maxWidth: "100%",
+                }}
+              >
+                {comment.comment}
+              </Typography>
             </Box>
           </Box>
         </Box>
       </Card>
+
+      {replyModalOpen && (
+        <ReplyModal
+          existingComment={comment.comment}
+          open={replyModalOpen}
+          setOpen={setReplyModalOpen}
+          userImage={currentUser.image ?? undefined}
+          handleReply={handleEditComment}
+        />
+      )}
+
       {deleteCommentModalOpen && (
         <DeletePostComment
           type={"Comment"}

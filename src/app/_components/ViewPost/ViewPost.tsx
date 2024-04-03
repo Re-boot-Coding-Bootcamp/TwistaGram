@@ -177,9 +177,6 @@ const ViewPost: React.FC<ViewPostProps> = ({
                 <Box onClick={(e) => e.stopPropagation()}>
                   <MoreActionsMenu
                     onDelete={() => setDeletePostModalOpen(true)}
-                    onEdit={() => {
-                      // todo
-                    }}
                   />
                 </Box>
               )}

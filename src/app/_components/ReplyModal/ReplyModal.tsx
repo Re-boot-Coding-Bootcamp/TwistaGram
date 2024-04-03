@@ -11,6 +11,7 @@ import {
 import { Avatar } from "../Avatar";
 
 interface ReplyModalProps {
+  existingComment?: string;
   open: boolean;
   setOpen: (open: boolean) => void;
   userImage: string | undefined;
@@ -18,12 +19,13 @@ interface ReplyModalProps {
 }
 
 const ReplyModal: React.FC<ReplyModalProps> = ({
+  existingComment,
   open,
   setOpen,
   userImage,
   handleReply,
 }: ReplyModalProps) => {
-  const [replyText, setReplyText] = useState<string>("");
+  const [replyText, setReplyText] = useState<string>(existingComment ?? "");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleReplySubmit = async () => {

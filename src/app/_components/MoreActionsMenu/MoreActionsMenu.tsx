@@ -15,7 +15,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 export type MoreActionsMenuProps = {
   onDelete: () => void;
-  onEdit: () => void;
+  onEdit?: () => void;
 };
 
 const MoreActionsMenu: React.FC<MoreActionsMenuProps> = ({
@@ -44,7 +44,7 @@ const MoreActionsMenu: React.FC<MoreActionsMenuProps> = ({
 
   const handleEditClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
     e.stopPropagation();
-    onEdit();
+    onEdit?.();
   };
 
   return (
@@ -77,12 +77,14 @@ const MoreActionsMenu: React.FC<MoreActionsMenuProps> = ({
                 </ListItemIcon>
                 <ListItemText primary="Delete" />
               </ListItemButton>
-              <ListItemButton onClick={handleEditClick}>
-                <ListItemIcon>
-                  <EditIcon />
-                </ListItemIcon>
-                <ListItemText primary="Edit" />
-              </ListItemButton>
+              {onEdit && (
+                <ListItemButton onClick={handleEditClick}>
+                  <ListItemIcon>
+                    <EditIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Edit" />
+                </ListItemButton>
+              )}
             </List>
           </ClickAwayListener>
         </Paper>

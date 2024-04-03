@@ -116,6 +116,7 @@ export default function PostDetailsPage({
             comment={comment}
             postOwnerId={post.createdBy.id}
             onAfterDelete={refetchPost}
+            onAfterEdit={refetchPost}
           />
         );
       })}
