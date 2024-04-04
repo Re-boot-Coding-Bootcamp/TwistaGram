@@ -9,7 +9,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const CLientAuthenticated = async ({ isAuthenticated, children }: Props) => {
+const CLientAuthenticated = ({ isAuthenticated, children }: Props) => {
   const pathname = usePathname();
 
   const isProtectedRoute = NavigationItems.some(

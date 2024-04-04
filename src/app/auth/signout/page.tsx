@@ -1,7 +1,8 @@
 import React from "react";
+import { SignOutPage } from "~/app/_components";
 
 const SignOut = () => {
-  return <div>SignOut Page</div>;
+  return <SignOutPage />;
 };
 
 export default SignOut;

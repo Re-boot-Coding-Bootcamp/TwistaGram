@@ -6,6 +6,11 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { MobileNav, DesktopNav, TabletNav } from "~/app/_components";
 import theme from "~/theme";
 import { SnackbarProvider } from "notistack";
+import { SessionProvider } from "next-auth/react";
+import {
+  HomePageFeedContextProvider,
+  NavigationContextProvider,
+} from "../_context";
 
 interface Props {
   children: React.ReactNode;
@@ -21,7 +26,12 @@ const MainLayout = ({ children }: Props) => {
       return (
         <>
           <MobileNav />
-          <Box component="main" sx={{ bgcolor: "background.default" }}>
+          <Box
+            id="mobile-nav-content"
+            component="main"
+            sx={{ bgcolor: "background.default" }}
+            pb="52px"
+          >
             {children}
           </Box>
         </>
@@ -34,7 +44,7 @@ const MainLayout = ({ children }: Props) => {
           <TabletNav />
           <Box
             component="main"
-            sx={{ flexGrow: 1, bgcolor: "background.default", pt: 5 }}
+            sx={{ flexGrow: 1, bgcolor: "background.default" }}
           >
             {children}
           </Box>
@@ -47,7 +57,7 @@ const MainLayout = ({ children }: Props) => {
         <DesktopNav />
         <Box
           component="main"
-          sx={{ flexGrow: 1, bgcolor: "background.default", pt: 5 }}
+          sx={{ flexGrow: 1, bgcolor: "background.default" }}
         >
           {children}
         </Box>
@@ -56,23 +66,29 @@ const MainLayout = ({ children }: Props) => {
   };
 
   return (
-    <SnackbarProvider
-      TransitionComponent={Grow}
-      anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
-    >
-      <Container
-        maxWidth="md"
-        sx={{
-          ...(isDesktop
-            ? { borderLeft: 1, borderRight: 1, borderColor: "divider" }
-            : {}),
-          paddingLeft: "0 !important",
-          paddingRight: "0 !important",
-        }}
+    <SessionProvider>
+      <SnackbarProvider
+        TransitionComponent={Grow}
+        anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
       >
-        {getContent()}
-      </Container>
-    </SnackbarProvider>
+        <NavigationContextProvider>
+          <HomePageFeedContextProvider>
+            <Container
+              maxWidth="md"
+              sx={{
+                ...(isDesktop
+                  ? { borderLeft: 1, borderRight: 1, borderColor: "divider" }
+                  : {}),
+                paddingLeft: "0 !important",
+                paddingRight: "0 !important",
+              }}
+            >
+              {getContent()}
+            </Container>
+          </HomePageFeedContextProvider>
+        </NavigationContextProvider>
+      </SnackbarProvider>
+    </SessionProvider>
   );
 };
 

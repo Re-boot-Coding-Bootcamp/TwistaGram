@@ -10,18 +10,19 @@ import {
   Tooltip,
   alpha,
 } from "@mui/material";
-import React, { useState } from "react";
-import { NavigationItems, Pages } from "~/constants";
+import React, { useContext } from "react";
+import { NavigationItems } from "~/constants";
 import theme from "~/theme";
 import Image from "next/image";
 import Logo from "~/assets/images/logo_small.svg";
 import { useRouter } from "next/navigation";
 import { UserIcon } from "../..";
+import { NavigationContext } from "~/app/_context";
 
 const TABLET_NAV_WIDTH = "80px";
 
 const TabletNav = () => {
-  const [selectedPage, setSelectedPage] = useState<Pages>(Pages.Home);
+  const { selectedPage, setSelectedPage } = useContext(NavigationContext);
   const router = useRouter();
 
   return (
@@ -83,7 +84,7 @@ const TabletNav = () => {
         ))}
       </List>
       <Box sx={{ px: 1, pb: 2, mt: "auto" }}>
-        <UserIcon name="tempName" username="@tempUsername" />
+        <UserIcon />
       </Box>
     </Drawer>
   );

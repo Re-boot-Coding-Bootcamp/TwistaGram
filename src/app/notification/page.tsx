@@ -1,3 +1,26 @@
-export default async function Notification() {
-  return <div>Notification page</div>;
+"use client";
+
+import { api } from "~/trpc/react";
+import { LoadingScreen, NotificationCard } from "../_components";
+import Link from "next/link";
+
+export default function Notification() {
+  const { data: notifications, isFetching } =
+    api.notification.getNotifications.useQuery();
+
+  if (isFetching) {
+    return <LoadingScreen />;
+  }
+
+  return (
+    <>
+      {notifications?.map((notification) => {
+        return (
+          <Link key={notification.id} href={`/post/${notification.postId}`}>
+            <NotificationCard notification={notification} />
+          </Link>
+        );
+      })}
+    </>
+  );
 }

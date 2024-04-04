@@ -1,98 +1,95 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  Box,
-  Card,
-  Typography,
-  useTheme,
-  IconButton,
-  TextField,
-  Button,
-  Tooltip,
-} from "@mui/material";
+import { formatDistanceToNowStrict } from "date-fns";
+import { Box, Card, Typography, useMediaQuery } from "@mui/material";
 import { ImageContainer } from "../ImageContainer";
 import { Avatar } from "../Avatar";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import type { Like, User } from "@prisma/client";
+import type { HomePagePost } from "~/types";
+import {
+  CommentIcon,
+  DeletePostComment,
+  ImageViewer,
+  LikeIcon,
+  MoreActionsMenu,
+} from "..";
+import { useRouter } from "next/navigation";
+import { api } from "~/trpc/react";
+import { enqueueSnackbar } from "notistack";
+import theme from "~/theme";
 
 interface ViewPostProps {
-  username: string;
-  currentUserId: string;
-  name: string;
-  postedTime: string;
-  textContent: string;
-  imageUrl: string;
-  onMore: () => void;
-  onProfile: () => void;
-  onChooseFile: () => void;
-  onDelete: () => void;
+  currentUser: User;
+  post: HomePagePost;
+  containerHover?: boolean;
+  onAfterDelete?: (deletedPostId: string) => void;
+  onAfterLike?: (like: Like, isLiked: boolean) => void;
+  onCommentIconClick?: () => void;
 }
 
 const ViewPost: React.FC<ViewPostProps> = ({
-  username,
-  currentUserId,
-  name,
-  postedTime,
-  textContent,
-  imageUrl,
-  onProfile,
-  onChooseFile,
-  onDelete,
+  currentUser,
+  post,
+  containerHover,
+  onAfterDelete,
+  onAfterLike,
+  onCommentIconClick,
 }) => {
-  const theme = useTheme();
-  const [editMode, setEditMode] = useState(false);
-  const [editedText, setEditedText] = useState(textContent);
-  const [showOptions, setShowOptions] = useState(false);
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const { mutateAsync: deletePost } = api.post.deletePost.useMutation();
 
-  const toggleEditMode = () => setEditMode(!editMode);
+  const router = useRouter();
+  const [deletePostModalOpen, setDeletePostModalOpen] = useState(false);
 
-  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditedText(e.target.value);
+  const isCurrentUserPost = currentUser.id === post.createdById;
+
+  const navigateToUserProfile = () => {
+    router.push(`/profile/${post.createdBy.id}`);
   };
 
-  const saveChanges = () => {
-    setEditMode(false);
+  const navigateToPostDetails = () => {
+    router.push(`/post/${post.id}`);
   };
 
-  const isCurrentUserPost = username === currentUserId;
-
-  const toggleMoreOptions = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    setShowOptions((prev) => !prev);
+  const handleDeletePost = async () => {
+    try {
+      await deletePost({ postId: post.id });
+      onAfterDelete?.(post.id);
+    } catch (error) {
+      enqueueSnackbar("Failed to delete post", { variant: "error" });
+    }
   };
 
   return (
-    <Box
-      id="main-container"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      width="100%"
-    >
+    <>
       <Card
-        id="contents-container"
+        id="post-container"
         sx={{
           p: 2,
-          minWidth: { xs: "100%", sm: 600, md: 800 },
+          width: "100%",
           maxWidth: "100%",
           flexDirection: "column",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          cursor: containerHover ? "pointer" : "default",
+          "&:hover": {
+            backgroundColor: containerHover
+              ? theme.palette.action.hover
+              : "none",
+          },
         }}
         elevation={0}
+        onClick={containerHover ? navigateToPostDetails : undefined}
       >
-        <Box
-          id="profile-container"
-          sx={{ display: "flex", mb: 2, width: "100%" }}
-        >
-          <Box id="avatar" mr={2}>
+        <Box id="profile-container" sx={{ display: "flex", width: "100%" }}>
+          <Box id="avatar" mr={isMobile ? 1 : 2}>
             <Avatar
-              size="large"
-              onClick={onProfile}
+              size={isMobile ? "medium" : "large"}
+              onClick={navigateToUserProfile}
               style={{ cursor: "pointer" }}
+              src={post.createdBy.image ?? undefined}
             />
           </Box>
           <Box
@@ -110,139 +107,142 @@ const ViewPost: React.FC<ViewPostProps> = ({
                 maxWidth: "100%",
               }}
             >
-              <Box onClick={onProfile}>
+              <Box
+                onClick={navigateToUserProfile}
+                id="name-username-container"
+                display="flex"
+                alignItems="center"
+                gap={0.5}
+              >
                 <Typography
                   id="name"
+                  variant="subtitle1"
                   sx={{
-                    fontSize: 20,
-                    fontWeight: "500",
-                    color: theme.palette.text.primary,
-                    mr: 0.5,
                     cursor: "pointer",
                   }}
+                  maxWidth={"150px"}
+                  noWrap
                 >
-                  {name}
+                  {post.createdBy.name}
                 </Typography>
-              </Box>
-              <Box onClick={onProfile}>
                 <Typography
                   id="username"
+                  variant="body2"
+                  maxWidth={"120px"}
+                  noWrap
                   sx={{
-                    mt: 0.3,
-                    mr: 0.5,
-                    fontSize: 14,
                     color: theme.palette.text.secondary,
                     cursor: "pointer",
                   }}
                 >
-                  @{username}
+                  @{post.createdBy.username}
                 </Typography>
               </Box>
-              <Box
-                onClick={(e) => e.stopPropagation()}
-                sx={{ cursor: "default" }}
-              >
-                <Typography
-                  id="posted-time"
-                  sx={{
-                    mt: 0.3,
-                    fontSize: 14,
-                    color: theme.palette.text.disabled,
-                  }}
-                >
-                  ·{postedTime}
-                </Typography>
-              </Box>
+              {!isMobile && (
+                <>
+                  <Box
+                    mx={0.5}
+                    sx={{
+                      color: theme.palette.text.disabled,
+                    }}
+                  >
+                    ·
+                  </Box>
+                  <Box id="timestamp-container">
+                    <Typography
+                      id="posted-time"
+                      variant="body2"
+                      sx={{
+                        color: theme.palette.text.disabled,
+                      }}
+                    >
+                      {formatDistanceToNowStrict(post.createdAt, {
+                        addSuffix: true,
+                      })}
+                    </Typography>
+                  </Box>
+                </>
+              )}
               <Box sx={{ flexGrow: 1 }} />
               {isCurrentUserPost && (
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  {showOptions && (
-                    <Box sx={{ display: "flex", mr: 2, gap: 2 }}>
-                      <Tooltip title="Edit" placement="top">
-                        <IconButton
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleEditMode();
-                          }}
-                          disableRipple
-                          sx={{ p: 0, color: theme.palette.primary.main }}
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Delete" placement="top">
-                        <IconButton
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onDelete();
-                          }}
-                          disableRipple
-                          sx={{ p: 0, color: theme.palette.error.main }}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </Box>
-                  )}
-                  <Tooltip title="More" placement="top">
-                    <IconButton onClick={toggleMoreOptions} sx={{ p: 0 }}>
-                      <MoreHorizIcon />
-                    </IconButton>
-                  </Tooltip>
+                <Box onClick={(e) => e.stopPropagation()}>
+                  <MoreActionsMenu
+                    onDelete={() => setDeletePostModalOpen(true)}
+                  />
                 </Box>
               )}
             </Box>
-            <Box onClick={(e) => e.stopPropagation()}>
-              {editMode ? (
-                <>
-                  <TextField
-                    fullWidth
-                    multiline
-                    variant="outlined"
-                    value={editedText}
-                    onChange={handleTextChange}
-                    onClick={(e) => e.stopPropagation()}
-                    margin="normal"
+            {isMobile && (
+              <Box id="timestamp-container">
+                <Typography
+                  id="posted-time"
+                  variant="body2"
+                  sx={{
+                    color: theme.palette.text.disabled,
+                  }}
+                >
+                  {formatDistanceToNowStrict(post.createdAt, {
+                    addSuffix: true,
+                  })}
+                </Typography>
+              </Box>
+            )}
+            <Box>
+              <Typography
+                id="text-content"
+                sx={{
+                  my: 1,
+                  color: theme.palette.text.primary,
+                  maxWidth: "100%",
+                }}
+              >
+                {post.content}
+              </Typography>
+              {post.image && (
+                <Box my={1}>
+                  <ImageViewer
+                    imageUrl={post.image}
+                    triggerElement={<ImageContainer imageUrl={post.image} />}
                   />
-                  <input
-                    type="file"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onChooseFile();
-                    }}
-                  />
-                  <Button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      saveChanges();
-                    }}
-                    color="primary"
-                  >
-                    Save Changes
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Typography
-                    id="text-content"
-                    sx={{
-                      mt: 1,
-                      mb: 2,
-                      color: theme.palette.text.primary,
-                      maxWidth: "100%",
-                      cursor: "default",
-                    }}
-                  >
-                    {textContent}
-                  </Typography>
-                  {imageUrl && <ImageContainer imageUrl={imageUrl} />}
-                </>
+                </Box>
               )}
+            </Box>
+            <Box
+              id="like-comment-container"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                gap: 1,
+                mt: 0,
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <LikeIcon
+                user={currentUser}
+                post={post}
+                onAfterLike={onAfterLike}
+              />
+              <CommentIcon
+                number={post.comments.length}
+                onCommentIcon={onCommentIconClick}
+              />
             </Box>
           </Box>
         </Box>
       </Card>
-    </Box>
+
+      {deletePostModalOpen && (
+        <DeletePostComment
+          type={"Post"}
+          open={deletePostModalOpen}
+          setOpen={setDeletePostModalOpen}
+          onDeleteClick={handleDeletePost}
+        />
+      )}
+    </>
   );
 };
 

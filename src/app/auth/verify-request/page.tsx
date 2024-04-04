@@ -1,7 +1,8 @@
 import React from "react";
+import { CheckYourEmailPage } from "~/app/_components";
 
 const VerifyRequest = () => {
-  return <div>VerifyRequest Page</div>;
+  return <CheckYourEmailPage />;
 };
 
 export default VerifyRequest;

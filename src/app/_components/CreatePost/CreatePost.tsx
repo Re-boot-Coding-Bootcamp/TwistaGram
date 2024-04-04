@@ -9,7 +9,13 @@ import {
   CircularProgress,
 } from "@mui/material";
 import ImageIcon from "@mui/icons-material/Image";
-import { type ChangeEvent, useEffect, useState, useRef } from "react";
+import {
+  type ChangeEvent,
+  useEffect,
+  useState,
+  useRef,
+  type KeyboardEventHandler,
+} from "react";
 import {
   VisuallyHiddenInput,
   Avatar,
@@ -21,18 +27,16 @@ import { type EmojiClickData } from "emoji-picker-react";
 import { PictureExtensions } from "~/constants";
 import theme from "~/theme";
 import { useSnackbar } from "notistack";
-
-export type PostContent =
-  | { content?: string; image: File }
-  | { content: string; image?: File };
+import type { PostContent } from "~/types";
 
 interface CreatePostProps {
+  userImage: string;
   onPostSubmit: (postContent: PostContent) => Promise<void>;
 }
 
 const POST_CHAR_LIMIT = 250;
 
-function CreatePost({ onPostSubmit }: CreatePostProps) {
+function CreatePost({ userImage, onPostSubmit }: CreatePostProps) {
   const [postContent, setPostContent] = useState("");
   const [file, setFile] = useState<File>();
   const [imageUrl, setImageUrl] = useState<string>();
@@ -50,6 +54,13 @@ function CreatePost({ onPostSubmit }: CreatePostProps) {
     setFile(undefined);
     setImageUrl(undefined);
     setIsPosting(false);
+  };
+
+  const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (e) => {
+    if (e.key === "Enter" && e.ctrlKey) {
+      e.preventDefault();
+      void handlePostClick();
+    }
   };
 
   const handleEmojiChange = (emojiData: EmojiClickData) => {
@@ -101,9 +112,9 @@ function CreatePost({ onPostSubmit }: CreatePostProps) {
   }, [file]);
 
   return (
-    <Box id="create-post-main-container" display="flex" p={2} gap={1}>
+    <Box id="create-post-main-container" display="flex" gap={1}>
       <Box id="avatar-container">
-        <Avatar size="medium" />
+        <Avatar size="medium" src={userImage} />
       </Box>
 
       <Box id="context-container" flexGrow={1}>
@@ -119,6 +130,7 @@ function CreatePost({ onPostSubmit }: CreatePostProps) {
             setPostContent(e.target.value);
           }}
           disabled={isPosting}
+          onKeyDown={handleKeyDown}
         />
 
         {file && imageUrl && (
