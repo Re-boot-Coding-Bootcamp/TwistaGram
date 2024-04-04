@@ -9,6 +9,7 @@ export { Avatar } from "./Avatar";
 export { CreateUpdateProfileForm } from "./CreateUpdateProfileForm";
 export { ForgotPasswordForm } from "./ForgotPasswordForm";
 export { SignInPage } from "./SignInPage";
+export { SignOutPage } from "./SignOutPage";
 export { ProfilePageHeader } from "./ProfilePageHeader";
 export { ImageViewer } from "./ImageViewer";
 export { CreatePost } from "./CreatePost";

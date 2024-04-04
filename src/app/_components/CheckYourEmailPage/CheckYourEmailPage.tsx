@@ -26,25 +26,17 @@ const CheckYourEmailPage = (): JSX.Element => {
           border: mobileSmallScreen ? "none" : "1px solid #CCC",
           width: mobileSmallScreen ? "90%" : 375,
           margin: "auto",
-          padding: "1rem",
+          padding: 3,
+          gap: 2,
         }}
       >
-        <Box id="logo-container" sx={{ marginTop: "40px" }}>
+        <Box id="logo-container">
           <Image src={Logo as string} alt="logo" width={200} />
         </Box>
 
-        <Typography
-          variant="h4"
-          sx={{
-            textAlign: "center",
-            marginTop: 3,
-            marginBottom: 2,
-          }}
-        >
-          Check your email
-        </Typography>
-        <Typography sx={{ marginBottom: 2, textAlign: "center" }}>
-          A sign in like has been sent to your email address.
+        <Typography variant="subtitle1">Check your email</Typography>
+        <Typography variant="subtitle1" sx={{ textAlign: "center" }}>
+          A sign in link has been sent to your email address
         </Typography>
       </Box>
     </Grid>

@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Button, Card, Typography, useTheme } from "@mui/material";
 import { Avatar } from "../Avatar";
 import type { User } from "@prisma/client";
+import Link from "next/link";
 
 interface ProfilePageHeaderProps {
   user: User;
@@ -73,7 +74,12 @@ const ProfilePageHeader: React.FC<ProfilePageHeaderProps> = ({
           <Button color="primary" variant="outlined" onClick={onEditProfile}>
             Edit Profile
           </Button>
-          <Button color="error" variant="outlined" onClick={onEditProfile}>
+          <Button
+            component={Link}
+            color="error"
+            variant="outlined"
+            href="/api/auth/signout"
+          >
             Log Out
           </Button>
         </Box>
