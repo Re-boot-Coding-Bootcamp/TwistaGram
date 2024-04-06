@@ -66,7 +66,7 @@ const LikeIcon = ({ user, post, onAfterLike }: Props): JSX.Element => {
         <Button
           sx={{ fontSize: 16 }}
           color="secondary"
-          aria-label="delete"
+          aria-label="like"
           onClick={handelLike}
           startIcon={
             isLikedByMe ? (
