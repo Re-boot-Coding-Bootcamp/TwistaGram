@@ -72,14 +72,14 @@ const MoreActionsMenu: React.FC<MoreActionsMenuProps> = ({
                 onClick={handleDeleteClick}
                 style={{ color: "red" }}
               >
-                <ListItemIcon>
+                <ListItemIcon aria-label="delete">
                   <DeleteIcon style={{ color: "red" }} />
                 </ListItemIcon>
                 <ListItemText primary="Delete" />
               </ListItemButton>
               {onEdit && (
                 <ListItemButton onClick={handleEditClick}>
-                  <ListItemIcon>
+                  <ListItemIcon aria-label="edit">
                     <EditIcon />
                   </ListItemIcon>
                   <ListItemText primary="Edit" />
